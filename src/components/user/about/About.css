@@ -1,0 +1,57 @@
+.about {
+  height: 100vh;
+  padding: 50px;
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-around;
+  align-items: center;
+}
+ 
+.about_text {
+  position: absolute;
+  width: 517px;
+  height: 206px;
+  left: 350px;
+  top: 1435px;
+  
+}
+.about_video {
+  position: absolute;
+  width: 739px;
+  height: 455px;
+  left: 960px;
+  top: 1435px;
+}
+
+.sub_text1 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 64px;
+  line-height: 70px;
+  color: #fa541c;
+}
+.sub_text2 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 30px;
+}
+.btn_image {
+  width: 303px;
+  height: 70px;
+  background: #fa541c;
+  border-radius: 12px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  /* padding-top: 2px; */
+}
+.btn_image span {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 24px;
+  text-align: center;
+}

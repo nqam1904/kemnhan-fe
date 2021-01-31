@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap');
+.page_cart{
+  margin-top:100px;
+  /* background-color: red; */
+  /* display: flex; */
+  /* height: 100vh; */
+  padding: 65px 10px 20px 100px;
+
+}
+.card_cart{
+width: 1015px;
+border: 1px solid #E5E5E5;
+position: relative;
+height:500px;
+border-radius: 12px;
+}
+.cart_custom{
+  width: 412px;
+border: 1px solid #E5E5E5;
+position: relative;
+height:500px;
+border-radius: 12px;
+}
+
+.cart_info{
+}
+.cart_header{
+  position: relative;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 20px;
+  border-bottom: 1px solid #E5E5E5;
+}
+.cart_header_custom{
+  position: relative;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 20px;
+  border-bottom: 1px solid #E5E5E5;
+}
+.cart_body{
+  padding-left: 24px;
+
+}
+.option{
+  display: flex;
+  justify-content: space-between;
+}
+.select_all{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width:120px;
+}
+.content_cart_item{
+margin: 0 auto;
+}
+ 
+.content_cart_item,
+.img_empty_cart{
+  width: 450px;
+  height: 340px;
+   
+}
+.page_empty{
+  position: relative;
+}
+.btn_back{
+position: absolute;
+width: 200px;
+height: 42px;
+left: 125px;
+top: 250px;
+text-align: center;
+background: #FA541C;
+border-radius: 4px;
+display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px !important;
+}
+.btn_back span{
+  color:#fff;
+  text-decoration:none;
+}
+.text_selectAll{
+font-family: 'Roboto Mono', monospace;
+font-style: normal;
+font-weight: normal;
+font-size: 14px;
+color:#595959;
+padding-top:15px
+
+}
+.delete_item{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width:120px;
+}
+.delete_item img{
+  width: 15px;
+}
+.text_delete{
+  font-family: 'Roboto Mono', monospace;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 24px;
+padding-top:15px
+
+}
+.content_cart{
+font-family: 'Roboto Mono', monospace;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 24px;
+}
+.number_cart{
+font-family: 'Roboto Mono', monospace;
+font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 24px;
+color:#595959
+}
