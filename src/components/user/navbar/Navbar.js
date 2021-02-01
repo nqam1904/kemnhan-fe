@@ -5,7 +5,6 @@ import "./Navbar.css";
 class Navbar extends Component {
   render() {
     return (
-
       <div className="nav">
         <div className="group-logo">
           <img

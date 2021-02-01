@@ -1,4 +1,3 @@
-import ProductDetail from "./components/user/product/ProductDetail";
 import Login from "./components/admin/login/Login";
 import HomeContainer from "./containers/admin/HomeContainer";
 import CartComponent from "./components/user/cart/CartComponent";
@@ -22,12 +21,6 @@ const routes = [
     component: CartComponent,
     layout: "/trang-chu",
     title: "Giỏ hàng",
-  },
-  {
-    path: "/details",
-    component: ProductDetail,
-    layout: "/home",
-    title: "Product Detail",
   },
   {
     path: "/",

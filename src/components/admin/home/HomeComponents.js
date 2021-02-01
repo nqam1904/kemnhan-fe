@@ -17,7 +17,7 @@ class HomeComponents extends Component {
     }
   }
   componentDidMount() {
-    if (localStorage.getItem('token') == null && localStorage.getItem('token') == 'undefined') {
+    if (localStorage.getItem('token') === null && localStorage.getItem('token') === 'undefined') {
       this.setState({
         isLogin: false
       })

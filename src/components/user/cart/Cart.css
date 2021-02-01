@@ -1,9 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap');
 .page_cart{
   margin-top:100px;
-  /* background-color: red; */
-  /* display: flex; */
-  /* height: 100vh; */
   padding: 65px 10px 20px 100px;
 
 }
@@ -13,6 +10,7 @@ border: 1px solid #E5E5E5;
 position: relative;
 height:500px;
 border-radius: 12px;
+background-color: #fff;
 }
 .cart_custom{
   width: 412px;
@@ -20,10 +18,9 @@ border: 1px solid #E5E5E5;
 position: relative;
 height:500px;
 border-radius: 12px;
+background-color: #fff;
 }
-
-.cart_info{
-}
+ 
 .cart_header{
   position: relative;
   top: 0;

@@ -18,7 +18,7 @@ class CartComponent extends Component {
         }
     }
     render() {
-        const { count, showCustom, cart } = this.state;
+        const { count, cart } = this.state;
         const emptyCart = (
             <div className="page_empty">
                 <img className="img_empty_cart" alt="empty" src={require('../../../res/image/empty.png').default} />
@@ -43,7 +43,7 @@ class CartComponent extends Component {
                                             <p className="text_selectAll" style={{ paddingLeft: 8 }}>Chọn tất cả</p>
                                         </div>
                                         <div className="delete_item">
-                                            <img src={require('../../../res/image/Delete.png').default} />
+                                            <img src={require('../../../res/image/Delete.png').default} alt="delete" />
                                             <p className="text_delete">Xoá</p>
                                         </div>
                                     </div>
@@ -55,7 +55,7 @@ class CartComponent extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                             <div className="cart_custom">
                                 <div className="cart_header_custom">
                                     <p className="content_cart">Đơn hàng</p>

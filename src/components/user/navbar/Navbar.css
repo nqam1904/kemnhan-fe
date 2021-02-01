@@ -1,10 +1,10 @@
 .nav {
   position: fixed;
-  z-index: 1000;
+  z-index: 1;
   top: 0;
   right: 0;
   left: 0;
-  height: 100%;
+  height: 148px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -16,8 +16,9 @@
   ); */
   background-image: url(../../../res/image/header.png);
   background-repeat: no-repeat;
-  width: 100%;
-  background-size: contain;
+  background-position: center center;
+  background-size: cover;
+  /* background-color: #FEFFE6; */
 }
 .nav .links a {
   margin-top: 20px;
