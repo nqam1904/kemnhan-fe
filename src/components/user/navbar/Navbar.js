@@ -20,7 +20,7 @@ class Navbar extends Component {
         </div>
         <div className="links">
           <Link to="/trang-chu">Trang chủ</Link>
-          <Link to="/home/details">Sản phẩm</Link>
+          <Link to="/trang-chu/san-pham">Sản phẩm</Link>
           <Link to="/home/about">Giới thiệu</Link>
           <Link to="/home">Liên hệ</Link>
           <Link to="/trang-chu/gio-hang">
