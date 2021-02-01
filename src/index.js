@@ -4,6 +4,8 @@ import Home from "./components/user/home/HomeComponents";
 import App from "./containers/admin/App";
 import './index.css'
 import Login from "./containers/admin/LoginContainers";
+import ProductDetail from "./components/user/product/ProductDetail";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   BrowserRouter,
@@ -33,6 +35,7 @@ ReactDOM.render(
             <Route component={Home} path="/trang-chu" />
             <Route component={Login} path="/login" />
             <Route component={App} path="/admin" />
+
             <Redirect to="/trang-chu" />
           </Switch>
         </Router>

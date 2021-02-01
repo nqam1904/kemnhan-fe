@@ -10,23 +10,39 @@ class CartComponent extends Component {
             count: 0,
             showCustom: false,
             cart: [],
+            layout: "container-fluid",
+
         }
     }
     componentDidMount() {
         if (!localStorage.getItem('cart', this.state.cart)) {
+            this.setState({
+                layout: "container",
+                showCustom: false
+            })
             toast.success(`${Types.MSG_CART_EMPTY}`)
         }
     }
     render() {
-        const { count, cart } = this.state;
+        const { count, cart, showCustom, layout } = this.state;
         const emptyCart = (
             <div className="page_empty">
                 <img className="img_empty_cart" alt="empty" src={require('../../../res/image/empty.png').default} />
                 <Link to='/home' className="btn_back"><span>Mua thêm sản phẩm</span></Link>
             </div>
         )
+        const elemCustom = showCustom === true ? (<div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+            <div className="cart_custom">
+                <div className="cart_header_custom">
+                    <p className="content_cart">Đơn hàng</p>
+                </div>
+                <div className="cart_custom_body">
+
+                </div>
+            </div>
+        </div>) : null;
         return (
-            <div className="container-fluid">
+            <div className={layout}>
                 <ToastContainer autoClose={3000} />
                 <div className="page_cart">
                     <div className="row">
@@ -48,23 +64,12 @@ class CartComponent extends Component {
                                         </div>
                                     </div>
                                     <div className="content_cart_item">
-                                        <div className="item_empty">
-                                            {!localStorage.getItem('cart', cart) ? (emptyCart) : ''}
-                                        </div>
+                                        {!localStorage.getItem('cart', cart) ? (emptyCart) : ''}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                            <div className="cart_custom">
-                                <div className="cart_header_custom">
-                                    <p className="content_cart">Đơn hàng</p>
-                                </div>
-                                <div className="cart_custom_body">
-
-                                </div>
-                            </div>
-                        </div>
+                        {elemCustom}
                     </div>
                 </div>
             </div>

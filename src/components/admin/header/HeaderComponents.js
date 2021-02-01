@@ -1,14 +1,19 @@
 import React, { Component } from "react";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import history from "../../../store/Route";
 class Header extends Component {
   logOut = () => {
     localStorage.removeItem("token");
-    this.props.history.push('/login')
+    this.props.logOutAction()
+    if (this.props.data === null) {
+      return history.push("/login")
+    }
   };
   render() {
+
     return (
+
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top" >
         <Navbar.Brand as={Link} to="/admin">
           <img

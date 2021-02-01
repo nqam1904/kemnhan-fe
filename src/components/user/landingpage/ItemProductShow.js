@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom'
 import './ItemProductShow.css';
 
 const ItemProductShow = props => {
-    console.log(props.images)
+    function getProduct(id) {
+        props.getProduct(id)
+    }
+    // console.log(props.images)
     return (
-        <div className="card_item" onClick={() => <Link to={`/chi-tiet-san-pham/${props.id}`} />}>
+        <div className="card_item" onClick={() => getProduct(props.id)} >
             {/* <img className="image" src={props.images} alt={props.name} /> */}
             <img className="image" src={require('../../../res/image/image.png').default} alt={props.name} />
             <h5 id="title1" aria-hidden="true">{props.name}</h5>

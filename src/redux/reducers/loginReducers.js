@@ -14,7 +14,7 @@ const loginReducers = (state = initialState, action) => {
                 data: action.data
             })
         case Types.LOGIN_SUCCESS:
-            // localStorage.setItem("token", action.data.access_token)
+            localStorage.setItem("token", action.data.access_token)
             console.log(action)
 
             return Object.assign({}, state, {
@@ -28,6 +28,12 @@ const loginReducers = (state = initialState, action) => {
                 loading: false,
                 data: null,
                 error: action.error
+            })
+        case Types.LOGOUT:
+            return Object.assign({}, state, {
+                loading: false,
+                data: null,
+                error: null
             })
         default:
             return state

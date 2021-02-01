@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+.page_product_detail{
+    margin-top:100px;
+    padding: 65px 0px 20px 100px;
+    display: flex;
+    justify-content:center;
+}
+.product_img img{
+    width: 603px;
+    height:250px;
+    border-radius: 12px;
+    margin-right: 24px;
+}
+.product_img_slide{
+    width: 600px;
+    display: flex;
+    justify-content:center;
+    margin-top: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+@keyframes slidy {
+    0% { left: 0%; }     /* 0 - 30% of animation time */
+    30% { left: 0%; }    /* 1st slide will be visible */
+    33% { left: -100%; } /* 30% - 33% slide change will occur */
+    63% { left: -100%; } /* etc.. */
+    66% { left: -200%; }
+    100% { left: -200%; }
+    }
+    div .product_img_slide figure img {
+        
+        float: left;
+      }
+      div .product_img_slide figure { 
+        position: relative;
+        width: 300%;       /* total width of 3 slides (3*100%) */
+        margin: 0;
+        left: 0;
+        text-align: left;
+        font-size: 0;
+        animation: 10s slidy infinite; /* length of animation */
+      }
+.product_body{
+    width: 705px;
+    border: 1px solid #E5E5E5;
+    position: relative;
+    height:500px;
+    border-radius: 12px;
+    background-color: #fff;
+    padding: 24px;
+}
+.option_detail{
+    display: flex;
+    justify-content:space-around;
+}
+ 
+.content{
+font-family:'Roboto', sans-serif;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 24px;
+}
+.content_price{
+color: #FA541C;
+font-size: 64px;
+font-family:'Roboto', sans-serif;
+font-style: normal;
+font-weight: normal;
+line-height: 70px;
+}
+.content_des{
+font-family:'Roboto', sans-serif;
+width: 582px;
+height: 168px;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 24px;
+}
+.btn_buy{
+width: 200px;
+height: 42px;
+text-align: center;
+background: #FA541C;
+border-radius: 4px;
+display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px !important;
+}
+.btn_buy span{
+    color: #fff;
+}
+.btn_buy:hover{
+    cursor: pointer;
+    transition:0.5s all ease;
+      opacity:1;
+}

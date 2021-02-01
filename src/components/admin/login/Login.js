@@ -46,7 +46,7 @@ class Login extends Component {
   render() {
     const { email, password, isSuccess } = this.state;
     console.log(this.props);
-    if (this.props.error === false) {
+    if (this.props.data) {
       return <Redirect to='/admin' />
     }
     return (

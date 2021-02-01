@@ -1,34 +1,19 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import history from "../../../store/Route";
 class HomeComponents extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLogin: true,
-      user: [],
-      showModal: false,
-      titileModal: "",
-      firstName: "",
-      lastName: "",
-      phone: "",
-      password: "",
-      email: "",
-      role: "",
+
     }
   }
   componentDidMount() {
-    if (localStorage.getItem('token') === null && localStorage.getItem('token') === 'undefined') {
-      this.setState({
-        isLogin: false
-      })
+    if (this.props.data === null) {
+      return history.push("/login")
     }
   }
   render() {
-
-    const { isLogin } = this.state;
-    if (isLogin === false) {
-      return <Redirect to='/login' />
-    }
     return (
       <>
         <h1>Hello</h1>
