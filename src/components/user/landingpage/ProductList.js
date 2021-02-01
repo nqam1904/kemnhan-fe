@@ -20,11 +20,10 @@ class ProductList extends Component {
     showProduct = (products) => {
         var result = null;
         if (products.length > 0) {
-            result = products.slice(0, 6).map((item, idx) => {
+            result = products.slice(0, 6).map((item) => {
                 return (
-                    <div key={idx} className="item_product">
+                    <div className="item_product">
                         <ItemProductShow
-                            index={idx}
                             name={item.name}
                             description={item.description}
                             images={item.images[0].key}

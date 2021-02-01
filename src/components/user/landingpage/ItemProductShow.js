@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom'
 import './ItemProductShow.css';
 
 const ItemProductShow = props => {
-
+    console.log(props.images)
     return (
-        <div className="card_item">
-            <img className="image" src={props.images} alt={props.name} />
+        <div className="card_item" onClick={() => alert('hello')}>
+            {/* <img className="image" src={props.images} alt={props.name} /> */}
+            <img className="image" src={require('../../../res/image/image.png').default} alt={props.name} />
             <h5 id="title1" aria-hidden="true">{props.name}</h5>
             <div className="overlay">
                 <div className="description">{props.description}</div>

@@ -50,8 +50,9 @@ h5 {
     transition: .5s ease;
 }
 
-.card_item:hover ~ .overlay {
+.card_item:hover .overlay {
     height: 100%!important;
+    cursor: pointer!important;
 }
 
 .description {
