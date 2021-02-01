@@ -1,33 +1,26 @@
 .about {
-  height: 100vh;
+  /* height: 100vh; */
   padding: 50px;
   display: flex;
   margin: 0 auto;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
 }
  
-.about_text {
-  position: absolute;
-  width: 517px;
-  height: 206px;
-  left: 350px;
-  top: 1435px;
-  
+.about_text { 
+  width: 550px;
+  margin-bottom: 100px;
+  margin-left: 100px;
+  /* height: 206px; */
 }
 .about_video {
-  position: absolute;
   width: 739px;
   height: 455px;
-  left: 960px;
-  top: 1435px;
 }
-
 .sub_text1 {
   font-style: normal;
   font-weight: normal;
   font-size: 64px;
-  line-height: 70px;
   color: #fa541c;
 }
 .sub_text2 {

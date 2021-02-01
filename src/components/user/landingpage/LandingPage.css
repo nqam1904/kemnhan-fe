@@ -1,56 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Rochester&display=swap");
-/* LANDING CSS */
-.landing {
-  height: 100vh;
-  background-image: url(../../../res/image/bg3.png);
+.landing img {
   background-size: contain;
-  height: 800px;
   background-repeat: no-repeat;
-
+  width:100%;
 }
-.landingImg {
-  position: absolute;
-  width: 1352px;
-  /* height: 974px; */
-  left: 44px;
-  right: 44px;
-  top: 600px;
-  margin: 0 auto;
-  background: #ffffff;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.06);
-  border-radius: 12px;
-  z-index: 1;
-}
-
-.text {
-  /* background-color: black; */
-  position: relative;
-  /* width: 584px; */
-  height: 24px;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-.text-detail {
-  position: absolute;
-  top:40px;
-  /* left: 344px; */
-  font-family: "Rochester", cursive;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 36px;
-  width: 610px;
-  color: #ff7a45;
-  
-   
-}
-.list_product {
-  margin-top: 80px;
-  text-align: center;
-}
-.item_product {
-  display: inline-block;
-  margin: 38px 26px;
-}
+ 

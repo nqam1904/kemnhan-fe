@@ -3,9 +3,10 @@ import { Route, Switch } from "react-router-dom";
 import routes from "../../../routes";
 import Navbar from "../navbar/Navbar";
 import LandingPage from "../landingpage/LandingPage";
+import ProductList from "../landingpage/ProductList";
+import "../../../App.css";
 import AboutComponents from "../about/AboutComponents";
 import Footer from "../footer/Footer";
-import MessengerCustomerChat from 'react-messenger-customer-chat';
 class HomeComponents extends Component {
   render() {
     return (
@@ -31,8 +32,8 @@ class HomeComponents extends Component {
                 return (
                   <>
                     <LandingPage />
+                    <ProductList />
                     <AboutComponents />
-
                   </>
                 );
               }

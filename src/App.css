@@ -8,7 +8,9 @@ body {
 * {
   text-decoration: none !important;
 }
-
+.wrapper{
+  background: #FEFFE6 !important;
+}
 .white {
   color: #fff !important;
 }

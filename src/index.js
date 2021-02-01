@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./App.css";
 import Home from "./components/user/home/HomeComponents";
 import App from "./containers/admin/App";
+import './index.css'
 import Login from "./containers/admin/LoginContainers";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
@@ -10,6 +10,7 @@ import {
   Redirect,
   Route,
   Router,
+  HashRouter,
   Switch,
 } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,14 +27,16 @@ const hist = createBrowserHistory();
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Router history={hist}>
-        <Switch>
-          <Route component={Home} path="/trang-chu" />
-          <Route component={Login} path="/login" />
-          <Route component={App} path="/admin" />
-          <Redirect to="/trang-chu" />
-        </Switch>
-      </Router>
+      <HashRouter>
+        <Router history={hist}>
+          <Switch>
+            <Route component={Home} path="/trang-chu" />
+            <Route component={Login} path="/login" />
+            <Route component={App} path="/admin" />
+            <Redirect to="/trang-chu" />
+          </Switch>
+        </Router>
+      </HashRouter>
     </BrowserRouter>
   </Provider>,
 
