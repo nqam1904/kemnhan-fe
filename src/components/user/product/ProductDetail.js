@@ -30,6 +30,7 @@ class ProductDetail extends Component {
   }
   getProductDetail = () => {
     const id = this.props.match.params.id;
+    const path = 
     axios.get(`${API_URL}/products/${id}`)
       .then(res =>
         this.setState({
@@ -40,7 +41,9 @@ class ProductDetail extends Component {
           displayPrice: res.data.displayPrice,
           isActive: res.data.isActive,
           isFeature: res.data.isFeature,
-          selectedImage: res.data.images
+          selectedImage: `${API_URL}/static/${res.data.images[0].name}`
+        },()=>{
+          console.log(res.data.images[0])
         })
       ).catch(err => { console.log(err) })
   }
@@ -59,7 +62,7 @@ class ProductDetail extends Component {
           <div className="product_img">
             {/* <img src={require('../../../res/image/image.png').default} /> */}
             <img src={selectedImage} />
-
+{/* {selectedImage.length < 0 ?  <img className="image" src={`${API_URL}/static/${props.images}`} alt={props.name} /> : (<img src={selectedImage}/>)} */}
             <div className="product_img_slide">
               {dataImage.map((x, index) => {
                 return (
