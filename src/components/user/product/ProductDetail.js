@@ -3,12 +3,7 @@ import './ProductDetail.css';
 import axios from 'axios';
 import { API_URL } from "../../../config/setting";
 
-const dataImage = [
-  { name: require('../../../res/image/bacha.jpg').default },
-  { name: require('../../../res/image/chanh.jpg').default },
-  { name: require('../../../res/image/mangcau.jpg').default },
-  { name: require('../../../res/image/socola.jpg').default },
-]
+
 class ProductDetail extends Component {
 
   constructor(props) {
@@ -22,7 +17,8 @@ class ProductDetail extends Component {
       isActive: false,
       isFeature: false,
       images: [],
-      selectedImage: null
+      selectedImage: null,
+      dataImage:[],
     }
   }
   async componentDidMount() {
@@ -41,9 +37,10 @@ class ProductDetail extends Component {
           displayPrice: res.data.displayPrice,
           isActive: res.data.isActive,
           isFeature: res.data.isFeature,
-          selectedImage: `${API_URL}/static/${res.data.images[0].name}`
+          selectedImage: `${API_URL}/static/${res.data.images[0].key}`,
+          dataImage:`${API_URL}/static/${res.data.images}`
         },()=>{
-          console.log(res.data.images[0])
+          console.log(this.state.dataImage)
         })
       ).catch(err => { console.log(err) })
   }
@@ -54,8 +51,8 @@ class ProductDetail extends Component {
       });
   };
   render() {
-    const { name, unit, description, shopeeUrl, displayPrice, selectedImage, images } = this.state
-
+    const { name, unit, description, shopeeUrl, displayPrice, selectedImage, dataImage } = this.state
+console.log(dataImage,'aaaa')
     return (
       <div className="container-fluid">
         <div className="page_product_detail">
@@ -64,16 +61,18 @@ class ProductDetail extends Component {
             <img src={selectedImage} />
 {/* {selectedImage.length < 0 ?  <img className="image" src={`${API_URL}/static/${props.images}`} alt={props.name} /> : (<img src={selectedImage}/>)} */}
             <div className="product_img_slide">
-              {dataImage.map((x, index) => {
+              {/* {dataImage.map((x, index) => {
                 return (
                   <figure>
                     <img
-                      src={x.name}
+                    key={index}
+                      src={x.key}
                       onClick={e => this.handleClick(x)}
+                      alt={x.name}
                     />
                   </figure>
                 );
-              })}
+              })} */}
             </div>
           </div>
           <div className="product_body">
