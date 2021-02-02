@@ -24,7 +24,8 @@ class AccountComponent extends Component {
             password: "",
             email: "",
             role: "",
-            isSetRole: ""
+            isSetRole: "",
+
         }
 
     }
@@ -102,10 +103,11 @@ class AccountComponent extends Component {
     onSave = (e) => {
         e.preventDefault();
         const { id, firstName, lastName, phone, password, email, isSetRole } = this.state;
-        if (firstName === "" || lastName === "" || phone === "" || password === "" || email === "" || isSetRole) {
+        if (firstName === "" || lastName === "" || phone === "" || password === "" || email === "" || isSetRole === "") {
             toast.warning('Vui lòng điền đủ thông tin!');
             return;
         }
+
         if (id) {
             axios.put(`${API_URL}/users/${id}`, {
                 firstName: firstName,
@@ -179,18 +181,19 @@ class AccountComponent extends Component {
                 </Table>
                 <Modal
                     show={showModal}
+                    size="lg"
                     onHide={() => {
                         this.setState({
                             showModal: false,
                         });
                     }}>
-                    <form onSubmit={this.onSave}>
+                    <form onSubmit={this.onSave}  >
                         <Modal.Header closeButton>
                             <Modal.Title> {titleModal} </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <div className="row">
-                                <div className=" form-group col-6">
+                                <div className="form-group col-6">
                                     <label> Họ <sup className="sub_text">*</sup></label>
                                     <input
                                         className="form-control"
@@ -199,6 +202,7 @@ class AccountComponent extends Component {
                                         value={firstName}
                                         placeholder="Nhập họ"
                                         onChange={this.onChange}
+
                                     />
                                 </div>
                                 <div className=" form-group col-6">

@@ -10,8 +10,8 @@ class Login extends Component {
     let isSuccess = false;
     super(props);
     this.state = {
-      email: "kemnhan@gmail.com",
-      password: "kemnhan123@@@",
+      email: "",
+      password: "",
       isSuccess,
     };
   }
@@ -45,7 +45,7 @@ class Login extends Component {
   };
   render() {
     const { email, password, isSuccess } = this.state;
-    console.log(this.props);
+    console.log(this.props.data, 'data');
     if (this.props.data) {
       return <Redirect to='/admin' />
     }

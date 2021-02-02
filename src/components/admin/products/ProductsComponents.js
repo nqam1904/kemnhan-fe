@@ -75,12 +75,12 @@ class ProductsComponents extends Component {
     if (e.target.files) {
       this.fileArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file))
       this.setState({
-        // media: (prevImages) => prevImages.concat(fileArray)
+        
         media: e.target.files,
       }, () => {
         console.log(this.state.media, "state")
       });
-      // Array.from(e.target.files).map((file) => URL.revokeObjectURL(file))
+     
     }
 
   };

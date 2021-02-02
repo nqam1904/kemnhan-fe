@@ -5,7 +5,7 @@ const error = "Không kết nối được với máy chủ";
 function* loginSaga(action) {
     try {
         const response = yield loginApi(action.data);
-        console.log(response, 'saga');
+
         if (response.is_success !== true) {
             yield put({ type: Types.LOGIN_ERROR, error });
         } else {
