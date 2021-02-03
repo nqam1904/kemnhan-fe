@@ -62,8 +62,7 @@ class ProductDetail extends Component {
     }
     this.props.actAddToCart(cart)
     toast.success('Thêm vào giỏ thành công!')
-
-    // localStorage.setItem('cart', cart);
+    localStorage.setItem('cart', JSON.stringify(cart));
     console.log('data cart ', this.props.data)
   }
   render() {
@@ -71,7 +70,7 @@ class ProductDetail extends Component {
 
     return (
       <div className="container-fluid">
-        <ToastContainer autoClose={3000} />
+        <ToastContainer autoClose={2000} />
         <div className="page_product_detail">
           <div className="product_img">
             {/* <img src={require('../../../res/image/image.png').default} /> */}

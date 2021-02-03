@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import * as Types from '../../../redux/action/mesAction'
 import './Cart.css'
+import CartItem from './CartItem';
 class CartComponent extends Component {
     constructor(props) {
         super(props);
@@ -15,32 +16,74 @@ class CartComponent extends Component {
         }
     }
     componentDidMount() {
-        if (!localStorage.getItem('cart', this.state.cart)) {
+        if (!localStorage.getItem('cart', this.props.cartItem)) {
             this.setState({
                 layout: "container",
-                showCustom: false
+
             })
             toast.success(`${Types.MSG_CART_EMPTY}`)
+        } else {
+            this.setState({
+                showCustom: true
+            })
         }
+    }
+    showCartItem = (cartItem) => {
+        var result = null;
+        if (cartItem.length > 0) {
+            result = cartItem.map((item, index) => {
+                return (
+                    <CartItem
+                        key={index}
+                        item={item}
+                        index={index}
+                    />
+                )
+            })
+        }
+        return result;
     }
     render() {
         const { count, cart, showCustom, layout } = this.state;
+        const { cartItem } = this.props;
+        console.log(cartItem)
         const emptyCart = (
-            <div className="page_empty">
-                <img className="img_empty_cart" alt="empty" src={require('../../../res/image/empty.png').default} />
-                <Link to='/home' className="btn_back"><span>Mua thêm sản phẩm</span></Link>
+            <div className="description">
+                <div className="page_empty">
+                    <img className="img_empty_cart" alt="empty" src={require('../../../res/image/empty.png').default} />
+                    <Link to='/home' className="btn_back"><span>Mua thêm sản phẩm</span></Link>
+                </div>
             </div>
         )
-        const elemCustom = showCustom === true ? (<div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-            <div className="cart_custom">
-                <div className="cart_header_custom">
-                    <p className="content_cart">Đơn hàng</p>
+        const elemCustom = showCustom === true && (
+            <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                <div className="cart_custom">
+                    <div className="cart_header_custom">
+                        <p className="content_cart">Đơn hàng</p>
+                    </div>
+                    <div className="cart_custom_body">
+                        <div className="about_custom">
+                            <p>Nghiem quoc</p>
+                            <p>Binh duong</p>
+                            <p>0339895154</p>
+                            <p>Email</p>
+                        </div>
+                        <div style={{ marginTop: 20 }}>
+                            <p style={{ color: '#1890FF' }}>Edit</p>
+                        </div>
+                    </div>
+                    <div className="cart_amount_body">
+                        <div className="thongtin">
+                            <p>gia san pham</p>
+                            <p>Tong cong:</p>
+                        </div>
+                        <div className="thanhtoan">
+                            <p>10000</p>
+                            <p>10000</p>
+                        </div>
+                    </div>
                 </div>
-                <div className="cart_custom_body">
-
-                </div>
-            </div>
-        </div>) : null;
+            </div>)
         return (
             <div className={layout}>
                 <ToastContainer autoClose={3000} />
@@ -64,7 +107,7 @@ class CartComponent extends Component {
                                         </div>
                                     </div>
                                     <div className="content_cart_item">
-                                        {!localStorage.getItem('cart', cart) ? (emptyCart) : ''}
+                                        {!localStorage.getItem('cart', cart) ? (emptyCart) : this.showCartItem(cartItem)}
                                     </div>
                                 </div>
                             </div>

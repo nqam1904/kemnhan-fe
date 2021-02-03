@@ -5,6 +5,7 @@ import CartComponent from "./components/user/cart/CartComponent";
 import HomeComponents from "./components/user/home/HomeComponents";
 import ProductDetail from "./components/user/product/ProductDetail";
 import ProductContainer from "./containers/user/ProductContainer";
+import CartContainer from "./containers/user/CartContainer";
 const routes = [
   {
     path: "/login",
@@ -20,7 +21,7 @@ const routes = [
   },
   {
     path: "/gio-hang",
-    component: CartComponent,
+    component: CartContainer,
     layout: "/trang-chu",
     title: "Giỏ hàng",
   },
