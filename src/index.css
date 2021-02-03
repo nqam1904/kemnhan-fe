@@ -27,7 +27,18 @@
     .list__products{
         margin-top: 0px;
     }
-     
+    .about{
+        display: flex;
+        flex-direction: column !important;
+    }
+    .footer,.list-item{
+        display: flex;
+        flex-direction: column !important;
+    }
+    .about_video {
+       display: none;
+        /* height: 455px; */
+      }
     
 }
 

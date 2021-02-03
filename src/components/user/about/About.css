@@ -8,13 +8,13 @@
 }
  
 .about_text { 
-  width: 550px;
+  width: 20rem;
   margin-bottom: 100px;
   margin-left: 100px;
   /* height: 206px; */
 }
 .about_video {
-  width: 739px;
+  width:  40rem;
   height: 455px;
 }
 .sub_text1 {

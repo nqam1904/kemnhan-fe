@@ -186,9 +186,7 @@ margin-left: 0px;
   border: 1px solid #F5F5F5;
   /* align-items:center */
 }
-.about{
-  flex-direction: column;
-}
+/*  */
 .cart_amount_body{
   display: flex;
   justify-content: space-around;
