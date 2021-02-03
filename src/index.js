@@ -25,17 +25,16 @@ import rootSaga from "./redux/middleware/saga/rootSaga";
 
 const sagaMiddleware = createSagaMiddleware();
 let store = createStore(allReducers, applyMiddleware(sagaMiddleware));
-const hist = createBrowserHistory();
+const history = createBrowserHistory();
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <HashRouter>
-        <Router history={hist}>
+        <Router history={history}>
           <Switch>
             <Route component={Home} path="/trang-chu" />
             <Route component={Login} path="/login" />
             <Route component={App} path="/admin" />
-
             <Redirect to="/trang-chu" />
           </Switch>
         </Router>

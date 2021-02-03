@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Button, Modal, Table } from "react-bootstrap";
 import { toast, ToastContainer } from 'react-toastify';
 import { API_URL } from "../../../config/setting";
- import ItemOrder from './ItemOrder'
+import ItemOrder from './ItemOrder'
 
 class AccountComponent extends Component {
 
@@ -14,7 +14,7 @@ class AccountComponent extends Component {
             id: "",
             showModal: false,
             titleModal: "",
-             
+
 
         }
 
@@ -42,12 +42,12 @@ class AccountComponent extends Component {
     // };
     onEdit = (id) => {
 
-         
 
-         
+
+
     }
     onDelete = (id) => {
-         
+
     }
     showOder(orders) {
         var result = null;
@@ -57,46 +57,43 @@ class AccountComponent extends Component {
                 return <ItemOrder
                     index={index}
                     id={item.id}
-                    // firstName={item.firstName}
-                    // lastName={item.lastName}
-                    // phone={item.phone}
-                    // email={item.email}
-                    // role={item.role}
-                    // createDate={item.createDate}
-                    // writeDate={item.writeDate}
-                    // onDelete={this.onDelete}
-                    // onEdit={this.onEdit}
+                    name={item.customer.firstName + ' ' + item.customer.lastName}
+                    note={item.note}
+                    amountTotal={item.amountTotal}
+                    createDate={item.createDate}
+                    phone={item.customer.phone}
+                    status={item.status}
                 />;
             });
         }
         return result;
     }
-  
+
     render() {
-        const {  showModal, titleModal,orders } = this.state;
+        const { showModal, titleModal, orders } = this.state;
         return (
             <>
                 <h1 className="mt-10"> Danh mục hoá đơn</h1>
                 <ToastContainer autoClose={3000} />
-                 
+
                 <Table striped bordered hover variant="dark" responsive="lg">
                     <thead>
                         <tr>
                             <th> # </th>
                             <th> Họ tên </th>
                             <th> Số điện thoại </th>
-                            <th> Email </th>
+                            <th> Tổng tiền</th>
+                            <th> Ghi chú</th>
                             <th> Ngày đặt </th>
-                            <th>   </th>
-                            <th>  </th>
+                            <th> Trạng thái </th>
                             <th>Chức năng</th>
                         </tr>
                     </thead>
-                    <tbody>  
+                    <tbody>
                         {this.showOder(orders)}
                     </tbody>
                 </Table>
-              </>
+            </>
         );
     }
 }

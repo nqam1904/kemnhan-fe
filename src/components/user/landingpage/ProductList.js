@@ -4,8 +4,8 @@ import ItemProductShow from "./ItemProductShow";
 import { API_URL } from "../../../config/setting";
 import './ProductList.css'
 import ProductDetail from "../product/ProductDetail";
-import { Route } from "react-router-dom";
 import history from "../../../store/Route";
+import { Link } from "react-router-dom";
 
 class ProductList extends Component {
     constructor(props) {
@@ -43,7 +43,10 @@ class ProductList extends Component {
         return result;
     }
     getProduct = (id) => {
-        history.push(`/trang-chu/chi-tiet-san-pham/${id}`)
+        return history.push({
+            pathname: `/trang-chu/chi-tiet-san-pham/${id}`,
+        });
+
     }
     render() {
         const { products } = this.state;
