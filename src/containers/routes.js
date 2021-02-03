@@ -3,6 +3,7 @@ import CategoryContainer from "./admin/CategoryContainer";
 import HomeContainer from "./admin/HomeContainer";
 import ProductContainer from "./admin/ProductContainer";
 import AccountContainer from "./admin/AccountContainer";
+import OrderContainer from "./admin/OrderContainer";
 const routes = [
   {
     path: "/admin",
@@ -23,6 +24,11 @@ const routes = [
     path: "/admin/account",
     exact: false,
     main: () => <AccountContainer />,
+  },
+  {
+    path: "/admin/order",
+    exact: false,
+    main: () => <OrderContainer />,
   },
   {
     path: "/admin/notfound",

@@ -31,7 +31,7 @@ class Header extends Component {
             </Nav.Link>
             <Nav.Link as={Link} to="/admin/product">Sản phẩm</Nav.Link>
             <Nav.Link as={Link} to="#">Khách hàng</Nav.Link>
-            <Nav.Link href="#pricing">Đơn hàng</Nav.Link>
+            <Nav.Link as={Link} to="/admin/order">Đơn hàng</Nav.Link>
             <Nav.Link href="#pricing">Thống kê</Nav.Link>
           </Nav>
           <div style={{ marginRight: 65 }}>
