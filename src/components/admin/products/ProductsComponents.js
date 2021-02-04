@@ -185,7 +185,6 @@ class ProductsComponents extends Component {
               this.setState(
                 {
                   showModal: false,
-
                   id: "",
                   name: "",
                   unit: "",
@@ -194,6 +193,7 @@ class ProductsComponents extends Component {
                   sellPrice: 0,
                   stockQuantity: 0,
                   categoriesId: [],
+                  imagesId: []
                 },
                 () => {
                   toast.success('Thêm sản phẩm thành công!')
@@ -220,17 +220,22 @@ class ProductsComponents extends Component {
       displayPrice,
       stockQuantity,
     } = this.state;
-    this.setState({ loading: true, showModal: false })
+    this.setState({
+      id: "",
+      name: "",
+      unit: "",
+      description: "",
+      displayPrice: 0,
+      sellPrice: 0,
+      stockQuantity: 0,
+      categoriesId: [],
+      imagesId: []
+    })
     e.preventDefault();
     if (id) {
       try {
-        this.setState({
-          loading: true
-        }, () => {
-          this.onSaveImg();
-          this.setState({ loading: false })
-        })
 
+        this.onSaveImg();
       } catch (error) {
         console.log(error);
       }

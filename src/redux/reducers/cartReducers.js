@@ -25,7 +25,10 @@ const cartReducers = (state = initialState, action) => {
             }
             localStorage.setItem('cart', JSON.stringify(state))
             return state
-
+        case types.EDDIT_TO_CART:
+            return state
+        case types.REMOVE_CART:
+            return state
         default: return state
     }
 }

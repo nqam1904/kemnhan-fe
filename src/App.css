@@ -3,10 +3,12 @@ body {
   overflow-x: hidden !important;
   margin: 0px !important;
   padding: 0px !important;
+
   
 }
 * {
   text-decoration: none !important;
+  box-sizing: border-box;
 }
 .wrapper{
   background: #FEFFE6 !important;
