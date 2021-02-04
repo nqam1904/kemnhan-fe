@@ -15,7 +15,7 @@ class HomeComponents extends Component {
         <Switch>
           {routes.map((prop, key) => {
             if (prop.layout === `/trang-chu`) {
-              if (prop.path != '/') {
+              if (prop.path !== '/') {
                 return (
                   <Route
                     component={(props) => (
