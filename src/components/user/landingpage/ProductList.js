@@ -27,9 +27,9 @@ class ProductList extends Component {
   showProduct = (products) => {
     var result = null;
     if (products.length > 0) {
-      result = products.slice(0, 6).map((item) => {
+      result = products.slice(0, 6).map((item, idx) => {
         return (
-          <div className="item_product">
+          <div key={idx} className="item_product">
             <ItemProductShow
               name={item.name}
               id={item.id}
@@ -37,8 +37,8 @@ class ProductList extends Component {
               images={item.images[0].key}
               isFeature={item.isFeature}
               isActive={item.isActive}
-            //   getProduct={this.getProduct}
-              propsURL={`/trang-chu/chi-tiet-san-pham/${item.id}`}
+              //   getProduct={this.getProduct}
+              propsURL={`/trang-chu/chi-tiet-san-pham?id=${item.id}`}
             />
           </div>
         );

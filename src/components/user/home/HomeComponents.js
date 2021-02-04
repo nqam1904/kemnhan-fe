@@ -12,37 +12,30 @@ class HomeComponents extends Component {
   render() {
     return (
       <div className="wrapper">
-
         <Navbar />
+        <LandingPage />
         <Switch>
           {routes.map((prop, key) => {
             if (prop.layout === `/trang-chu`) {
-              if (prop.path !== '/') {
-                return (
-                  <Route
-                    component={(props) => (
-                      <prop.component
-                        {...props}
-                        someThingProps="this is some props"
-                      />
-                    )}
-                    key={key}
-                    path={prop.layout + prop.path}
-                  />
-                );
-              } else {
-                return (
-                  <>
-                    <LandingPage />
-                    <ProductList />
-                    <AboutComponents />
-                  </>
-                );
-              }
+              return (
+                <Route
+                  component={(props) => (
+                    <prop.component
+                      {...props}
+                      someThingProps="this is some props"
+                    />
+                  )}
+                  key={key}
+                  path={prop.layout + prop.path}
+                />
+              );
             }
             return null;
           })}
         </Switch>
+        {window.location.pathname !== "/trang-chu/chi-tiet-san-pham" && (
+          <AboutComponents />
+        )}
         <Footer />
       </div>
     );

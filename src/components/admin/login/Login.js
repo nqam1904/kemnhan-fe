@@ -34,7 +34,7 @@ class Login extends Component {
     } else {
       this.props.loginAction({
         email: email,
-        password: password,
+        password: password, 
       });
       this.setState(
         {
