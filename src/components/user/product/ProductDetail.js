@@ -43,8 +43,6 @@ class ProductDetail extends Component {
             isFeature: res.data.isFeature,
             selectedImage: `${API_URL}/static/${res.data.images[0].key}`,
             dataImage: res.data.images
-          }, () => {
-            console.log(res.data.images)
           })
         ).catch(err => { console.log(err) })
   }
@@ -57,10 +55,21 @@ class ProductDetail extends Component {
       });
   };
   addCart = (product) => {
-    this.props.actAddToCart(product)
-    toast.success('Thêm vào giỏ thành công!')
+    const data =
+    {
+      product: {
+        id: parseInt(this.props.match.params.id),
+        name: this.state.name,
+        image: this.state.selectedImage,
+        price: this.state.displayPrice,
+        description: this.state.description
+      },
+      quantity: 1
+    }
 
-    // console.log('data cart ', this.props.data)
+    this.props.actAddToCart(data)
+    console.log('data cart', this.props.data)
+    toast.success('Thêm vào giỏ thành công!')
   }
   render() {
     const { name, unit, description, shopeeUrl, displayPrice, selectedImage, dataImage, id } = this.state

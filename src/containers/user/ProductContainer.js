@@ -11,7 +11,7 @@ export class ProductContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state)
+    // console.log(state)
     return {
         data: state.cartReducers
     }
@@ -19,8 +19,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        actAddToCart: (product) => {
-            dispatch(actAddToCart(product, 1));
+        actAddToCart: (item) => {
+            dispatch(actAddToCart(item));
         }
     }
 }

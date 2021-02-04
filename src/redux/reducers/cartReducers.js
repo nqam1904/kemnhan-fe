@@ -25,27 +25,54 @@ var initialState = data ? data : []
 // ]
 
 const cartReducers = (state = initialState, action) => {
-    var { product, quantity } = action;
+    var { item } = action;
     var index = -1;
+    console.log('cc', state.length)
     switch (action.type) {
         case types.ADD_TO_CART:
-            index = findProductInCart(state, product);
-            if (index !== -1) {
-                state[index].quantity += quantity;
-            } else {
-                state.push(action.item)
+
+            if (state.length == 0 || state == []) {
+                state.push(item)
+                console.log('ok')
+            }
+            else {
+                console.log('ko')
+                // for (var itemCart of state) {
+                //     if (itemCart.product.id === item.product.id) {
+                //         itemCart.quantity += 1
+                //         console.log('old', itemCart.product.id, item.product.id, itemCart.quantity, item.quantity)
+                //         break;
+                //     }
+                //     else {
+                //         console.log('new')
+                //         state.push(action.item)
+                //         break;
+                //     }
+                // }
+                const find = state.find((itemCart) =>
+                    itemCart.product.id === item.product.id
+                )
+                if (find !== undefined) {
+                    var i = state.indexOf(find)
+                    state[i].quantity += 1
+                }
+                else {
+                    state.push(action.item)
+                }
+
             }
             localStorage.setItem('cart', JSON.stringify(state))
-            return [...state]
+            return state
 
         default: return state
     }
 }
-var findProductInCart = (cart, product) => {
+//////////////////////////////////////////////////
+var findProductInCart = (item) => {
     var index = -1;
-    if (cart.length > 0) {
-        for (var i = 0; i < cart.length; i++) {
-            if (cart[i].product.id === product.id) {
+    if (item.length > 0) {
+        for (var i = 0; i < item.length; i++) {
+            if (item[i].product.id === item.id) {
                 index = i;
                 break;
             }
