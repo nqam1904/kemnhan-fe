@@ -4,7 +4,7 @@ import axios from "axios";
 import { API_URL } from "../../../config/setting";
 import { toast, ToastContainer } from "react-toastify";
 import history from "../../../store/Route";
-
+import { Link } from 'react-router-dom'
 class ProductDetail extends Component {
   constructor(props) {
     super(props);
@@ -91,7 +91,7 @@ class ProductDetail extends Component {
       name,
       unit,
       description,
-      // shopeeUrl,
+      shopeeUrl,
       displayPrice,
       selectedImage,
       dataImage,
@@ -105,48 +105,49 @@ class ProductDetail extends Component {
         {loading ? (
           <>Loading</>
         ) : (
-          <div className="container-fluid">
-            <ToastContainer autoClose={2000} />
-            <div className="page_product_detail">
-              <div className="product_img">
-                {/* <img src={require('../../../res/image/image.png').default} /> */}
-                <img src={selectedImage} alt="#" />
-                {/* {selectedImage.length < 0 ?  <img className="image" src={`${API_URL}/static/${props.images}`} alt={props.name} /> : (<img src={selectedImage}/>)} */}
-                <div className="product_img_slide">
-                  {dataImage.map((x, index) => {
-                    return (
-                      <figure key={index}>
-                        <img
-                          key={index}
-                          src={`${API_URL}/static/${x.key}`}
-                          onClick={(e) => this.handleClick(x)}
-                          alt={x.name}
-                        />
-                      </figure>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className="product_body">
-                <div className="product_content">
-                  <p className="content">{name}</p>
-                  <p className="content_price">
-                    {displayPrice}/{unit}
-                  </p>
-                  <p className="content_des">{description}</p>
-                </div>
-                <div className="option_detail">
-                  <div className="btn_buy" onClick={() => this.addCart(id)}>
-                    <span>Mua Ngay</span>
+            <div className="container-fluid">
+              <ToastContainer autoClose={2000} />
+              <div className="page_product_detail">
+                <div className="product_img">
+                  {/* <img src={require('../../../res/image/image.png').default} /> */}
+                  <img src={selectedImage} alt="#" />
+                  {/* {selectedImage.length < 0 ?  <img className="image" src={`${API_URL}/static/${props.images}`} alt={props.name} /> : (<img src={selectedImage}/>)} */}
+                  <div className="product_img_slide">
+                    {dataImage.map((x, index) => {
+                      return (
+                        <figure key={index}>
+                          <img
+                            key={index}
+                            src={`${API_URL}/static/${x.key}`}
+                            onClick={(e) => this.handleClick(x)}
+                            alt={x.name}
+                          />
+                        </figure>
+                      );
+                    })}
                   </div>
-                  <div className="btn_buy">
-                    <span>Shoppe</span>
+                </div>
+                <div className="product_body">
+                  <div className="product_content">
+                    <p className="content">{name}</p>
+                    <p className="content_price">
+                      {displayPrice}/{unit}
+                    </p>
+                    <p className="content_des">{description}</p>
+                  </div>
+                  <div className="option_detail">
+                    <div className="btn_buy" onClick={() => this.addCart(id)}>
+                      <span>Mua Ngay</span>
+                    </div>
+                    <div className="btn_buy" onClick={() => window.open(shopeeUrl, '_blank')}>
+                      <span>Shoppe</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )
+        }
       </>
     );
   }

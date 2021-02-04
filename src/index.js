@@ -22,7 +22,6 @@ import createSagaMiddleware from "redux-saga";
 import { createBrowserHistory } from "history";
 import allReducers from "./redux/reducers";
 import rootSaga from "./redux/middleware/saga/rootSaga";
-import Loading from "./shared/Loading";
 const sagaMiddleware = createSagaMiddleware();
 let store = createStore(allReducers, applyMiddleware(sagaMiddleware));
 const history = createBrowserHistory();

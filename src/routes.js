@@ -26,12 +26,12 @@ const routes = [
     layout: "/trang-chu",
     title: "Giỏ hàng",
   },
-  {
-    path: "/san-pham",
-    component: ProductList,
-    layout: "/trang-chu",
-    title: "Sản phẩm",
-  },
+  // {
+  //   path: "/san-pham",
+  //   component: ProductList,
+  //   layout: "/trang-chu",
+  //   title: "Sản phẩm",
+  // },
   {
     path: "/chi-tiet-san-pham",
     component: ProductContainer,

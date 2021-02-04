@@ -20,8 +20,8 @@ class Navbar extends Component {
         </div>
         <div className="links">
           <Link to="/trang-chu">Trang chủ</Link>
-          <Link to="/trang-chu/san-pham">Sản phẩm</Link>
-          <Link to="/trang-chu/about">Giới thiệu</Link>
+          <Link to="#">Sản phẩm</Link>
+          <Link to="/trang-chu">Giới thiệu</Link>
           <Link to="/trang-chu">Liên hệ</Link>
           <Link to="/trang-chu/gio-hang">
             <div className="button-cart">
@@ -39,7 +39,7 @@ class Navbar extends Component {
           <img
             src={require("../../../res/image/logo.png").default}
             alt="logo"
-className="logo_mobile"
+            className="logo_mobile"
           />
         </label>
 

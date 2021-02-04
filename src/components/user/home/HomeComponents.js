@@ -34,7 +34,11 @@ class HomeComponents extends Component {
           })}
         </Switch>
         {window.location.pathname !== "/trang-chu/chi-tiet-san-pham" && (
-          <AboutComponents />
+          <>
+
+            <ProductList />
+            <AboutComponents />
+          </>
         )}
         <Footer />
       </div>
