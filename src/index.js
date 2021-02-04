@@ -5,8 +5,8 @@ import App from "./containers/admin/App";
 import './index.css'
 import Login from "./containers/admin/LoginContainers";
 import ProductDetail from "./components/user/product/ProductDetail";
-
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'react-activity/dist/react-activity.css';
 import {
   BrowserRouter,
   Redirect,

@@ -4,6 +4,7 @@ import { Button, Modal, Table } from "react-bootstrap";
 import { toast, ToastContainer } from 'react-toastify';
 import { API_URL } from "../../../config/setting";
 import ItemAccount from './ItemAccount';
+import { Spinner } from 'react-activity';
 const roles = [
     { id: 1, name: 'admin' },
     { id: 2, name: 'staff' },
@@ -25,11 +26,14 @@ class AccountComponent extends Component {
             email: "",
             role: "",
             isSetRole: "",
-
+            loading: true,
         }
 
     }
     async componentDidMount() {
+        this.setState({
+            loading: !this.state.loading
+        })
         await this.getDataAccount();
     }
     getDataAccount() {
@@ -51,7 +55,6 @@ class AccountComponent extends Component {
         });
     };
     onEdit = (id) => {
-
         axios.get(`${API_URL}/users/${id}`).then(res => {
             console.log(res.data)
             this.setState({
@@ -69,11 +72,16 @@ class AccountComponent extends Component {
         }).catch(error => console.log(error));
     }
     onDelete = (id) => {
+        this.setState({
+            loading: true
+        })
         axios.delete(`${API_URL}/users/${id}`)
             .then(res => {
                 toast.success('Xóa thành công')
                 this.getDataAccount();
-
+                this.setState({
+                    loading: false
+                })
             }).catch(error => {
                 toast.error(`${error}`)
             });
@@ -81,7 +89,6 @@ class AccountComponent extends Component {
     showAccount(users) {
         var result = null;
         if (users.length > 0) {
-            console.log(users);
             result = users.map((item, index) => {
                 return <ItemAccount
                     index={index}
@@ -102,7 +109,7 @@ class AccountComponent extends Component {
     }
     onSave = (e) => {
         e.preventDefault();
-        const { id, firstName, lastName, phone, password, email, isSetRole } = this.state;
+        const { id, firstName, lastName, phone, password, email, isSetRole, isActive } = this.state;
         if (firstName === "" || lastName === "" || phone === "" || password === "" || email === "" || isSetRole === "") {
             toast.warning('Vui lòng điền đủ thông tin!');
             return;
@@ -118,7 +125,7 @@ class AccountComponent extends Component {
                 role: isSetRole,
 
             }).then(res => {
-                this.setState({ showModal: !this.state.showModal, firstName: "", lastName: "", phone: "", emai: "" })
+                this.setState({ showModal: !this.state.showModal, firstName: "", lastName: "", phone: "", emai: "", loading: true })
                 toast.success('Cập nhật thành công!');
                 this.getDataAccount();
             }).catch(err => { toast.danger('Có lỗi xảy ra') })
@@ -139,11 +146,17 @@ class AccountComponent extends Component {
         }
     }
     render() {
-        const { users, firstName, lastName, phone, password, email, role, showModal, titleModal, isSetRole } = this.state;
+        const { users, firstName, lastName, phone, password, email, role, showModal, titleModal, isSetRole, loading } = this.state;
+        const result = loading ? (
+            <Spinner size={32} speed={1} animating={true} />
+        ) : (
+                this.showAccount(users)
+            );
         return (
             <>
                 <h1 className="mt-10"> Danh mục tài khoản </h1>
                 <ToastContainer autoClose={3000} />
+
                 <div className="text-right">
                     <Button
                         type="button"
@@ -177,7 +190,7 @@ class AccountComponent extends Component {
                             <th>Chức năng</th>
                         </tr>
                     </thead>
-                    <tbody> {this.showAccount(users)} </tbody>
+                    <tbody> {result} </tbody>
                 </Table>
                 <Modal
                     show={showModal}

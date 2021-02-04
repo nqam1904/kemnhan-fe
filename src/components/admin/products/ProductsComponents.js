@@ -5,7 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import ItemProduct from "./ItemProduct";
 import "./Product.css";
-
+import { Spinner } from 'react-activity';
 class ProductsComponents extends Component {
   constructor(props) {
     super(props);
@@ -31,6 +31,7 @@ class ProductsComponents extends Component {
       imagesId: [],
       media: [],
       selectImage: [],
+      loading: false
     };
     this.fileObj = [];
     this.fileArray = [];
@@ -75,12 +76,12 @@ class ProductsComponents extends Component {
     if (e.target.files) {
       this.fileArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file))
       this.setState({
-        
+
         media: e.target.files,
       }, () => {
         console.log(this.state.media, "state")
       });
-     
+
     }
 
   };
@@ -96,8 +97,10 @@ class ProductsComponents extends Component {
       }).catch(error => console.log(error));
   }
   onDelete = (id) => {
+
     axios.delete(`${API_URL}/products/${id}`)
       .then(res => {
+
         toast.success('Xóa thành công')
         this.getDateProduct();
       }).catch(error => {
@@ -152,8 +155,6 @@ class ProductsComponents extends Component {
       console.log(media, "file")
       bodyFormData.append("medias", file);
     }
-
-
     try {
       console.log(bodyFormData);
       axios
@@ -179,10 +180,20 @@ class ProductsComponents extends Component {
               imagesId: res.data.mediasId,
             })
             .then((result) => {
+
               console.log(result);
               this.setState(
                 {
                   showModal: false,
+
+                  id: "",
+                  name: "",
+                  unit: "",
+                  description: "",
+                  displayPrice: 0,
+                  sellPrice: 0,
+                  stockQuantity: 0,
+                  categoriesId: [],
                 },
                 () => {
                   toast.success('Thêm sản phẩm thành công!')
@@ -209,10 +220,17 @@ class ProductsComponents extends Component {
       displayPrice,
       stockQuantity,
     } = this.state;
+    this.setState({ loading: true, showModal: false })
     e.preventDefault();
     if (id) {
       try {
-        this.onSaveImg();
+        this.setState({
+          loading: true
+        }, () => {
+          this.onSaveImg();
+          this.setState({ loading: false })
+        })
+
       } catch (error) {
         console.log(error);
       }
@@ -228,6 +246,9 @@ class ProductsComponents extends Component {
         return;
       } else {
         try {
+          this.setState({
+            loading: false
+          })
           this.onSaveImg();
         } catch (error) {
           console.log(error);
@@ -249,8 +270,14 @@ class ProductsComponents extends Component {
       stockQuantity,
       showModal,
       titleModal,
-      selectImage
+      selectImage,
+      loading
     } = this.state;
+    const result = loading ? (
+      <Spinner size={32} speed={1} animating={true} />
+    ) : (
+        this.showProduct(products)
+      );
     return (
       <>
         <h1 className="mt-10">Danh sách sản phẩm</h1>
@@ -285,7 +312,7 @@ class ProductsComponents extends Component {
               <th>Hành động</th>
             </tr>
           </thead>
-          <tbody>{this.showProduct(products)}</tbody>
+          <tbody>{result}</tbody>
         </Table>
         <Modal
           size="lg"
