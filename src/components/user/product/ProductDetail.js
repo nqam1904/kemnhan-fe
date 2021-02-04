@@ -42,28 +42,25 @@ class ProductDetail extends Component {
             isActive: res.data.isActive,
             isFeature: res.data.isFeature,
             selectedImage: `${API_URL}/static/${res.data.images[0].key}`,
-            dataImage: `${API_URL}/static/${res.data.images}`
+            dataImage: res.data.images
           }, () => {
-            console.log(this.state.dataImage)
+            console.log(res.data.images)
           })
         ).catch(err => { console.log(err) })
   }
   handleClick = image => {
     this.setState(
       {
-        selectedImage: image.name
+        selectedImage: `${API_URL}/static/${image.key}`
+      }, () => {
+        console.log(image.key)
       });
   };
-  addCart = (id) => {
-    const { quantity } = this.state
-    const cart = {
-      productId: parseInt(id),
-      quantity: 1
-    }
-    this.props.actAddToCart(cart)
+  addCart = (product) => {
+    this.props.actAddToCart(product)
     toast.success('Thêm vào giỏ thành công!')
-    localStorage.setItem('cart', JSON.stringify(cart));
-    console.log('data cart ', this.props.data)
+
+    // console.log('data cart ', this.props.data)
   }
   render() {
     const { name, unit, description, shopeeUrl, displayPrice, selectedImage, dataImage, id } = this.state
@@ -77,18 +74,18 @@ class ProductDetail extends Component {
             <img src={selectedImage} />
             {/* {selectedImage.length < 0 ?  <img className="image" src={`${API_URL}/static/${props.images}`} alt={props.name} /> : (<img src={selectedImage}/>)} */}
             <div className="product_img_slide">
-              {/* {dataImage.map((x, index) => {
+              {dataImage.map((x, index) => {
                 return (
                   <figure>
                     <img
-                    key={index}
-                      src={x.key}
+                      key={index}
+                      src={`${API_URL}/static/${x.key}`}
                       onClick={e => this.handleClick(x)}
                       alt={x.name}
                     />
                   </figure>
                 );
-              })} */}
+              })}
             </div>
           </div>
           <div className="product_body">

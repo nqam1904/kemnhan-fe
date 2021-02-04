@@ -1,8 +1,9 @@
 export const ADD_TO_CART = 'ADD_TO_CART';
 
-export const actAddToCart = (item) => {
+export const actAddToCart = (product, quantity) => {
     return {
         type: ADD_TO_CART,
-        item: item
+        product,
+        quantity
     }
 }

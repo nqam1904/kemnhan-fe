@@ -4,6 +4,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import * as Types from '../../../redux/action/mesAction'
 import './Cart.css'
 import CartItem from './CartItem';
+import {currencyFormat} from '../../../shared/Function';
 class CartComponent extends Component {
     constructor(props) {
         super(props);
@@ -37,11 +38,22 @@ class CartComponent extends Component {
                         key={index}
                         item={item}
                         index={index}
+                         
                     />
                 )
             })
         }
         return result;
+    }
+    showTotalAmount = (cartItem) => {
+    
+            var result = 0;
+            if(cartItem.length > 0){
+                for(var i = 0; i < cartItem.length; i++){
+                    result += cartItem[i].product.price * cartItem[i].quantity;
+                }
+            }
+            return currencyFormat(result);
     }
     render() {
         const { count, cart, showCustom, layout } = this.state;
@@ -62,9 +74,13 @@ class CartComponent extends Component {
                         <p className="content_cart">Đơn hàng</p>
                     </div>
                     <div className="cart_custom_body">
+                        <div className="icon_icon">
+                            <img src={require('../../../res/image/Call.png').default} width={16}/>
+                            <img src={require('../../../res/image/Call.png').default} width={16}/>
+                            <img src={require('../../../res/image/Call.png').default} width={16}/>
+                        </div>
                         <div className="about_custom">
                             <p>Nghiem quoc</p>
-                            <p>Binh duong</p>
                             <p>0339895154</p>
                             <p>Email</p>
                         </div>
@@ -74,12 +90,13 @@ class CartComponent extends Component {
                     </div>
                     <div className="cart_amount_body">
                         <div className="thongtin">
-                            <p>gia san pham</p>
-                            <p>Tong cong:</p>
+                            <p>Giá sản phẩm (1):</p>
+                            <p>Tổng cộng:</p>
+                            {/* <p>Phí ship:</p> */}
                         </div>
                         <div className="thanhtoan">
-                            <p>10000</p>
-                            <p>10000</p>
+                            <p>{currencyFormat(cartItem[0].product.price)} đ</p>
+                            <p className="total">{this.showTotalAmount(cartItem)} đ</p>
                         </div>
                     </div>
                 </div>

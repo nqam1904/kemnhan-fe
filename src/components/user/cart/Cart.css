@@ -162,7 +162,7 @@ color:#595959
   width: 40px;
 }
 .title_item_cart{
-font-family: 'Roboto Mono', monospace;;
+font-family: 'Roboto Mono', monospace;
 font-style: normal;
 font-weight: 500;
 font-size: 16px;
@@ -173,22 +173,45 @@ margin-left: 0px;
   padding: 10px;
 }
 .about_custom{
-  padding: 10px;
-  margin-bottom: 10px;
+
+font-family: 'Roboto Mono', monospace;
+  font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 24px;
+
 
 }
+.icon_icon{
+  width:1px;
+  display: flex;
+  flex-direction:column;
+  padding:10px;
+}
 .thongtin{
-  padding: 10px
+   
+  font-family: 'Roboto Mono', monospace;
+font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 24px;
 }
 .cart_custom_body{
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   border: 1px solid #F5F5F5;
-  /* align-items:center */
+  padding: 20px;
+  align-items:center
+}
+.total{
+  color:#FA541C
 }
 /*  */
 .cart_amount_body{
   display: flex;
-  justify-content: space-around;
-  align-items:center
+  justify-content: space-between;
+  align-items:center;
+  padding: 20px;
+
+  
 }
