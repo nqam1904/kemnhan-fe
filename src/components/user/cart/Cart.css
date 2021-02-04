@@ -222,3 +222,16 @@ line-height: 24px;
 
   
 }
+.btn_payment{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 310px;
+    height: 40px;
+    margin: 0 auto;
+    background: #fa541c;
+    border: 1px solid #fa541c;
+    color:#fff;
+    box-sizing: border-box;
+    border-radius: 4px;
+}

@@ -98,6 +98,9 @@ class CartComponent extends Component {
                         <p className="total">{this.showTotalAmount(cartItem)} đ</p>
                     </div>
                 </div>
+                <div className="btn_payment">
+                    Đặt mua
+                </div>
             </div>
         )
         return (
