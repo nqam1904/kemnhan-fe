@@ -7,10 +7,12 @@ import ProductList from "../landingpage/ProductList";
 import "../../../App.css";
 import AboutComponents from "../about/AboutComponents";
 import Footer from "../footer/Footer";
+
 class HomeComponents extends Component {
   render() {
     return (
       <div className="wrapper">
+
         <Navbar />
         <Switch>
           {routes.map((prop, key) => {

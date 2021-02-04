@@ -18,6 +18,7 @@ background-color: #fff;
 border: 1px solid #E5E5E5;
 position: relative;
 height:500px;
+margin-left: 10px;
 border-radius: 12px;
 background-color: #fff;
 }
@@ -61,7 +62,7 @@ background-color: #fff;
 margin-bottom: 5px;
 
 }
-.description{
+.description_cart{
 display: flex;
 justify-content: center;
 margin: 0 auto;

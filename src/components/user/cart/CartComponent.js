@@ -38,7 +38,6 @@ class CartComponent extends Component {
                         key={index}
                         item={item}
                         index={index}
-
                     />
                 )
             })
@@ -60,7 +59,7 @@ class CartComponent extends Component {
         const { cartItem } = this.props;
         console.log()
         const emptyCart = (
-            <div className="description">
+            <div className="description_cart">
                 <div className="page_empty">
                     <img className="img_empty_cart" alt="empty" src={require('../../../res/image/empty.png').default} />
                     <Link to='/home' className="btn_back"><span>Mua thêm sản phẩm</span></Link>

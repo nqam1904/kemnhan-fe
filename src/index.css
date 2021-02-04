@@ -1,9 +1,13 @@
 @media (max-width:980px) {
     .nav {
-        background-image: none;
+        /* background-image: none; */
+        
     }
     .group-logo {
         display: none !important;
+    }
+    .logo_mobile{
+        width: 50px;
     }
     .button-cart {
         position: relative;
