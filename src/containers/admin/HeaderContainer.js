@@ -13,7 +13,7 @@ class HeaderContainer extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(state);
+
   return {
     loading: state.loginReducers.loading,
     error: state.loginReducers.error,
