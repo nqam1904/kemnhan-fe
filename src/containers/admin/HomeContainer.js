@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import HomeComponents from "../../components/admin/home/HomeComponents";
 import { connect } from "react-redux";
-import { loginAction, logOutAction } from '../../redux/action/loginAction';
+import { loginAction } from "../../redux/action/loginAction";
 class HomeContainer extends Component {
   render() {
     return (
@@ -13,7 +13,6 @@ class HomeContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-
   return {
     loading: state.loginReducers.loading,
     error: state.loginReducers.error,
@@ -25,7 +24,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loginAction: (data) => {
       dispatch(loginAction(data));
-    }
+    },
   };
 };
 

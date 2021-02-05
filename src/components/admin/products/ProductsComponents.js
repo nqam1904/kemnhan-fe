@@ -140,7 +140,7 @@ class ProductsComponents extends Component {
       name,
       unit,
       sellPrice,
-      imagesId,
+      // imagesId,
       media,
       selectCategory,
       description,
@@ -275,7 +275,7 @@ class ProductsComponents extends Component {
       stockQuantity,
       showModal,
       titleModal,
-      selectImage,
+      // selectImage,
       loading
     } = this.state;
     const result = loading ? (

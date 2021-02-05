@@ -4,7 +4,7 @@ import axios from "axios";
 import { API_URL } from "../../../config/setting";
 import { toast, ToastContainer } from "react-toastify";
 import history from "../../../store/Route";
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 class ProductDetail extends Component {
   constructor(props) {
     super(props);

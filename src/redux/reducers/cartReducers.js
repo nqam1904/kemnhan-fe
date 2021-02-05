@@ -7,7 +7,7 @@ const cartReducers = (state = initialState, action) => {
     var { item, idItemDelete, itemUpdate, quantityUpdate } = action;
     switch (action.type) {
         case types.ADD_TO_CART:
-            if (state.length == 0 || state == []) {
+            if (state.length === 0 || state === []) {
                 state.push(item)
             }
             else {
@@ -45,7 +45,7 @@ const cartReducers = (state = initialState, action) => {
                 var i2 = state.indexOf(find2)
                 state.splice(i2, 1)
             }
-            if (state.length == 0) {
+            if (state.length === 0) {
                 localStorage.clear('cart')
             }
             else {

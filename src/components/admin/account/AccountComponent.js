@@ -123,7 +123,7 @@ class AccountComponent extends Component {
       password,
       email,
       isSetRole,
-      isActive,
+      // isActive,
     } = this.state;
     if (
       firstName === "" ||
@@ -196,7 +196,7 @@ class AccountComponent extends Component {
       phone,
       password,
       email,
-      role,
+      // role,
       showModal,
       titleModal,
       isSetRole,

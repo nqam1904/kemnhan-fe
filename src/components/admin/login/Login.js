@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Form, Button, Container } from "react-bootstrap";
-import history from "../../../store/Route";
-import * as Types from "../../../redux/action/loginAction"
+// import history from "../../../store/Route";
+// import * as Types from "../../../redux/action/loginAction"
 import "./Login.css";
 import { Redirect } from "react-router-dom";
 class Login extends Component {
@@ -17,8 +17,8 @@ class Login extends Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.data !== null && prevProps.data !== this.props.data) {
-      alert('Login Success')
-      return <Redirect to="/admin" />
+      alert("Login Success");
+      return <Redirect to="/admin" />;
     }
   }
   onChange = (e) => {
@@ -32,7 +32,7 @@ class Login extends Component {
   };
   onSubmit = (e) => {
     e.preventDefault();
-    const { email, password, isSuccess } = this.state;
+    const { email, password } = this.state;
     if (email === "" || password === "") {
       toast.warn("Vui lòng nhập thông tin đăng nhập!");
       return;
@@ -44,8 +44,8 @@ class Login extends Component {
     }
   };
   render() {
-    const { email, password, isSuccess } = this.state;
-    console.log(this.props.data, 'data');
+    const { email, password } = this.state;
+    console.log(this.props.data, "data");
 
     return (
       <Container className="layout mt-10">
@@ -57,7 +57,7 @@ class Login extends Component {
               type="email"
               placeholder="Nhập tài khoản"
               value={email}
-              type="text"
+              // type="text"
               autoComplete="off"
               name="email"
               onChange={this.onChange}
@@ -70,7 +70,6 @@ class Login extends Component {
               type="password"
               value={password}
               placeholder="Nhập mật khẩu"
-              type="password"
               autoComplete="off"
               name="password"
               onChange={this.onChange}

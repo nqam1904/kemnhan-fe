@@ -4,9 +4,9 @@ import { API_URL } from "../../../config/setting";
 import "./ItemProductShow.css";
 
 const ItemProductShow = (props) => {
-  function getProduct(id) {
-    props.getProduct(id);
-  }
+  // function getProduct(id) {
+  //   props.getProduct(id);
+  // }
   // console.log(props.images)
   return (
     <Link to={props.propsURL}>

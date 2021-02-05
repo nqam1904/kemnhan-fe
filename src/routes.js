@@ -1,10 +1,10 @@
-import ProductComponents from "./components/user/product/ProductComponents";
+// import ProductComponents from "./components/user/product/ProductComponents";
 import Login from "./components/admin/login/Login";
 import HomeContainer from "./containers/admin/HomeContainer";
-import CartComponent from "./components/user/cart/CartComponent";
-import HomeComponents from "./components/user/home/HomeComponents";
-import ProductDetail from "./components/user/product/ProductDetail";
-import ProductList from "./components/user/landingpage/ProductList";
+// import CartComponent from "./components/user/cart/CartComponent";
+// import HomeComponents from "./components/user/home/HomeComponents";
+// import ProductDetail from "./components/user/product/ProductDetail";
+// import ProductList from "./components/user/landingpage/ProductList";
 import ProductContainer from "./containers/user/ProductContainer";
 import CartContainer from "./containers/user/CartContainer";
 const routes = [
