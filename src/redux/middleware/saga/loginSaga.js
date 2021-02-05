@@ -9,7 +9,7 @@ function* loginSaga(action) {
         if (response.is_success !== true) {
             yield put({ type: Types.LOGIN_ERROR, error });
         } else {
-            localStorage.setItem("token", response.access_token);
+            // localStorage.setItem("token", response.access_token);
             yield put({ type: Types.LOGIN_SUCCESS, response });
         }
     } catch (error) {
@@ -20,6 +20,6 @@ export function* watchLoginSaga() {
     yield takeEvery(Types.LOGIN, loginSaga);
 }
 
-export function* watchLoginSuccessSaga() {
-    yield takeEvery(Types.LOGIN_SUCCESS, loginSaga);
-}
+// export function* watchLoginSuccessSaga() {
+//     yield takeEvery(Types.LOGIN_SUCCESS, loginSaga);
+// }

@@ -9,8 +9,9 @@ class HomeComponents extends Component {
     }
   }
   componentDidMount() {
-    if (this.props.data === null) {
-      return history.push("/login")
+    if (!localStorage.getItem("token")) {
+      alert("Logined")
+      history.push("/login")
     }
   }
   render() {

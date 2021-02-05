@@ -17,7 +17,7 @@ background-color: #fff;
   width: 412px;
 border: 1px solid #E5E5E5;
 position: relative;
-height:500px;
+/* height:500px; */
 margin-left: 10px;
 border-radius: 12px;
 background-color: #fff;
@@ -258,6 +258,7 @@ width: 24px;
     color:#fff;
     box-sizing: border-box;
     border-radius: 4px;
+    margin-bottom: 15px;
 }
 
 .btn_payment:hover {
@@ -265,5 +266,11 @@ width: 24px;
   background: #fff0f6;
   border: 1px solid #fa541c;
   color:#fa541c;
+
+}
+ 
+.btn_Edit p:hover{
+  color:#fa541c;
+  cursor: pointer;
 
 }

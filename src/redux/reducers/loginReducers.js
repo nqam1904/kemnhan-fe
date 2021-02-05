@@ -6,17 +6,16 @@ const initialState = {
     error: null
 }
 const loginReducers = (state = initialState, action) => {
+    console.log(action)
     switch (action.type) {
         case Types.LOGIN:
             return Object.assign({}, state, {
-                loading: false,
+                loading: true,
                 error: null,
-                data: action.data
+                data: null
             })
         case Types.LOGIN_SUCCESS:
-            localStorage.setItem("token", action.data.access_token)
-            console.log(action)
-
+            localStorage.setItem("token", action.response.access_token)
             return Object.assign({}, state, {
                 loading: false,
                 error: false,

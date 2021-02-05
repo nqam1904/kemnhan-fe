@@ -15,7 +15,12 @@ class Login extends Component {
       isSuccess,
     };
   }
-
+  componentDidUpdate(prevProps) {
+    if (this.props.data !== null && prevProps.data !== this.props.data) {
+      alert('Login Success')
+      return <Redirect to="/admin" />
+    }
+  }
   onChange = (e) => {
     e.preventDefault();
     var target = e.target;
@@ -34,21 +39,14 @@ class Login extends Component {
     } else {
       this.props.loginAction({
         email: email,
-        password: password, 
+        password: password,
       });
-      this.setState(
-        {
-          isSuccess: true,
-        }
-      );
     }
   };
   render() {
     const { email, password, isSuccess } = this.state;
     console.log(this.props.data, 'data');
-    if (this.props.data) {
-      return <Redirect to='/admin' />
-    }
+
     return (
       <Container className="layout mt-10">
         <ToastContainer autoClose={3000} />

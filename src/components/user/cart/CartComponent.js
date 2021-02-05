@@ -5,6 +5,8 @@ import * as Types from '../../../redux/action/mesAction'
 import './Cart.css'
 import CartItem from './CartItem';
 import { currencyFormat } from '../../../shared/Function';
+import { API_URL } from '../../../config/setting';
+import axios from 'axios';
 class CartComponent extends Component {
     constructor(props) {
         super(props);
@@ -12,7 +14,13 @@ class CartComponent extends Component {
             count: 0,
             showCustom: false,
             cart: [],
-            layout: "container-fluid"
+            layout: "container-fluid",
+            firstName: "",
+            lastName: "",
+            phone: "",
+            email: "",
+            address: "",
+            customer: [],
         }
     }
     componentDidMount() {
@@ -58,7 +66,7 @@ class CartComponent extends Component {
         if (quantity > 1) {
             const sl = - 1
             this.props.actUpdateItem(id, sl);
-            // window.location.reload();
+            window.location.reload();
             console.log('subtract', quantity, sl, this.props.cartItem)
         }
     }
@@ -67,7 +75,7 @@ class CartComponent extends Component {
         if (quantity < 100) {
             const sl = 1
             this.props.actUpdateItem(id, sl);
-            // window.location.reload();
+            window.location.reload();
             console.log('plus', quantity, sl, this.props.cartItem)
 
         }
@@ -88,15 +96,64 @@ class CartComponent extends Component {
         }
         return currencyFormat(result);
     }
-    payment = (cartItem) => {
-
+    onChange = (e) => {
+        e.preventDefault();
+        var target = e.target;
+        var name = target.name;
+        var value = target.value;
+        this.setState({
+            [name]: value,
+        });
+    };
+    payment = () => {
+        const { cartItem } = this.props;
+        const { cart, layout, firstName, lastName, email, address, phone } = this.state;
+        const date = new Date();
+        if (firstName == "" || lastName == "" || email == "" || address == "" || phone == "") {
+            return toast.warning("Vui lòng nhập đủ thồn tin cá nhân!");
+        }
+        else {
+            let listProduct = []
+            for (var item of cartItem) {
+                listProduct.push(
+                    {
+                        productId: item.product.id,
+                        quantity: item.quantity,
+                        unitPrice: item.product.price,
+                        subtotal: item.product.price * item.quantity,
+                        discount: 0,
+                        note: ""
+                    }
+                )
+            }
+            axios.post(`${API_URL}/orders`, {
+                data: date,
+                expectDateDelivery: date,
+                note: "",
+                customer: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    phone: phone,
+                    email: email,
+                    address: address,
+                },
+                lines: listProduct
+            }).then((res) => {
+                toast.success('Success!');
+                this.props.actDeleteAll();
+                window.location.reload();
+            }).catch(err => { console.log(err); })
+        }
     }
     onDeleteAll = () => {
         this.props.actDeleteAll()
         window.location.reload();
     }
+    onSaveCustom = () => {
+
+    }
     render() {
-        const { count, cart, showCustom, layout } = this.state;
+        const { count, cart, showCustom, layout, firstName, lastName, email, address, phone } = this.state;
         const { cartItem } = this.props;
         console.log()
         const emptyCart = (
@@ -115,16 +172,17 @@ class CartComponent extends Component {
                 </div>
                 <div className="cart_custom_body">
                     <div className="cart_custom_detail">
-                        <input className="input_custom" style={{ marginLeft: 20 }} placeholder="Nhập họ tên" /> <br />
+                        <input className="input_custom" style={{ marginLeft: 20 }} onChange={this.onChange} name="firstName" value={firstName} placeholder="Nhập họ" /> <br />
+                        <input className="input_custom" style={{ marginLeft: 20 }} onChange={this.onChange} name="lastName" value={lastName} placeholder="Nhập tên" /> <br />
                         <img src={require('../../../res/image/Location.png').default} />
-                        <input className="input_custom" placeholder="Nhập địa chỉ" /><br />
+                        <input className="input_custom" placeholder="Nhập địa chỉ" name="address" value={address} onChange={this.onChange} /><br />
                         <img src={require('../../../res/image/Call.png').default} />
-                        <input className="input_custom" placeholder="Nhập số điện thoại" /><br />
+                        <input className="input_custom" placeholder="Nhập số điện thoại" name="phone" type="number" value={phone} onChange={this.onChange} /><br />
                         <img src={require('../../../res/image/mail.png').default} />
-                        <input className="input_custom" placeholder="Nhập email" />
+                        <input className="input_custom" placeholder="Nhập email" value={email} name="email" onChange={this.onChange} />
                     </div>
-                    <div style={{ color: '#1890FF' }}>
-                        Edit
+                    <div className="btn_Edit" style={{ color: '#1890FF' }} onClick={() => this.onSaveCustom()}>
+                        <p>Edit</p>
                     </div>
                 </div>
                 <div className="cart_amount_body">
