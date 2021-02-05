@@ -3,14 +3,23 @@ import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Link, Redirect } from "react-router-dom";
 import history from "../../../store/Route";
 class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { logout: false, }
+  }
+
+
   logOut = () => {
-    localStorage.removeItem("token");
-    this.props.logOutAction()
+    localStorage.clear("token");
     if (this.props.data === null) {
-      return history.push("/login")
+      this.setState({ logout: true })
     }
   };
   render() {
+    const { logout } = this.state;
+    if (this.props.data === null || logout === true) {
+      return <Redirect to="/login" />
+    }
 
     return (
 
@@ -32,16 +41,14 @@ class Header extends Component {
             <Nav.Link as={Link} to="/admin/product">Sản phẩm</Nav.Link>
             <Nav.Link as={Link} to="#">Khách hàng</Nav.Link>
             <Nav.Link as={Link} to="/admin/order">Đơn hàng</Nav.Link>
-            <Nav.Link href="#pricing">Thống kê</Nav.Link>
+            <Nav.Link as={Link} to="#">Thống kê</Nav.Link>
           </Nav>
-          <div style={{ marginRight: 65 }}>
-            <NavDropdown title="Tài khoản" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">
-                Thông tin tài khoản
+          <NavDropdown title="Tài khoản" id="collasible-nav-dropdown">
+            <NavDropdown.Item href="#action/3.1">
+              Thông tin tài khoản
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={() => this.logOut}>Đăng xuất</NavDropdown.Item>
-            </NavDropdown>
-          </div>
+            <NavDropdown.Item onClick={() => this.logOut()}>Đăng xuất</NavDropdown.Item>
+          </NavDropdown>
         </Navbar.Collapse>
       </Navbar >
     );
