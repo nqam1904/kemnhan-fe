@@ -10,7 +10,7 @@ class NotFoundPageComponent extends Component {
     return (
       <div className="notfoundpage">
         <ToastContainer autoClose={3000} />
-        <h1>404</h1>
+        <p className="title_notfound">404</p>
         <p className="oops">Oops! không tìm thấy trang này!</p>
         <Link className="notfound_btn" to="/trang-chu">Quay về</Link>
       </div >

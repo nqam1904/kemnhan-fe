@@ -4,6 +4,7 @@ import HomeContainer from "./admin/HomeContainer";
 import ProductContainer from "./admin/ProductContainer";
 import AccountContainer from "./admin/AccountContainer";
 import OrderContainer from "./admin/OrderContainer";
+import MediaContainer from "./admin/MediaContainer"
 const routes = [
   {
     path: "/admin",
@@ -35,5 +36,10 @@ const routes = [
     exact: false,
     main: () => <NotFoundContainer />,
   },
+  {
+    path: "/admin/media",
+    exact: false,
+    main: () => <MediaContainer />
+  }
 ];
 export default routes;

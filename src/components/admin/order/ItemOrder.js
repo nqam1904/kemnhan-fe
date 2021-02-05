@@ -22,7 +22,7 @@ const ItemOrder = props => {
                     <button className="btn btn-danger" >
                         Từ chối đơn hàng
                     </button>
-                    <Button variant="primary" disabled>
+                    {/* <Button variant="primary" disabled>
                         <Spinner
                             as="span"
                             animation="grow"
@@ -31,7 +31,7 @@ const ItemOrder = props => {
                             aria-hidden="true"
                         />
     Loading...
-  </Button>
+  </Button> */}
                 </td>
             </tr>
         </>

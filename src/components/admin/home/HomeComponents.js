@@ -10,14 +10,13 @@ class HomeComponents extends Component {
   }
   componentDidMount() {
     if (!localStorage.getItem("token")) {
-      alert("Logined")
       history.push("/login")
     }
   }
   render() {
     return (
       <>
-        <h1>Hello</h1>
+        <p>Hello</p>
       </>
     );
   }

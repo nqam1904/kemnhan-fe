@@ -44,18 +44,10 @@ class Header extends Component {
             <Nav.Link as={Link} to="/admin/category">
               Danh mục
             </Nav.Link>
-            <Nav.Link as={Link} to="/admin/product">
-              Sản phẩm
-            </Nav.Link>
-            <Nav.Link as={Link} to="#">
-              Khách hàng
-            </Nav.Link>
-            <Nav.Link as={Link} to="/admin/order">
-              Đơn hàng
-            </Nav.Link>
-            <Nav.Link as={Link} to="#">
-              Thống kê
-            </Nav.Link>
+            <Nav.Link as={Link} to="/admin/product">Sản phẩm</Nav.Link>
+            <Nav.Link as={Link} to="#">Khách hàng</Nav.Link>
+            <Nav.Link as={Link} to="/admin/order">Đơn hàng</Nav.Link>
+            <Nav.Link as={Link} to="/admin/media">YouTube</Nav.Link>
           </Nav>
           <NavDropdown title="Tài khoản" id="collasible-nav-dropdown">
             <NavDropdown.Item href="#action/3.1">

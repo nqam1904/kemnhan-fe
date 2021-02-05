@@ -2,18 +2,37 @@ import { Modal } from 'react-bootstrap';
 import React, { Component } from 'react';
 import './About.css';
 import VideoYoutube from './VideoYoutube';
+import axios from 'axios';
+import { API_URL } from '../../../config/setting';
+import { toast, ToastContainer } from "react-toastify";
 
 class AboutComponents extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isShowModal: false,
+            value: ""
         }
     }
+    componentDidMount() {
+        this.getMedia();
+    }
+    getMedia = () => {
+        axios.get(`${API_URL}/settings`)
+            .then(res => {
+                this.setState({
+                    value: res.data[0].value
+                }, () => {
+                    console.log(res.data[0].value.split("https://www.youtube.com/watch?v=")[1]);
+                })
+
+            }).catch(error => toast.danger('Có lỗi xảy ra'))
+    }
     render() {
-        const { isShowModal } = this.state;
+        const { isShowModal, value } = this.state;
         return (
             <div className="about">
+                <ToastContainer autoClose={3000} />
                 <div className="about_text">
                     <h2 className="sub_text">Chất lượng</h2>
                     <p className="sub_text1">100%</p>
@@ -48,7 +67,7 @@ class AboutComponents extends Component {
                     </Modal>
                 </div>
                 <div className="about_video">
-                    <VideoYoutube videoId="8oPjKKiooZA" />
+                    <VideoYoutube videoId={value.split("https://www.youtube.com/watch?v=")[1]} />
                 </div>
             </div>
 

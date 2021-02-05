@@ -39,9 +39,10 @@ ReactDOM.render(
             <Route component={Login} path="/login" />
             <Route component={App} path="/admin" />
             <Route component={Page404} />
+            <Redirect from="/" to="/trang-chu" />
           </Switch>
-          <Redirect from="/" to="/trang-chu" />
         </Router>
+
       </HashRouter>
     </BrowserRouter>
   </Provider>,
