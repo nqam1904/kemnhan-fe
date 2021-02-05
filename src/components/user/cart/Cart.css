@@ -149,7 +149,7 @@ color:#595959
   margin-bottom: 15px;
 }
 .cart_item img{
-  border-radius: 12px;
+   
   width: 90px;
 }
 .content_item{
@@ -189,15 +189,20 @@ line-height: 24px;
 
 
 }
-.icon_icon{
-  width:1px;
+.icon_icon img{
+  width:16px !important;
   display: flex;
   flex-direction:column;
   padding:10px;
+  /* line-height: 24px; */
+}
+.item_delete_1 img{
+  width: 24px;
+  margin-right:20px
 }
 .thongtin{
    
-  font-family: 'Roboto Mono', monospace;
+font-family: 'Roboto Mono', monospace;
 font-style: normal;
 font-weight: normal;
 font-size: 14px;
@@ -205,10 +210,29 @@ line-height: 24px;
 }
 .cart_custom_body{
   display: flex;
-  justify-content: space-between;
+  flex-direction:row;
+  justify-content: space-around;
   border: 1px solid #F5F5F5;
   padding: 20px;
   align-items:center
+}
+.cart_custom_detail img{
+width: 24px;
+}
+.ml-10{
+  margin-left: 10px
+}
+.input_custom{
+  font-family: 'Roboto Mono', monospace;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  margin-bottom: 14pt * 2;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,1);
+  padding: 20px;
+  outline: none;
+  color: rgba(0,0,0,1);
 }
 .total{
   color:#FA541C
@@ -234,4 +258,12 @@ line-height: 24px;
     color:#fff;
     box-sizing: border-box;
     border-radius: 4px;
+}
+
+.btn_payment:hover {
+  cursor: pointer;
+  background: #fff0f6;
+  border: 1px solid #fa541c;
+  color:#fa541c;
+
 }

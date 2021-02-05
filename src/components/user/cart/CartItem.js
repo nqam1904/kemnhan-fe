@@ -6,20 +6,20 @@ class CartItem extends Component {
         console.log(item)
         return (
             <div className="cart_item">
-                {/* <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                        <input className="" type="checkbox" />
-                    </div> */}
                 <div className="content_item">
-                    <img src={item.product.image} />
+                    <div className="item_delete_1">
+                        <img src={require('../../../res/image/Delete.png').default} alt="delete" />
+                    </div>
+                    <img src={item.product.image} alt={item.product.name} />
                     <div className="mota">
                         <p className="title_item_cart">{item.product.name}</p>
                         <p className="title_item_cart">{formatSubstring(item.product.description)}</p>
                     </div>
                 </div>
                 <div className="option_item">
-                    <img src={require('../../../res/image/tru.png').default} />
+                    <img src={require('../../../res/image/tru.png').default} alt="tru" />
                     <div className="quantity">{item.quantity}</div>
-                    <img src={require('../../../res/image/plus.png').default} />
+                    <img src={require('../../../res/image/plus.png').default} alt="plus" />
                 </div>
             </div>
         );

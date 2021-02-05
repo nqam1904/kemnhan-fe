@@ -62,7 +62,7 @@ class CartComponent extends Component {
             <div className="description_cart">
                 <div className="page_empty">
                     <img className="img_empty_cart" alt="empty" src={require('../../../res/image/empty.png').default} />
-                    <Link to='/home' className="btn_back"><span>Mua thêm sản phẩm</span></Link>
+                    <Link to='/trang-chu' className="btn_back"><span>Mua thêm sản phẩm</span></Link>
                 </div>
             </div>
         )
@@ -73,18 +73,17 @@ class CartComponent extends Component {
                     <p className="content_cart">Đơn hàng</p>
                 </div>
                 <div className="cart_custom_body">
-                    <div className="icon_icon">
-                        <img src={require('../../../res/image/Call.png').default} width={16} />
-                        <img src={require('../../../res/image/Call.png').default} width={16} />
-                        <img src={require('../../../res/image/Call.png').default} width={16} />
+                    <div className="cart_custom_detail">
+                        <input className="input_custom" style={{ marginLeft: 20 }} placeholder="Nhập họ tên" /> <br />
+                        <img src={require('../../../res/image/Location.png').default} />
+                        <input className="input_custom" placeholder="Nhập địa chỉ" /><br />
+                        <img src={require('../../../res/image/Call.png').default} />
+                        <input className="input_custom" placeholder="Nhập số điện thoại" /><br />
+                        <img src={require('../../../res/image/mail.png').default} />
+                        <input className="input_custom" placeholder="Nhập email" />
                     </div>
-                    <div className="about_custom">
-                        <p>Nghiem quoc</p>
-                        <p>0339895154</p>
-                        <p>Email</p>
-                    </div>
-                    <div style={{ marginTop: 20 }}>
-                        <p style={{ color: '#1890FF' }}>Edit</p>
+                    <div style={{ color: '#1890FF' }}>
+                        Edit
                     </div>
                 </div>
                 <div className="cart_amount_body">
