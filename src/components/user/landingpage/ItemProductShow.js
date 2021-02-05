@@ -1,16 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { API_URL } from "../../../config/setting";
 import "./ItemProductShow.css";
+import { createBrowserHistory } from "history";
+const history = createBrowserHistory({
+  forceRefresh: true
+  });
 
 const ItemProductShow = (props) => {
   // function getProduct(id) {
   //   props.getProduct(id);
   // }
   // console.log(props.images)
+  // props.propsURL
   return (
-    <Link to={props.propsURL}>
-      <div className="card_item">
+
+      <div className="card_item" onClick={() => history.push("/trang-chu/chi-tiet-san-pham?id=1")}>
         <img
           className="image"
           src={`${API_URL}/static/${props.images}`}
@@ -33,7 +37,7 @@ const ItemProductShow = (props) => {
           )}
         </div>
       </div>
-    </Link>
+    // </Link>
   );
 };
 
