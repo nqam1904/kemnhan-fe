@@ -17,14 +17,14 @@ const ItemMedia = (props) => {
         <td>{props.value}</td>
         <td className="text-center">
           <button
-            className="btn btn-warning mr-10 white"
+            className="btn btn-success mr-10 white"
             onClick={() => onEdit(props.id)}
           >
-            Sửa
+            Cập nhật
         </button>
-          <button className="btn btn-danger" onClick={() => onDelete(props.id)}>
+          {/* <button className="btn btn-danger" onClick={() => onDelete(props.id)}>
             Xóa
-        </button>
+        </button> */}
         </td>
       </tr>
     </>
