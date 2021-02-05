@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-activity/dist/react-activity.css";
 import {
   BrowserRouter,
-  // Redirect,
+  Redirect,
   Route,
   Router,
   HashRouter,
@@ -22,11 +22,12 @@ import createSagaMiddleware from "redux-saga";
 import { createBrowserHistory } from "history";
 import allReducers from "./redux/reducers";
 import rootSaga from "./redux/middleware/saga/rootSaga";
+import NotFoundPageComponent from "./components/user/NotFoundPage/NotFoundPageComponent";
 const sagaMiddleware = createSagaMiddleware();
 let store = createStore(allReducers, applyMiddleware(sagaMiddleware));
 const history = createBrowserHistory();
 const Page404 = () => {
-  return <>This is page 404</>;
+  return <NotFoundPageComponent />;
 };
 ReactDOM.render(
   <Provider store={store}>
@@ -34,11 +35,12 @@ ReactDOM.render(
       <HashRouter>
         <Router history={history}>
           <Switch>
-            <Route component={Home} path="/trang-chu" />
+            <Route component={Home} exact path="/trang-chu" />
             <Route component={Login} path="/login" />
             <Route component={App} path="/admin" />
             <Route component={Page404} />
           </Switch>
+          <Redirect from="/" to="/trang-chu" />
         </Router>
       </HashRouter>
     </BrowserRouter>

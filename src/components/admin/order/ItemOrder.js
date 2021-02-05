@@ -1,4 +1,6 @@
+
 import React from 'react';
+import { Spinner, Button } from 'react-bootstrap';
 
 const ItemOrder = props => {
     return (
@@ -11,20 +13,25 @@ const ItemOrder = props => {
                 <td>{props.note}</td>
                 <td>{props.createDate.slice(0, 10).split('-').reverse().join('/')}</td>
                 <td>{props.status}</td>
-                {/* <td>{"0" + props.phone}</td>
-            <td>{props.email}</td>
-            <td>{props.role}</td>
-           
-            <td>{props.writeDate.slice(0, 10).split('-').reverse().join('/')}</td> */}
+
                 <td className="text-center">
                     <button
-                        className="btn btn-warning mr-10 white"
-                    >
-                        Sửa
-                </button>
+                        className="btn btn-info mr-10">
+                        Duyệt đơn hàng
+                    </button>
                     <button className="btn btn-danger" >
-                        Xóa
-                </button>
+                        Từ chối đơn hàng
+                    </button>
+                    <Button variant="primary" disabled>
+                        <Spinner
+                            as="span"
+                            animation="grow"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />
+    Loading...
+  </Button>
                 </td>
             </tr>
         </>
