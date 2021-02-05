@@ -7,7 +7,6 @@ import "./Login.css";
 import { Redirect } from "react-router-dom";
 class Login extends Component {
   constructor(props) {
-    let isSuccess = false;
     super(props);
     this.state = {
       email: "",
