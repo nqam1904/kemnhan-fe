@@ -4,7 +4,6 @@ import routes from "../../../routes";
 import Navbar from "../navbar/Navbar";
 import LandingPage from "../landingpage/LandingPage";
 import ProductList from "../landingpage/ProductList";
-import "../../../App.css";
 import AboutComponents from "../about/AboutComponents";
 import Footer from "../footer/Footer";
 

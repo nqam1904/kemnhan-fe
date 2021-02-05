@@ -26,13 +26,13 @@ class AboutComponents extends Component {
                     console.log(res.data[0].value.split("https://www.youtube.com/watch?v=")[1]);
                 })
 
-            }).catch(error => toast.danger('Có lỗi xảy ra'))
+            }).catch(error => console.log(error))
     }
     render() {
         const { isShowModal, value } = this.state;
         return (
             <div className="about">
-                <ToastContainer autoClose={3000} />
+
                 <div className="about_text">
                     <h2 className="sub_text">Chất lượng</h2>
                     <p className="sub_text1">100%</p>
