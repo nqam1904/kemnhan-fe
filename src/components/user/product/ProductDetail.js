@@ -40,6 +40,7 @@ class ProductDetail extends Component {
   };
   getProductDetail = () => {
     const { id } = this.getRouteParams();
+    console.log(id)
     axios
       .get(`${API_URL}/products/${id}`)
       .then((res) =>
@@ -71,9 +72,10 @@ class ProductDetail extends Component {
     );
   };
   addCart = (product) => {
+    const { id } = this.getRouteParams();
     const data = {
       product: {
-        id: parseInt(this.props.match.params.id),
+        id: parseInt(id),
         name: this.state.name,
         image: this.state.selectedImage,
         price: this.state.displayPrice,
@@ -83,7 +85,7 @@ class ProductDetail extends Component {
     };
 
     this.props.actAddToCart(data);
-    console.log("data cart", this.props.data);
+    console.log("data cart", id, this.props.data);
     toast.success("Thêm vào giỏ thành công!");
   };
   render() {

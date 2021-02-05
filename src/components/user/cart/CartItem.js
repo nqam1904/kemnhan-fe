@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { formatSubstring } from '../../../shared/Function'
 class CartItem extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {}
+    }
     render() {
         var { item } = this.props;
         console.log(item)
         return (
             <div className="cart_item">
                 <div className="content_item">
-                    <div className="item_delete_1">
+                    <div className="item_delete_1" onClick={() => this.props.onDeleteItem()}>
                         <img src={require('../../../res/image/Delete.png').default} alt="delete" />
                     </div>
                     <img src={item.product.image} alt={item.product.name} />
@@ -17,9 +21,9 @@ class CartItem extends Component {
                     </div>
                 </div>
                 <div className="option_item">
-                    <img src={require('../../../res/image/tru.png').default} alt="tru" />
+                    <img src={require('../../../res/image/tru.png').default} alt="tru" onClick={() => this.props.subItem()} />
                     <div className="quantity">{item.quantity}</div>
-                    <img src={require('../../../res/image/plus.png').default} alt="plus" />
+                    <img src={require('../../../res/image/plus.png').default} alt="plus" onClick={() => this.props.plusItem()} />
                 </div>
             </div>
         );

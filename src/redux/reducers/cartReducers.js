@@ -4,7 +4,7 @@ var initialState = data ? data : []
 
 
 const cartReducers = (state = initialState, action) => {
-    var { item } = action;
+    var { item, idItemDelete, itemUpdate, quantityUpdate } = action;
     switch (action.type) {
         case types.ADD_TO_CART:
             if (state.length == 0 || state == []) {
@@ -25,11 +25,37 @@ const cartReducers = (state = initialState, action) => {
             }
             localStorage.setItem('cart', JSON.stringify(state))
             return state
+        /////////////////////////////////////
         case types.UPDATE_TO_CART:
+            const find1 = state.find((itemCart) =>
+                itemCart.product.id === itemUpdate
+            )
+            if (find1 !== undefined) {
+                var i1 = state.indexOf(find1)
+                state[i1].quantity += quantityUpdate
+            }
             localStorage.setItem('cart', JSON.stringify(state))
             return state
+        /////////////////////////////////////
         case types.REMOVE_CART:
-            localStorage.setItem('cart', JSON.stringify(state))
+            const find2 = state.find((itemCart) =>
+                itemCart.product.id === idItemDelete
+            )
+            if (find2 !== undefined) {
+                var i2 = state.indexOf(find2)
+                state.splice(i2, 1)
+            }
+            if (state.length == 0) {
+                localStorage.clear('cart')
+            }
+            else {
+                localStorage.setItem('cart', JSON.stringify(state))
+            }
+            return state
+        //////////////////////////////////
+        case types.REMOVE_All_CART:
+            state = []
+            localStorage.clear('cart')
             return state
         default: return state
     }

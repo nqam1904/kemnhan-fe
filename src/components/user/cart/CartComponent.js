@@ -12,8 +12,7 @@ class CartComponent extends Component {
             count: 0,
             showCustom: false,
             cart: [],
-            layout: "container-fluid",
-
+            layout: "container-fluid"
         }
     }
     componentDidMount() {
@@ -28,24 +27,59 @@ class CartComponent extends Component {
                 showCustom: true
             })
         }
+
     }
-    showCartItem = (cartItem) => {
+
+    componentDidUpdate(prevProps) {
+        console.log('asd', this.props.cartItem !== prevProps.cartItem)
+    }
+    showCartItem = () => {
         var result = null;
+        const { cartItem } = this.props
         if (cartItem.length > 0) {
             result = cartItem.map((item, index) => {
+                const quantity = parseInt(item.quantity)
                 return (
                     <CartItem
+                        {...this.props}
                         key={index}
                         item={item}
                         index={index}
+                        onDeleteItem={() => this.onDeleteItem(item.product.id)}
+                        subItem={() => this.subItem(quantity, item.product.id)}
+                        plusItem={() => this.plusItem(quantity, item.product.id)}
                     />
                 )
             })
         }
         return result;
     }
-    showTotalAmount = (cartItem) => {
+    subItem = (quantity, id) => {
+        if (quantity > 1) {
+            const sl = - 1
+            this.props.actUpdateItem(id, sl);
+            // window.location.reload();
+            console.log('subtract', quantity, sl, this.props.cartItem)
+        }
+    }
 
+    plusItem = (quantity, id) => {
+        if (quantity < 100) {
+            const sl = 1
+            this.props.actUpdateItem(id, sl);
+            // window.location.reload();
+            console.log('plus', quantity, sl, this.props.cartItem)
+
+        }
+    }
+
+    onDeleteItem = (id) => {
+        if (window.confirm('Are you sure you want to delete')) {
+            this.props.actDeleteItem(id);
+            window.location.reload();
+        }
+    }
+    showTotalAmount = (cartItem) => {
         var result = 0;
         if (cartItem.length > 0) {
             for (var i = 0; i < cartItem.length; i++) {
@@ -53,6 +87,13 @@ class CartComponent extends Component {
             }
         }
         return currencyFormat(result);
+    }
+    payment = (cartItem) => {
+
+    }
+    onDeleteAll = () => {
+        this.props.actDeleteAll()
+        window.location.reload();
     }
     render() {
         const { count, cart, showCustom, layout } = this.state;
@@ -93,11 +134,11 @@ class CartComponent extends Component {
                         {/* <p>Phí ship:</p> */}
                     </div>
                     <div className="thanhtoan">
-                        <p>{currencyFormat(cartItem[0].product.price)} đ</p>
+                        <p>{currencyFormat(cartItem[0]?.product.price)} đ</p>
                         <p className="total">{this.showTotalAmount(cartItem)} đ</p>
                     </div>
                 </div>
-                <div className="btn_payment">
+                <div className="btn_payment" onClick={() => this.payment()}>
                     Đặt mua
                 </div>
             </div>
@@ -109,7 +150,7 @@ class CartComponent extends Component {
                     <div className="card_cart">
                         <div className="cart_header">
                             <p className="content_cart">Giỏ hàng</p>
-                            <p className="number_cart">{cartItem.length} Sản phẩm</p>
+                            <p className="number_cart">{cartItem.length ?? 0} Sản phẩm</p>
                         </div>
                         <div className="cart_body">
                             <div className="option">
@@ -117,13 +158,13 @@ class CartComponent extends Component {
                                     <input type="checkbox" className="checkbox" />
                                     <p className="text_selectAll" style={{ paddingLeft: 8 }}>Chọn tất cả</p>
                                 </div>
-                                <div className="delete_item" onClick={() => this.props.actDeleteItem()}>
+                                <div className="delete_item" onClick={() => this.onDeleteAll()}>
                                     <img src={require('../../../res/image/Delete.png').default} alt="delete" />
-                                    <p className="text_delete">Xoá</p>
+                                    <p className="text_delete">Xoá Tất cả</p>
                                 </div>
                             </div>
                             <div className="content_cart_item">
-                                {!localStorage.getItem('cart', cart) ? (emptyCart) : this.showCartItem(cartItem)}
+                                {!localStorage.getItem('cart', cart) ? (emptyCart) : this.showCartItem()}
                             </div>
                         </div>
                     </div>
