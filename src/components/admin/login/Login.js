@@ -3,6 +3,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { Form, Button, Container } from "react-bootstrap";
 // import history from "../../../store/Route";
 // import * as Types from "../../../redux/action/loginAction"
+import { history } from "../../../configureStore";
+
 import "./Login.css";
 import { Redirect } from "react-router-dom";
 class Login extends Component {
@@ -46,7 +48,7 @@ class Login extends Component {
   render() {
     const { email, password, isSuccess } = this.state;
     if (isSuccess === true) {
-      return <Redirect to="/admin" />;
+      return history.push("/admin")
     }
 
     return (
