@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+
 import { history } from "../../../configureStore";
+import { toast, ToastContainer } from "react-toastify";
+
 class HomeComponents extends Component {
   constructor(props) {
     super(props);
@@ -10,7 +12,6 @@ class HomeComponents extends Component {
   }
   componentDidMount() {
     if (!localStorage.getItem("token")) {
-
       this.setState({ isLogin: true })
     }
   }
@@ -21,6 +22,7 @@ class HomeComponents extends Component {
     }
     return (
       <>
+        <ToastContainer autoClose={3000} />
         <p>Hello</p>
       </>
     );

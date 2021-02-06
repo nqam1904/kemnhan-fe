@@ -23,7 +23,8 @@ class Header extends Component {
     if (this.props.data === null || logout === true) {
       return history.push("/login")
     }
-    console.log(userData, "logined")
+    const user = localStorage.getItem("userData");
+    console.log(user)
     return (
       <Navbar
         collapseOnSelect

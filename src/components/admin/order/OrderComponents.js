@@ -13,6 +13,8 @@ class AccountComponent extends Component {
       id: "",
       showModal: false,
       titleModal: "",
+      status: "",
+      btnStatus: "",
     };
   }
   async componentDidMount() {
@@ -30,16 +32,16 @@ class AccountComponent extends Component {
         toast.danger("Có lỗi xảy ra");
       });
   }
-  // onChange = (e) => {
-  //     e.preventDefault();
-  //     var target = e.target;
-  //     var name = target.name;
-  //     var value = target.value;
-  //     this.setState({
-  //         [name]: value,
-  //     });
-  // };
-  onEdit = (id) => { };
+  
+  onEdit = (id) => {
+    axios.get(`${API_URL}/orders/${id}`)
+      .then(res => {
+        this.setState({
+          id: id,
+          status: res.data.status,
+        });
+      }).catch(error => toast.danger('Có lỗi xảy ra'));
+  };
   onDelete = (id) => { };
   showOder(orders) {
     var result = null;

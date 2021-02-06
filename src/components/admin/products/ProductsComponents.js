@@ -101,7 +101,7 @@ class ProductsComponents extends Component {
           isActive: res.data.isActive,
           shopeeUrl: res.data.shopeeUrl,
           selectCategory: res.data.categories[0].name,
-          imagesId: res.data.images[0].key,
+          imagesId: res.data.images[0]?.key,
         }, () => {
           console.log(res.data)
         });
@@ -137,7 +137,7 @@ class ProductsComponents extends Component {
             categoriesId={item.categoriesId}
             isFeature={item.isFeature}
             isActive={item.isActive}
-            images={item.images[0].key}
+            images={item.images[0]?.key}
             onEdit={this.onEdit}
             onDelete={this.onDelete}
           />
