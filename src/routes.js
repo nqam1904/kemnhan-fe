@@ -17,7 +17,7 @@ const routes = [
   {
     path: "/admin",
     component: HomeContainer,
-    layout: "/admin/home",
+    layout: "/",
     title: "Quản lý",
   },
   {

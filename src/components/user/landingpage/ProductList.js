@@ -4,7 +4,7 @@ import ItemProductShow from "./ItemProductShow";
 import { API_URL } from "../../../config/setting";
 import "./ProductList.css";
 // import ProductDetail from "../product/ProductDetail";
-import history from "../../../store/Route";
+import {history} from "../../../configureStore";
 // import { Link } from "react-router-dom";
 
 class ProductList extends Component {

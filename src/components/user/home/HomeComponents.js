@@ -12,7 +12,6 @@ class HomeComponents extends Component {
     return (
       <div className="wrapper">
         <Navbar />
-        <LandingPage />
         <Switch>
           {routes.map((prop, key) => {
             if (prop.layout === `/trang-chu`) {
@@ -25,20 +24,20 @@ class HomeComponents extends Component {
                     />
                   )}
                   key={key}
-                  path={prop.layout + prop.path}
+                  path={prop.path}
                 />
               );
             }
             return null;
           })}
+          {window.location.pathname !== "/chi-tiet-san-pham" && (
+            <>
+              <LandingPage />
+              <ProductList />
+              <AboutComponents />
+            </>
+          )}
         </Switch>
-        {window.location.pathname !== "/trang-chu/chi-tiet-san-pham" && (
-          <>
-
-            <ProductList />
-            <AboutComponents />
-          </>
-        )}
         <Footer />
       </div>
     );

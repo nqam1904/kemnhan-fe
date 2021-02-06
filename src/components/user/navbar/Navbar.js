@@ -19,11 +19,11 @@ class Navbar extends Component {
           />
         </div>
         <div className="links">
-          <Link to="/trang-chu">Trang chủ</Link>
+          <Link to="/">Trang chủ</Link>
           <Link to="#">Sản phẩm</Link>
           <Link to="/trang-chu">Giới thiệu</Link>
           <Link to="/trang-chu">Liên hệ</Link>
-          <Link to="/trang-chu/gio-hang">
+          <Link to="/gio-hang">
             <div className="button-cart">
               <img
                 src={require("../../../res/image/ic_cart.png").default}

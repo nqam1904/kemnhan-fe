@@ -15,11 +15,11 @@ const App = ({ history }) => {
   return (
     <ConnectedRouter history={history}>
       <Switch>
-        <Route component={Home} exact path="/trang-chu" />
         <Route component={Login} path="/login" />
         <Route component={Admin} path="/admin" />
-        <Route component={Page404} />
-        <Redirect from="/" to="/trang-chu" />
+        <Route component={Home} path="/" />
+        {/* <Route component={Page404} /> */}
+        {/* <Redirect from="/" to="/" /> */}
       </Switch>
     </ConnectedRouter>
   );

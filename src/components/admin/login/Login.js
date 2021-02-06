@@ -19,8 +19,6 @@ class Login extends Component {
       this.setState({
         isSuccess: true,
       });
-    } else {
-      toast.error("Đăng nhập không thành công!");
     }
   }
   onChange = (e) => {

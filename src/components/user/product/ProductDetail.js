@@ -3,7 +3,7 @@ import "./ProductDetail.css";
 import axios from "axios";
 import { API_URL } from "../../../config/setting";
 import { toast, ToastContainer } from "react-toastify";
-import history from "../../../store/Route";
+import { history } from "../../../configureStore";
 // import { Link } from 'react-router-dom'
 class ProductDetail extends Component {
   constructor(props) {
