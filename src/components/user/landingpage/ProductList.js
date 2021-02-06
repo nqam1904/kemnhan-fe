@@ -27,7 +27,9 @@ class ProductList extends Component {
   showProduct = (products) => {
     var result = null;
     if (products.length > 0) {
-      result = products.slice(0, 6).map((item, idx) => {
+      const featureProduct = products.filter((x) => x.isFeature)
+      const productShow = featureProduct.length > 6 ? featureProduct.slice(0,6) : featureProduct
+      result = productShow.map((item, idx) => {
         return (
           <div key={idx} className="item_product">
             <ItemProductShow
