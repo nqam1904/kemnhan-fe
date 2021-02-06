@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
 import configureStore, { history } from "./configureStore";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import App from "./App";
 import './App.css'
 import "./index.css";

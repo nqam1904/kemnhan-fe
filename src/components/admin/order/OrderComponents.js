@@ -39,8 +39,8 @@ class AccountComponent extends Component {
   //         [name]: value,
   //     });
   // };
-  onEdit = (id) => {};
-  onDelete = (id) => {};
+  onEdit = (id) => { };
+  onDelete = (id) => { };
   showOder(orders) {
     var result = null;
     if (orders.length > 0) {
@@ -48,6 +48,7 @@ class AccountComponent extends Component {
       result = orders.map((item, index) => {
         return (
           <ItemOrder
+            key={index}
             index={index}
             id={item.id}
             name={item.customer.firstName + " " + item.customer.lastName}

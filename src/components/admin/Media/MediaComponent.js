@@ -47,6 +47,7 @@ class MediaComponent extends Component {
       ;
       result = media.map((item, index) => {
         return <ItemMedia
+          key={index}
           index={index}
           id={item.id}
           value={item.value}

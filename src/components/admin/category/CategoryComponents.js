@@ -47,6 +47,7 @@ class CategoryComponents extends Component {
       ;
       result = categorys.map((item, index) => {
         return <ItemCategory
+        key={index}
           index={index}
           id={item.id}
           name={item.name}
@@ -89,7 +90,6 @@ class CategoryComponents extends Component {
     var bodyFormData = new FormData();
     bodyFormData.append('name', name);
     if (id) {
-
       axios.put(`${API_URL}/categories/${id}`, {
         name: name,
       }).then(res => {

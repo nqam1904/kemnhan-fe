@@ -31,7 +31,7 @@ class ProductsComponents extends Component {
       imagesId: [],
       media: [],
       selectImage: [],
-      loading: false
+      loading: false,
     };
     this.fileObj = [];
     this.fileArray = [];
@@ -81,7 +81,6 @@ class ProductsComponents extends Component {
       }, () => {
         console.log(this.state.media, "state")
       });
-
     }
 
   };
@@ -92,7 +91,19 @@ class ProductsComponents extends Component {
           id: id,
           showModal: true,
           titleModal: 'Cập nhật sản phẩm',
-          name: res.data.name
+          name: res.data.name,
+          unit: res.data.unit,
+          description: res.data.description,
+          displayPrice: parseInt(res.data.displayPrice),
+          sellPrice: parseInt(res.data.sellPrice),
+          stockQuantity: parseInt(res.data.stockQuantity),
+          isFeature: res.data.isFeature,
+          isActive: res.data.isActive,
+          shopeeUrl: res.data.shopeeUrl,
+          selectCategory: res.data.categories[0].name,
+          imagesId: res.data.images[0].key,
+        }, () => {
+          console.log(res.data)
         });
       }).catch(error => console.log(error));
   }
@@ -140,7 +151,6 @@ class ProductsComponents extends Component {
       name,
       unit,
       sellPrice,
-      // imagesId,
       media,
       selectCategory,
       description,
@@ -211,6 +221,80 @@ class ProductsComponents extends Component {
       console.log(error);
     }
   };
+  onPutImg = () => {
+    const {
+      name,
+      unit,
+      sellPrice,
+      media,
+      selectCategory,
+      description,
+      displayPrice,
+      stockQuantity,
+      isActive,
+      isFeature,
+      shopeeUrl,
+    } = this.state;
+    var bodyFormData = new FormData();
+    for (const file of media) {
+      console.log(media, "file")
+      bodyFormData.append("medias", file);
+    }
+    try {
+      console.log(bodyFormData);
+      axios
+        .post(`${API_URL}/media`, bodyFormData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          axios
+            .put(`${API_URL}/products`, {
+              name: name,
+              unit: unit,
+              description: description,
+              displayPrice: parseInt(displayPrice),
+              sellPrice: parseInt(sellPrice),
+              stockQuantity: parseInt(stockQuantity),
+              isFeature: isFeature,
+              isActive: isActive,
+              shopeeUrl: shopeeUrl,
+              categoriesId: [parseInt(selectCategory)],
+              imagesId: res.data.mediasId,
+            })
+            .then((result) => {
+
+              console.log(result);
+              this.setState(
+                {
+                  showModal: false,
+                  id: "",
+                  name: "",
+                  unit: "",
+                  description: "",
+                  displayPrice: 0,
+                  sellPrice: 0,
+                  stockQuantity: 0,
+                  categoriesId: [],
+                  imagesId: []
+                },
+                () => {
+                  this.getDateProduct();
+                }
+              );
+            })
+            .catch((error) => console.log("error", error));
+        }
+        )
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   onSave = (e) => {
     const {
       name,
@@ -229,13 +313,15 @@ class ProductsComponents extends Component {
       sellPrice: 0,
       stockQuantity: 0,
       categoriesId: [],
-      imagesId: []
+      imagesId: [],
+      shopeeUrl: ""
     })
     e.preventDefault();
     if (id) {
+      console.log(id, "id")
       try {
-
         this.onSaveImg();
+        toast.success("Cập nhật sản phẩm thành công!");
       } catch (error) {
         console.log(error);
       }
@@ -295,6 +381,16 @@ class ProductsComponents extends Component {
               this.setState({
                 showModal: true,
                 titleModal: "Thêm sản phẩm",
+                id: "",
+                name: "",
+                unit: "",
+                description: "",
+                displayPrice: 0,
+                sellPrice: 0,
+                stockQuantity: 0,
+                categoriesId: [],
+                imagesId: [],
+                shopeeUrl: ""
               });
             }}
           >

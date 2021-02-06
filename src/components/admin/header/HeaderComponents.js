@@ -2,27 +2,28 @@ import React, { Component } from "react";
 import { Button, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { history } from "../../../configureStore";
+import { userData } from "../../../config/setting"
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = { logout: false };
   }
+  componentDidMount() {
+    // console.log(userData, "userData")
+  }
 
   onLogout = () => {
     localStorage.clear("token");
+    localStorage.clear("userData")
     console.log(localStorage.getItem("token"));
     this.setState({ logout: true });
-    // if (this.props.data === null) {
-    //   console.log(this.props.data);
-    //   this.setState({ logout: true });
-    // }
   };
   render() {
     const { logout } = this.state;
     if (this.props.data === null || logout === true) {
       return history.push("/login")
     }
-
+    console.log(userData, "logined")
     return (
       <Navbar
         collapseOnSelect
@@ -53,8 +54,10 @@ class Header extends Component {
             <Nav.Link as={Link} to="/admin/order">Đơn hàng</Nav.Link>
             <Nav.Link as={Link} to="/admin/media">YouTube</Nav.Link>
           </Nav>
-          <Button inline onClick={() => this.onLogout()} type="button" variant="outline-success">Đăng xuất</Button>
-
+          <Navbar bg="dark">
+            <Navbar.Brand>Xin Chào:{userData.firstName + userData.lastName}</Navbar.Brand>
+          </Navbar>
+          <Button onClick={() => this.onLogout()} type="button" variant="outline-success">Đăng xuất</Button>
         </Navbar.Collapse>
       </Navbar>
     );

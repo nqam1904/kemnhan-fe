@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Form, Button, Container } from "react-bootstrap";
 import { history } from "../../../configureStore";
+import { userData } from '../../../config/setting';
 import "./Login.css";
 class Login extends Component {
   constructor(props) {
@@ -16,9 +17,16 @@ class Login extends Component {
 
     if (this.props.result !== null && prevProps.result !== this.props.result) {
       if (this.props.result) {
+
         this.setState({
           isSuccess: true,
         });
+        userData.accessToken = this.props.data.accessToken;
+        userData.firstName = this.props.data.user.firstName;
+        userData.lastName = this.props.data.user.lastName;
+        userData.email = this.props.data.user.email;
+        userData.phone = this.props.data.user.phone;
+        localStorage.setItem("userData", JSON.stringify(userData));
       } else {
         toast.error("Có lỗi xảy ra!")
       }
@@ -49,6 +57,7 @@ class Login extends Component {
   };
   render() {
     const { email, password, isSuccess } = this.state;
+    // console.log(userData)
     if (isSuccess === true) {
       return history.push("/admin")
     }
