@@ -84,8 +84,14 @@ class AccountComponent extends Component {
       right: true,
     }, {
       name: "Hành động",
-      selector: (data, b) => <Button type="button" className="btn btn-warning white" onClick={() => this.onEdit(data.id)}>Sửa</Button>,
+      selector: (data, b) =>
+        <>
+          <Button type="button" className="btn btn-warning white mr-10" onClick={() => this.onEdit(data.id)}>Sửa</Button>
+          <Button type="button" className="btn btn-danger white" onClick={() => this.onDelete(data.id)}>Xoá</Button>
+        </>,
+
     }
+
   ];
   async componentDidMount() {
 
