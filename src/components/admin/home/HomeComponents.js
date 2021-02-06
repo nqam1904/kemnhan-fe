@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 // import { Redirect } from "react-router-dom";
 import history from "../../../store/Route";
 class HomeComponents extends Component {
@@ -10,7 +11,7 @@ class HomeComponents extends Component {
   }
   componentDidMount() {
     if (!localStorage.getItem("token")) {
-      history.push("/login")
+      return <Redirect to="/login" />
     }
   }
   render() {
