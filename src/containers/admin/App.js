@@ -23,7 +23,7 @@ class App extends Component {
     return (
       <>
         <HeaderContainer />
-        <div className="container">{this.showContent(routes)}</div>
+        <div className="container-fluid">{this.showContent(routes)}</div>
       </>
     );
   }

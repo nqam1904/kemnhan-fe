@@ -15,8 +15,7 @@ const ItemAccount = props => {
             <tr>
                 <td>{props.index + 1}</td>
                 <td>{props.firstName + ' ' + props.lastName}</td>
-                {/* <td>{}</td> */}
-                <td>{"0" + props.phone}</td>
+                <td>{props.phone}</td>
                 <td>{props.email}</td>
                 <td>{props.role}</td>
                 <td>{props.createDate.slice(0, 10).split('-').reverse().join('/')}</td>

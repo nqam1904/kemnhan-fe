@@ -4,11 +4,21 @@ import { Button, Modal, Table } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import ItemAccount from "./ItemAccount";
-import { Spinner } from "react-activity";
+import DataTable from "react-data-table-component";
+
+
 const roles = [
   { id: 1, name: "admin" },
   { id: 2, name: "staff" },
 ];
+{/* <th> # </th>
+<th> Họ tên </th>
+<th> Số điện thoại </th>
+<th> Email </th>
+<th> Chức vụ </th>
+<th> Ngày tạo </th>
+<th> Ngày chỉnh sửa </th>
+<th>Chức năng</th> */}
 class AccountComponent extends Component {
   constructor(props) {
     super(props);
@@ -27,10 +37,58 @@ class AccountComponent extends Component {
       loading: true,
     };
   }
+  columns = [
+    {
+      name: "#",
+      selector: "id",
+      sortable: true
+    },
+    {
+      name: "Họ",
+      selector: "firstName",
+      sortable: true
+    },
+    {
+      name: "Tên",
+      selector: "lastName",
+      sortable: true
+    },
+    {
+      name: "Số điện thoại",
+      selector: "phone",
+      sortable: true,
+      right: true
+    },
+    {
+      name: "Email",
+      selector: "email",
+      sortable: true,
+      right: true
+    },
+    {
+      name: "Chức vụ ",
+      selector: "role",
+      sortable: true,
+      right: true
+    },
+    {
+      name: "Ngày tạo",
+      selector: "createDate",
+      sortable: true,
+      right: true
+    },
+    {
+      name: "Ngày chỉnh sửa",
+      selector: "writeDate",
+      sortable: true,
+      right: true,
+    }, {
+      name: "Hành động",
+      selector: (data, b) => <Button type="button" className="btn btn-warning white" onClick={() => this.onEdit(data.id)}>Sửa</Button>,
+    }
+  ];
   async componentDidMount() {
-    this.setState({
-      loading: !this.state.loading,
-    });
+
     await this.getDataAccount();
   }
   getDataAccount() {
@@ -54,6 +112,7 @@ class AccountComponent extends Component {
       [name]: value,
     });
   };
+
   onEdit = (id) => {
     axios
       .get(`${API_URL}/users/${id}`)
@@ -71,7 +130,7 @@ class AccountComponent extends Component {
           titleModal: "Cập nhật tài khoản",
         });
       })
-      .catch((_) => {});
+      .catch((_) => { });
   };
   onDelete = (id) => {
     this.setState({
@@ -96,6 +155,7 @@ class AccountComponent extends Component {
       result = users.map((item, index) => {
         return (
           <ItemAccount
+            key={index}
             index={index}
             id={item.id}
             firstName={item.firstName}
@@ -154,7 +214,7 @@ class AccountComponent extends Component {
             lastName: "",
             phone: "",
             emai: "",
-            loading: true,
+
           });
           toast.success("Cập nhật thành công!");
           this.getDataAccount();
@@ -196,17 +256,11 @@ class AccountComponent extends Component {
       phone,
       password,
       email,
-      // role,
       showModal,
       titleModal,
       isSetRole,
-      loading,
     } = this.state;
-    const result = loading ? (
-      <Spinner size={32} speed={1} animating={true} />
-    ) : (
-      this.showAccount(users)
-    );
+
     return (
       <>
         <h1 className="mt-10"> Danh mục tài khoản </h1>
@@ -232,7 +286,16 @@ class AccountComponent extends Component {
             Thêm tài khoản
           </Button>
         </div>
-        <Table striped bordered hover variant="dark" responsive="lg">
+        <DataTable
+          title="Account"
+          columns={this.columns}
+          data={users}
+          defaultSortField="title"
+          pagination
+          responsive={true}
+          button
+        />
+        {/* <table responsive="lg" id="example" className="table table-bordered">
           <thead>
             <tr>
               <th> # </th>
@@ -245,8 +308,9 @@ class AccountComponent extends Component {
               <th>Chức năng</th>
             </tr>
           </thead>
-          <tbody> {result} </tbody>
-        </Table>
+          <tbody> {this.showAccount(users)} </tbody>
+        </table> */}
+
         <Modal
           show={showModal}
           size="lg"
