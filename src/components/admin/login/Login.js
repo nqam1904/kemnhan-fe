@@ -1,12 +1,8 @@
 import React, { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Form, Button, Container } from "react-bootstrap";
-// import history from "../../../store/Route";
-// import * as Types from "../../../redux/action/loginAction"
 import { history } from "../../../configureStore";
-
 import "./Login.css";
-import { Redirect } from "react-router-dom";
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -17,11 +13,17 @@ class Login extends Component {
     };
   }
   componentDidUpdate(prevProps) {
-    if (this.props.data !== null && prevProps.data !== this.props.data) {
-      this.setState({
-        isSuccess: true,
-      });
+
+    if (this.props.result !== null && prevProps.result !== this.props.result) {
+      if (this.props.result) {
+        this.setState({
+          isSuccess: true,
+        });
+      } else {
+        toast.error("Có lỗi xảy ra!")
+      }
     }
+
   }
   onChange = (e) => {
     e.preventDefault();

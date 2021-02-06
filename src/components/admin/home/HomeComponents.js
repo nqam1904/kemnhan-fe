@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { history } from "../../../configureStore";
-// import { Redirect } from "react-router-dom";
 class HomeComponents extends Component {
   constructor(props) {
     super(props);
@@ -11,7 +10,7 @@ class HomeComponents extends Component {
   }
   componentDidMount() {
     if (!localStorage.getItem("token")) {
-      // console.log(localStorage.getItem("token"));
+
       this.setState({ isLogin: true })
     }
   }

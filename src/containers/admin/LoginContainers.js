@@ -10,8 +10,8 @@ class LoginContainer extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log(state)
     return {
+        result: state.loginReducers.result,
         loading: state.loginReducers.loading,
         error: state.loginReducers.error,
         data: state.loginReducers.data,

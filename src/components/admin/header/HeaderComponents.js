@@ -1,22 +1,26 @@
 import React, { Component } from "react";
-import { Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { Link, Redirect } from "react-router-dom";
+import { Button, Nav, Navbar } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { history } from "../../../configureStore";
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = { logout: false };
   }
 
-  logOut = () => {
+  onLogout = () => {
     localStorage.clear("token");
-    if (this.props.data === null) {
-      this.setState({ logout: true });
-    }
+    console.log(localStorage.getItem("token"));
+    this.setState({ logout: true });
+    // if (this.props.data === null) {
+    //   console.log(this.props.data);
+    //   this.setState({ logout: true });
+    // }
   };
   render() {
     const { logout } = this.state;
     if (this.props.data === null || logout === true) {
-      return <Redirect to="/login" />;
+      return history.push("/login")
     }
 
     return (
@@ -49,14 +53,8 @@ class Header extends Component {
             <Nav.Link as={Link} to="/admin/order">Đơn hàng</Nav.Link>
             <Nav.Link as={Link} to="/admin/media">YouTube</Nav.Link>
           </Nav>
-          <NavDropdown title="Tài khoản" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">
-              Thông tin tài khoản
-            </NavDropdown.Item>
-            <NavDropdown.Item onClick={() => this.logOut()}>
-              Đăng xuất
-            </NavDropdown.Item>
-          </NavDropdown>
+          <Button inline onClick={() => this.onLogout()} type="button" variant="outline-success">Đăng xuất</Button>
+
         </Navbar.Collapse>
       </Navbar>
     );
