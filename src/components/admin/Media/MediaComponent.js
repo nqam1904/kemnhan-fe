@@ -4,6 +4,7 @@ import { Button, Modal, Table } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import ItemMedia from "./ItemMedia";
+import DataTable from "react-data-table-component";
 class MediaComponent extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +16,29 @@ class MediaComponent extends Component {
       id: "",
     };
   }
+  columns = [
+    {
+      name: "#",
+      selector: "id",
+      sortable: true
+    },
 
+    {
+      name: "Media",
+      selector: "value",
+      sortable: true,
+
+    }, {
+      name: "Hành động",
+      selector: (data, b) =>
+        <>
+          <Button type="button" className="btn btn-warning white mr-10" onClick={() => this.onEdit(data.id)}>Sửa</Button>
+          <Button type="button" className="btn btn-danger white" onClick={() => this.onDelete(data.id)}>Xoá</Button>
+        </>,
+
+    }
+
+  ];
   async componentDidMount() {
     await this.getDataMedia();
   }
@@ -108,14 +131,23 @@ class MediaComponent extends Component {
         <h1 className="mt-10"> Link youtube</h1>
         <ToastContainer autoClose={3000} />
 
-        <Table striped bordered hover variant="dark">
+        {/* <Table striped bordered hover variant="dark">
           <thead>
             <tr>
               <th> # </th> <th> Đường dẫn youtube </th> <th> Hành động </th>
             </tr>
           </thead>
           <tbody> {this.showMedia(media)} </tbody>
-        </Table>
+        </Table> */}
+        <DataTable
+          title="Category"
+          columns={this.columns}
+          data={media}
+          defaultSortField="title"
+          pagination
+          responsive={true}
+
+        />
         <Modal
           show={showModal}
           onHide={() => {

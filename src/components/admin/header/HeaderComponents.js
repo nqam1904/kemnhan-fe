@@ -51,7 +51,7 @@ class Header extends Component {
               Danh mục
             </Nav.Link>
             <Nav.Link as={Link} to="/admin/product">Sản phẩm</Nav.Link>
-            <Nav.Link as={Link} to="#">Khách hàng</Nav.Link>
+            <Nav.Link as={Link} to="/admin/customer">Khách hàng</Nav.Link>
             <Nav.Link as={Link} to="/admin/order">Đơn hàng</Nav.Link>
             <Nav.Link as={Link} to="/admin/media">YouTube</Nav.Link>
           </Nav>

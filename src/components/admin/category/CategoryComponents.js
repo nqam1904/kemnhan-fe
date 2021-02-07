@@ -4,6 +4,8 @@ import { Button, Modal, Table } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import ItemCategory from "./ItemCategory";
+import DataTable from "react-data-table-component";
+
 class CategoryComponents extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +17,29 @@ class CategoryComponents extends Component {
       id: "",
     };
   }
+  columns = [
+    {
+      name: "#",
+      selector: "id",
+      sortable: true
+    },
 
+    {
+      name: "Tên danh mục",
+      selector: "name",
+      sortable: true,
+
+    }, {
+      name: "Hành động",
+      selector: (data, b) =>
+        <>
+          <Button type="button" className="btn btn-warning white mr-10" onClick={() => this.onEdit(data.id)}>Sửa</Button>
+          <Button type="button" className="btn btn-danger white" onClick={() => this.onDelete(data.id)}>Xoá</Button>
+        </>,
+
+    }
+
+  ];
   async componentDidMount() {
     await this.getDataCategory();
   }
@@ -47,7 +71,7 @@ class CategoryComponents extends Component {
       ;
       result = categorys.map((item, index) => {
         return <ItemCategory
-        key={index}
+          key={index}
           index={index}
           id={item.id}
           name={item.name}
@@ -143,14 +167,23 @@ class CategoryComponents extends Component {
             Thêm danh mục
           </Button>
         </div>
-        <Table striped bordered hover variant="dark">
+        <DataTable
+          title="Category"
+          columns={this.columns}
+          data={categorys}
+          defaultSortField="title"
+          pagination
+          responsive={true}
+
+        />
+        {/* <Table striped bordered hover variant="dark">
           <thead>
             <tr>
               <th> # </th> <th> Tên danh mục </th> <th> Hành động </th>
             </tr>
           </thead>
           <tbody> {this.showCategory(categorys)} </tbody>
-        </Table>
+        </Table> */}
         <Modal
           show={showModal}
           onHide={() => {

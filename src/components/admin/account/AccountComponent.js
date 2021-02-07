@@ -5,20 +5,11 @@ import { toast, ToastContainer } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import ItemAccount from "./ItemAccount";
 import DataTable from "react-data-table-component";
-
-
 const roles = [
   { id: 1, name: "admin" },
   { id: 2, name: "staff" },
 ];
-{/* <th> # </th>
-<th> Họ tên </th>
-<th> Số điện thoại </th>
-<th> Email </th>
-<th> Chức vụ </th>
-<th> Ngày tạo </th>
-<th> Ngày chỉnh sửa </th>
-<th>Chức năng</th> */}
+
 class AccountComponent extends Component {
   constructor(props) {
     super(props);
@@ -250,7 +241,7 @@ class AccountComponent extends Component {
           this.getDataAccount();
         })
         .catch((err) => {
-          toast.danger("Có lỗi xảy ra");
+          toast.error("Có lỗi xảy ra");
         });
     }
   };
@@ -280,6 +271,7 @@ class AccountComponent extends Component {
               this.setState({
                 showModal: true,
                 titleModal: "Thêm tài khoản",
+                id: "",
                 firstName: "",
                 lastName: "",
                 phone: "",
@@ -299,7 +291,7 @@ class AccountComponent extends Component {
           defaultSortField="title"
           pagination
           responsive={true}
-          button
+
         />
         {/* <table responsive="lg" id="example" className="table table-bordered">
           <thead>
