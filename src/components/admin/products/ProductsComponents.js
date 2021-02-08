@@ -320,7 +320,7 @@ class ProductsComponents extends Component {
     if (id) {
       console.log(id, "id")
       try {
-        this.onPutImg();
+        this.onPutImg(id);
         toast.success("Cập nhật sản phẩm thành công!");
       } catch (error) {
         console.log(error);
