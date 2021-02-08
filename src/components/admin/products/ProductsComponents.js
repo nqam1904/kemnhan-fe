@@ -267,7 +267,7 @@ class ProductsComponents extends Component {
           isActive: isActive,
           shopeeUrl: shopeeUrl,
           categoriesId: [parseInt(selectCategory)],
-          imagesId: res.data.mediasId,
+
         })
         .then((result) => {
           console.log(result);
