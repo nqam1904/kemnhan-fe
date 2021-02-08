@@ -10,10 +10,8 @@ class AccountComponent extends Component {
     super(props);
     this.state = {
       orders: [],
-      id: "",
       showModal: false,
       titleModal: "",
-      status: "",
       btnStatus: "",
     };
   }
@@ -33,16 +31,28 @@ class AccountComponent extends Component {
       });
   }
 
-  onEdit = (id) => {
-    axios.get(`${API_URL}/orders/${id}`)
+  onEdit = (id, status) => {
+    axios.put(`${API_URL}/orders/${id}`, {
+      status: status + 1
+    })
       .then(res => {
-        this.setState({
-          id: id,
-          status: res.data.status,
-        });
+        if (res.data) {
+          this.getDataOrder();
+        }
       }).catch(error => toast.danger('Có lỗi xảy ra'));
   };
-  onDelete = (id) => { };
+  onDelete = (id) => {
+    axios.put(`${API_URL}/orders/${id}`, {
+      status: 4
+    })
+      .then(res => {
+        if (res.data) {
+          this.getDataOrder();
+        }
+      }).catch(error => toast.danger('Có lỗi xảy ra'));
+  };
+
+
   showOder(orders) {
     var result = null;
     if (orders.length > 0) {
@@ -59,6 +69,12 @@ class AccountComponent extends Component {
             createDate={item.createDate}
             phone={item.customer.phone}
             status={item.status}
+            onEdit={() => {
+              this.onEdit(item.id, item.status)
+            }}
+            onDelete={() => {
+              this.onDelete(item.id)
+            }}
           />
         );
       });
@@ -68,7 +84,7 @@ class AccountComponent extends Component {
 
   render() {
     const { orders } = this.state;
-    
+
     return (
       <>
         <h1 className="mt-10"> Danh mục hoá đơn</h1>

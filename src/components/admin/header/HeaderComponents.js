@@ -23,8 +23,7 @@ class Header extends Component {
     if (this.props.data === null || logout === true) {
       return history.push("/login")
     }
-    const user = localStorage.getItem("userData");
-    console.log(user)
+    const user = JSON.parse(localStorage.getItem("userData"))
     return (
       <Navbar
         collapseOnSelect
@@ -56,7 +55,7 @@ class Header extends Component {
             <Nav.Link as={Link} to="/admin/media">YouTube</Nav.Link>
           </Nav>
           <Navbar bg="dark">
-            <Navbar.Brand>Xin Chào:{userData.firstName + userData.lastName}</Navbar.Brand>
+            <Navbar.Brand>Xin Chào: {user.firstName + ' ' + user.lastName}</Navbar.Brand>
           </Navbar>
           <Button onClick={() => this.onLogout()} type="button" variant="outline-success">Đăng xuất</Button>
         </Navbar.Collapse>
