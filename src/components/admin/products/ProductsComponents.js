@@ -232,7 +232,7 @@ class ProductsComponents extends Component {
       console.log(error);
     }
   };
-  onPutImg = () => {
+  onPutImg = (id) => {
     const {
       name,
       unit,
@@ -255,7 +255,7 @@ class ProductsComponents extends Component {
     try {
       console.log(bodyFormData);
       axios
-        .put(`${API_URL}/products`, {
+        .put(`${API_URL}/products/${id}`, {
           name: name,
           unit: unit,
           description: description,
