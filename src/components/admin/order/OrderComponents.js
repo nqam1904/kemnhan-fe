@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Table } from "react-bootstrap";
+import { Table, Popover } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import ItemOrder from "./ItemOrder";
@@ -32,7 +32,7 @@ class AccountComponent extends Component {
         toast.danger("Có lỗi xảy ra");
       });
   }
-  
+
   onEdit = (id) => {
     axios.get(`${API_URL}/orders/${id}`)
       .then(res => {
@@ -68,6 +68,7 @@ class AccountComponent extends Component {
 
   render() {
     const { orders } = this.state;
+    
     return (
       <>
         <h1 className="mt-10"> Danh mục hoá đơn</h1>

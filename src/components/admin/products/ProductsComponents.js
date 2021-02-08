@@ -6,6 +6,7 @@ import { API_URL } from "../../../config/setting";
 import ItemProduct from "./ItemProduct";
 import "./Product.css";
 import { Spinner } from 'react-activity';
+
 class ProductsComponents extends Component {
   constructor(props) {
     super(props);
@@ -19,6 +20,7 @@ class ProductsComponents extends Component {
       description: "",
       displayPrice: 0,
       sellPrice: 0,
+      soldQuantity: 0,
       stockQuantity: 0,
       isFeature: false,
       isActive: false,
@@ -96,6 +98,7 @@ class ProductsComponents extends Component {
           description: res.data.description,
           displayPrice: parseInt(res.data.displayPrice),
           sellPrice: parseInt(res.data.sellPrice),
+          soldQuantity: parseInt(res.soldQuantity),
           stockQuantity: parseInt(res.data.stockQuantity),
           isFeature: res.data.isFeature,
           isActive: res.data.isActive,
@@ -132,6 +135,7 @@ class ProductsComponents extends Component {
             unit={item.unit}
             description={item.description}
             displayPrice={item.displayPrice}
+            soldQuantity={item.soldQuantity}
             sellPrice={item.sellPrice}
             stockQuantity={item.stockQuantity}
             categoriesId={item.categoriesId}
@@ -140,12 +144,16 @@ class ProductsComponents extends Component {
             images={item.images[0]?.key}
             onEdit={this.onEdit}
             onDelete={this.onDelete}
+            onUpdateStatus={this.onUpdateStatus}
           />
         );
       });
     }
     return result;
   };
+  onUpdateStatus = () => {
+
+  }
   onSaveImg = () => {
     const {
       name,
@@ -156,6 +164,7 @@ class ProductsComponents extends Component {
       description,
       displayPrice,
       stockQuantity,
+      soldQuantity,
       isActive,
       isFeature,
       shopeeUrl,
@@ -182,6 +191,7 @@ class ProductsComponents extends Component {
               description: description,
               displayPrice: parseInt(displayPrice),
               sellPrice: parseInt(sellPrice),
+              soldQuantity: parseInt(soldQuantity),
               stockQuantity: parseInt(stockQuantity),
               isFeature: isFeature,
               isActive: isActive,
@@ -201,6 +211,7 @@ class ProductsComponents extends Component {
                   description: "",
                   displayPrice: 0,
                   sellPrice: 0,
+                  stockQuantity: 0,
                   stockQuantity: 0,
                   categoriesId: [],
                   imagesId: []
@@ -234,6 +245,7 @@ class ProductsComponents extends Component {
       isActive,
       isFeature,
       shopeeUrl,
+      soldQuantity,
     } = this.state;
     var bodyFormData = new FormData();
     for (const file of media) {
@@ -243,7 +255,7 @@ class ProductsComponents extends Component {
     try {
       console.log(bodyFormData);
       axios
-        .post(`${API_URL}/media`, bodyFormData, {
+        .put(`${API_URL}/media`, bodyFormData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -257,6 +269,7 @@ class ProductsComponents extends Component {
               description: description,
               displayPrice: parseInt(displayPrice),
               sellPrice: parseInt(sellPrice),
+              soldQuantity: parseInt(soldQuantity),
               stockQuantity: parseInt(stockQuantity),
               isFeature: isFeature,
               isActive: isActive,
@@ -265,7 +278,6 @@ class ProductsComponents extends Component {
               imagesId: res.data.mediasId,
             })
             .then((result) => {
-
               console.log(result);
               this.setState(
                 {
@@ -302,6 +314,7 @@ class ProductsComponents extends Component {
       unit,
       selectCategory,
       displayPrice,
+      sellPrice,
       stockQuantity,
     } = this.state;
     this.setState({
@@ -320,7 +333,7 @@ class ProductsComponents extends Component {
     if (id) {
       console.log(id, "id")
       try {
-        this.onSaveImg();
+        this.onPutImg();
         toast.success("Cập nhật sản phẩm thành công!");
       } catch (error) {
         console.log(error);
@@ -330,7 +343,7 @@ class ProductsComponents extends Component {
         name === "" ||
         unit === "" ||
         selectCategory === "" ||
-        displayPrice === "" ||
+        sellPrice === "" ||
         stockQuantity === ""
       ) {
         toast.warn("Vui lòng nhập những thông tin bắt buộc!");
@@ -356,10 +369,12 @@ class ProductsComponents extends Component {
       category,
       selectCategory,
       description,
+      soldQuantity,
       displayPrice,
       imageName,
       stockQuantity,
       showModal,
+      sellPrice,
       titleModal,
       // selectImage,
       loading
@@ -397,14 +412,14 @@ class ProductsComponents extends Component {
             Thêm sản phẩm
           </Button>
         </div>
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover >
           <thead>
             <tr>
               <th> # </th>
               <th>Tên sản phẩm</th>
               <th>Hình ảnh</th>
               <th>Giá tiền</th>
-              <th>Giảm giá</th>
+              <th>Đã bán được</th>
               <th>Đơn vị</th>
               <th>Số lượng</th>
               <th>Mô tả</th>
@@ -499,9 +514,9 @@ class ProductsComponents extends Component {
                   <input
                     className="form-control"
                     type="number"
-                    name="displayPrice"
+                    name="sellPrice"
                     placeholder="Nhập giá tiền sản phẩm"
-                    value={displayPrice}
+                    value={sellPrice}
                     onChange={this.onChange}
                   />
                 </div>

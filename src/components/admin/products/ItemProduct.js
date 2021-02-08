@@ -19,8 +19,8 @@ const ItemProduct = props => {
         <td>{props.index + 1}</td>
         <td>{props.name}</td>
         <td><img src={`${API_URL}/static/${props.images}`} alt={props.name} width="80" /></td>
-        <td>{props.displayPrice}</td>
         <td>{props.sellPrice}</td>
+        <td>{props.soldQuantity}</td>
         <td>{props.unit}</td>
         <td>{props.stockQuantity}</td>
         <td>{formatSubstring(props.description)}</td>
@@ -28,7 +28,7 @@ const ItemProduct = props => {
         <td>{props.isActive.toString()}</td>
         <td className="text-center">
           <button
-            className="btn btn-warning mt-10 white"
+            className="btn btn-warning mt-10 mr-10 white"
             onClick={() => onEdit(props.id)}
           >
             Sửa
