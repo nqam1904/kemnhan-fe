@@ -255,54 +255,41 @@ class ProductsComponents extends Component {
     try {
       console.log(bodyFormData);
       axios
-        .put(`${API_URL}/media`, bodyFormData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+        .put(`${API_URL}/products`, {
+          name: name,
+          unit: unit,
+          description: description,
+          displayPrice: parseInt(displayPrice),
+          sellPrice: parseInt(sellPrice),
+          soldQuantity: parseInt(soldQuantity),
+          stockQuantity: parseInt(stockQuantity),
+          isFeature: isFeature,
+          isActive: isActive,
+          shopeeUrl: shopeeUrl,
+          categoriesId: [parseInt(selectCategory)],
+          imagesId: res.data.mediasId,
         })
-        .then((res) => {
-          console.log(res);
-          axios
-            .put(`${API_URL}/products`, {
-              name: name,
-              unit: unit,
-              description: description,
-              displayPrice: parseInt(displayPrice),
-              sellPrice: parseInt(sellPrice),
-              soldQuantity: parseInt(soldQuantity),
-              stockQuantity: parseInt(stockQuantity),
-              isFeature: isFeature,
-              isActive: isActive,
-              shopeeUrl: shopeeUrl,
-              categoriesId: [parseInt(selectCategory)],
-              imagesId: res.data.mediasId,
-            })
-            .then((result) => {
-              console.log(result);
-              this.setState(
-                {
-                  showModal: false,
-                  id: "",
-                  name: "",
-                  unit: "",
-                  description: "",
-                  displayPrice: 0,
-                  sellPrice: 0,
-                  stockQuantity: 0,
-                  categoriesId: [],
-                  imagesId: []
-                },
-                () => {
-                  this.getDateProduct();
-                }
-              );
-            })
-            .catch((error) => console.log("error", error));
-        }
-        )
-        .catch((err) => {
-          console.log(err);
-        });
+        .then((result) => {
+          console.log(result);
+          this.setState(
+            {
+              showModal: false,
+              id: "",
+              name: "",
+              unit: "",
+              description: "",
+              displayPrice: 0,
+              sellPrice: 0,
+              stockQuantity: 0,
+              categoriesId: [],
+              imagesId: []
+            },
+            () => {
+              this.getDateProduct();
+            }
+          );
+        })
+        .catch((error) => console.log("error", error));
     } catch (error) {
       console.log(error);
     }
