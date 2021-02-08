@@ -67,10 +67,10 @@ class Login extends Component {
         <ToastContainer autoClose={3000} />
         <Form>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Tên đăng nhập</Form.Label>
+            <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
-              placeholder="Nhập tài khoản"
+              placeholder="Nhập email"
               value={email}
               // type="text"
               autoComplete="off"
