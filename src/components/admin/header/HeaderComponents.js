@@ -55,7 +55,7 @@ class Header extends Component {
             <Nav.Link as={Link} to="/admin/media">YouTube</Nav.Link>
           </Nav>
           <Navbar bg="dark">
-            <Navbar.Brand>Xin Chào: {user.firstName + ' ' + user.lastName}</Navbar.Brand>
+            <Navbar.Brand>Xin Chào: {user?.firstName + ' ' + user?.lastName}</Navbar.Brand>
           </Navbar>
           <Button onClick={() => this.onLogout()} type="button" variant="outline-success">Đăng xuất</Button>
         </Navbar.Collapse>

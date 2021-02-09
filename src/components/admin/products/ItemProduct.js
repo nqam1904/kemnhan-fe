@@ -1,6 +1,6 @@
 import React from 'react';
 import { API_URL } from '../../../config/setting';
-import { formatSubstring } from '../../../shared/Function'
+import { currencyFormat, formatSubstring } from '../../../shared/Function'
 const ItemProduct = props => {
   console.log(props.images);
   function onDelete(id) {
@@ -19,7 +19,7 @@ const ItemProduct = props => {
         <td>{props.index + 1}</td>
         <td>{props.name}</td>
         <td><img src={`${API_URL}/static/${props.images}`} alt={props.name} width="80" /></td>
-        <td>{props.sellPrice}</td>
+        <td>{currencyFormat(props.sellPrice)}</td>
         <td>{props.soldQuantity}</td>
         <td>{props.unit}</td>
         <td>{props.stockQuantity}</td>

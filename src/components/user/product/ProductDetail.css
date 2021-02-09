@@ -7,7 +7,7 @@
 }
 .product_img img{
     width: 603px;
-    height:250px;
+    /* height:250px; */
     border-radius: 12px;
     margin-right: 24px;
 }
@@ -88,12 +88,16 @@ display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px !important;
+  color: #fff;
 }
-.btn_buy span{
-    color: #fff;
-}
+
+ 
 .btn_buy:hover{
     cursor: pointer;
     transition:0.5s all ease;
-      opacity:1;
+    opacity:1;
+    background: #fff0f6;
+    border: 1px solid #fa541c;
+    color: #fa541c !important;
+
 }

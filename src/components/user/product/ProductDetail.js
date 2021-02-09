@@ -4,7 +4,7 @@ import axios from "axios";
 import { API_URL } from "../../../config/setting";
 import { toast, ToastContainer } from "react-toastify";
 import { history } from "../../../configureStore";
-// import { Link } from 'react-router-dom'
+import { currencyFormat } from '../../../shared/Function';
 class ProductDetail extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +18,7 @@ class ProductDetail extends Component {
       isActive: false,
       isFeature: false,
       images: [],
+      sellPrice: 0,
       selectedImage: null,
       dataImage: [],
       quantity: 0,
@@ -49,12 +50,15 @@ class ProductDetail extends Component {
           unit: res.data.unit,
           description: res.data.description,
           shopeeUrl: res.data.shopeeUrl,
-          displayPrice: res.data.displayPrice,
+          sellPrice: res.data.sellPrice,
           isActive: res.data.isActive,
           isFeature: res.data.isFeature,
           selectedImage: `${API_URL}/static/${res.data.images[0].key}`,
           dataImage: res.data.images,
           loading: false,
+        }, () => {
+
+          console.log(res.data);
         })
       )
       .catch((err) => {
@@ -78,7 +82,7 @@ class ProductDetail extends Component {
         id: parseInt(id),
         name: this.state.name,
         image: this.state.selectedImage,
-        price: this.state.displayPrice,
+        price: this.state.sellPrice,
         description: this.state.description,
       },
       quantity: 1,
@@ -94,7 +98,7 @@ class ProductDetail extends Component {
       unit,
       description,
       shopeeUrl,
-      displayPrice,
+      sellPrice,
       selectedImage,
       dataImage,
       id,
@@ -114,7 +118,7 @@ class ProductDetail extends Component {
                   {/* <img src={require('../../../res/image/image.png').default} /> */}
                   <img src={selectedImage} alt="#" />
                   {/* {selectedImage.length < 0 ?  <img className="image" src={`${API_URL}/static/${props.images}`} alt={props.name} /> : (<img src={selectedImage}/>)} */}
-                  <div className="product_img_slide">
+                  {/* <div className="product_img_slide">
                     {dataImage.map((x, index) => {
                       return (
                         <figure key={index}>
@@ -127,13 +131,13 @@ class ProductDetail extends Component {
                         </figure>
                       );
                     })}
-                  </div>
+                  </div> */}
                 </div>
                 <div className="product_body">
                   <div className="product_content">
                     <p className="content">{name}</p>
                     <p className="content_price">
-                      {displayPrice}/{unit}
+                      {currencyFormat(sellPrice)}/{unit}
                     </p>
                     <p className="content_des">{description}</p>
                   </div>
