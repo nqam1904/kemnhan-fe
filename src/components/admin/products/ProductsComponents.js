@@ -212,7 +212,6 @@ class ProductsComponents extends Component {
                   displayPrice: 0,
                   sellPrice: 0,
                   stockQuantity: 0,
-                  stockQuantity: 0,
                   categoriesId: [],
                   imagesId: []
                 },
@@ -261,7 +260,6 @@ class ProductsComponents extends Component {
           description: description,
           displayPrice: parseInt(displayPrice),
           sellPrice: parseInt(sellPrice),
-          soldQuantity: parseInt(soldQuantity),
           stockQuantity: parseInt(stockQuantity),
           isFeature: isFeature,
           isActive: isActive,
