@@ -27,11 +27,11 @@ const ItemProductShow = (props) => {
         ) : (
             ""
           )}
-        {props.isActive === true ? (
+        {/* {props.isActive === true ? (
           ""
         ) : (
             <div className="button_detail">Hết hàng</div>
-          )}
+          )} */}
       </div>
     </div>
     // </Link>

@@ -145,14 +145,37 @@ class ProductsComponents extends Component {
             onEdit={this.onEdit}
             onDelete={this.onDelete}
             onUpdateStatus={this.onUpdateStatus}
+            onFeature={() => this.onFeature(item.id, item.isFeature)}
+            onActive={() => this.onActive(item.id, item.isActive)}
           />
         );
       });
     }
     return result;
   };
-  onUpdateStatus = () => {
 
+  onFeature = (id, isFeature) => {
+    axios
+      .put(`${API_URL}/products/${id}`, {
+        isFeature: !isFeature,
+      })
+      .then((result) => {
+        toast.success('Cập nhật thành công')
+        this.getDateProduct();
+      })
+      .catch((error) => console.log("error", error));
+  }
+  onActive = (id, isActive) => {
+    axios
+      .put(`${API_URL}/products/${id}`, {
+        isActive: !isActive,
+      })
+      .then((result) => {
+
+        toast.success('Cập nhật thành công')
+        this.getDateProduct();
+      })
+      .catch((error) => console.log("error", error));
   }
   onSaveImg = () => {
     const {

@@ -26,13 +26,13 @@ const ItemProduct = props => {
         <td>{props.stockQuantity}</td>
         <td>{formatSubstring(props.description)}</td>
         <td className="text-center">
-          <Badge variant={props.isFeature === true ? 'primary' : 'danger'}>
+          <Badge variant={props.isFeature === true ? 'primary' : 'danger'} onClick={() => props.onFeature()}>
             {props.isFeature === true ? 'Kích hoạt' : 'Ẩn'}
           </Badge>
 
         </td>
         <td className="text-center">
-          <Badge variant={props.isActive === true ? 'primary' : 'danger'}>
+          <Badge variant={props.isActive === true ? 'primary' : 'danger'} onClick={() => props.onActive()}>
             {props.isActive === true ? 'Kích hoạt' : 'Ẩn'}
           </Badge>
 
