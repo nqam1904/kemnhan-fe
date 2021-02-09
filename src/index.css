@@ -47,20 +47,44 @@
        display: none;
         /* height: 455px; */
    
-      }
+    }
       .page_cart {
         margin-top: 100px;
         padding: 0;
         display: flex;
     }
     .product_body{
-        width: 705px;
+        width: 436px;
         border: 1px solid #E5E5E5;
         position: relative;
         height:500px;
         border-radius: 12px;
         background-color: #fff;
         padding: 24px;
+        margin-top: 10px;
+    }
+    .option_detail{
+       margin-top: 2.5rem;
+       display:none;
+       /* padding: 10px; */
+    }
+    #btn_cart{
+        display: block;
+    }
+    .option_detail .btn_buy{
+        margin-left: 10px;
+        margin-right: 10px;
+        
+    }
+    .product_content,
+    .content_des{
+    font-family:'Roboto', sans-serif;
+    width: 400px;
+    height: 168px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 40px;
     }
 }
 

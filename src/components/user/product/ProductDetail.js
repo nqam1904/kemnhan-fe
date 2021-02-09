@@ -140,6 +140,9 @@ class ProductDetail extends Component {
                       {currencyFormat(sellPrice)}/{unit}
                     </p>
                     <p className="content_des">{description}</p>
+                    <div id="btn_cart" className="btn_mobile_cart">
+                      <p>Mua ngay</p>
+                    </div>
                   </div>
                   <div className="option_detail">
                     <div className="btn_buy" onClick={() => this.addCart(id)}>
@@ -149,6 +152,7 @@ class ProductDetail extends Component {
                       <span>Shoppe</span>
                     </div>
                   </div>
+
                 </div>
               </div>
             </div>

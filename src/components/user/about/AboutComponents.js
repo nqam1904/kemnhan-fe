@@ -54,22 +54,36 @@ class AboutComponents extends Component {
                         onHide={() => { this.setState({ isShowModal: false }) }}>
                         <Modal.Header closeButton>
                             <Modal.Title>
-                                Kemnhanonline
+                                Giới thiệu về kemnhanonline
                             </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
 
-                            <div style={{ textAlign: 'center' }}>
-                                <img src={require('../../../res/image/menu.jpg').default} width={700} alt="menu" />
+                            <div className="row">
+                                <div className="col-lg-6 col-sm-6 col-xs-6">
+                                    <div style={{ textAlign: 'center' }}>
+                                        <img src={require('../../../res/image/about.png').default} width={350} alt="menu" />
+                                    </div>
+                                </div>
+                                <div className="col-lg-6 col-sm-6 col-xs-6">
+                                    <div style={{ textAlign: 'center' }}>
+                                        <p>
+                                            Từ hôm nay là bắt đầu đếm lịch âm, 20 TẾT rồi mọi người ơiii 🧧🧧🧧
+                                            Đến hẹn lại lên mình bắt đầu nhận ODER KEM CHO TẾT nha khách
+                                            📍 Nhận oder từ ngày 1/2- 7/2 ( 20 tết đến 26 tết ) mình chốt oder.
+                                            👉🏻 Giao kem vào 27 - 28 TẾT 🚚
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </Modal.Body>
 
                     </Modal>
-                </div>
+                </div >
                 <div className="about_video">
                     <VideoYoutube videoId={value.split("https://www.youtube.com/watch?v=")[1]} />
                 </div>
-            </div>
+            </div >
 
         );
     }
