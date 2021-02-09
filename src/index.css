@@ -1,7 +1,11 @@
 @media (max-width:980px) {
-    .nav {
-        /* background-image: none; */
-        
+    .page_product_detail {
+        margin-top: 100px;
+        /* padding: 65px 0px 20px 100px; */
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
     }
     .group-logo {
         display: none !important;
@@ -49,7 +53,15 @@
         padding: 0;
         display: flex;
     }
-    
+    .product_body{
+        width: 705px;
+        border: 1px solid #E5E5E5;
+        position: relative;
+        height:500px;
+        border-radius: 12px;
+        background-color: #fff;
+        padding: 24px;
+    }
 }
 
 /* mobile layout */
