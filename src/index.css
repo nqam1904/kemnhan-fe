@@ -48,10 +48,25 @@
         /* height: 455px; */
    
     }
+    .page_cart{
+        margin-top:100px;
+        /* padding: 65px 10px 20px 100px; */
+        display:flex;
+      flex-direction: column;
+      }
       .page_cart {
         margin-top: 100px;
         padding: 0;
         display: flex;
+    }
+    .card_cart {
+        border: 1px solid #E5E5E5;
+        position: relative;
+        width: 420px;
+        margin-bottom:10px;
+        /* height: 500px; */
+        border-radius: 12px;
+        background-color: #fff;
     }
     .product_body{
         width: 436px;
