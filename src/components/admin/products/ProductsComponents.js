@@ -362,6 +362,8 @@ class ProductsComponents extends Component {
       sellPrice,
       titleModal,
       // selectImage,
+      isFeature,
+      isActive,
       loading
     } = this.state;
     const result = loading ? (
@@ -397,7 +399,7 @@ class ProductsComponents extends Component {
             Thêm sản phẩm
           </Button>
         </div>
-        <Table striped bordered hover >
+        <Table striped bordered hover responsive >
           <thead>
             <tr>
               <th> # </th>
@@ -409,7 +411,7 @@ class ProductsComponents extends Component {
               <th>Số lượng</th>
               <th>Mô tả</th>
               <th>Nổi bật</th>
-              <th>Hết hàng</th>
+              <th>Hiện thị</th>
               <th>Hành động</th>
             </tr>
           </thead>
@@ -444,6 +446,7 @@ class ProductsComponents extends Component {
                     value={selectCategory}
                     name="selectCategory"
                   >
+
                     <option>---Thêm danh mục---</option>
                     {category &&
                       category.map((item, index) => {
@@ -541,6 +544,32 @@ class ProductsComponents extends Component {
                     name="shopeeUrl"
                     placeholder="Nhập link shoppee nếu có"
                     value={shopeeUrl}
+                    onChange={this.onChange}
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className=" form-group col-6">
+                  <label>
+                    Sản phẩm nổi bật
+                </label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="isFeature"
+                    value={isFeature}
+                    onChange={this.onChange}
+                  />
+                </div>
+                <div className=" form-group col-6">
+                  <label>
+                    Hiện thị
+                  </label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="isActive"
+                    value={isActive}
                     onChange={this.onChange}
                   />
                 </div>

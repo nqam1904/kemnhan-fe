@@ -1,4 +1,5 @@
 import React from 'react';
+import { Badge } from 'react-bootstrap';
 import { API_URL } from '../../../config/setting';
 import { currencyFormat, formatSubstring } from '../../../shared/Function'
 const ItemProduct = props => {
@@ -24,8 +25,18 @@ const ItemProduct = props => {
         <td>{props.unit}</td>
         <td>{props.stockQuantity}</td>
         <td>{formatSubstring(props.description)}</td>
-        <td>{props.isFeature.toString()}</td>
-        <td>{props.isActive.toString()}</td>
+        <td className="text-center">
+          <Badge variant={props.isFeature === true ? 'primary' : 'danger'}>
+            {props.isFeature === true ? 'Kích hoạt' : 'Ẩn'}
+          </Badge>
+
+        </td>
+        <td className="text-center">
+          <Badge variant={props.isActive === true ? 'primary' : 'danger'}>
+            {props.isActive === true ? 'Kích hoạt' : 'Ẩn'}
+          </Badge>
+
+        </td>
         <td className="text-center">
           <button
             className="btn btn-warning mt-10 mr-10 white"
