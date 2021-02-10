@@ -571,32 +571,6 @@ class ProductsComponents extends Component {
                   />
                 </div>
               </div>
-              <div className="row">
-                <div className=" form-group col-6">
-                  <label>
-                    Sản phẩm nổi bật
-                </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="isFeature"
-                    value={isFeature}
-                    onChange={this.onChange}
-                  />
-                </div>
-                <div className=" form-group col-6">
-                  <label>
-                    Hiện thị
-                  </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="isActive"
-                    value={isActive}
-                    onChange={this.onChange}
-                  />
-                </div>
-              </div>
               <label> Mô tả </label>
               <textarea
                 className="form-control"

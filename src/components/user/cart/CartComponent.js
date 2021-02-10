@@ -157,7 +157,7 @@ class CartComponent extends Component {
   onSaveCustom = () => { };
   render() {
     const {
-      //   count,
+      note,
       cart,
       showCustom,
       layout,
@@ -192,18 +192,20 @@ class CartComponent extends Component {
           <div className="cart_custom_detail">
             <input
               className="input_custom"
-              style={{ marginLeft: 20 }}
+              style={{ marginLeft: 20, width: '90%' }}
               onChange={this.onChange}
               name="firstName"
+
               value={firstName}
               placeholder="Nhập họ"
             />{" "}
             <br />
             <input
               className="input_custom"
-              style={{ marginLeft: 20 }}
+              style={{ marginLeft: 20, width: '90%' }}
               onChange={this.onChange}
               name="lastName"
+
               value={lastName}
               placeholder="Nhập tên"
             />{" "}
@@ -215,6 +217,7 @@ class CartComponent extends Component {
             <input
               className="input_custom"
               placeholder="Nhập địa chỉ"
+              style={{ width: '90%' }}
               name="address"
               value={address}
               onChange={this.onChange}
@@ -223,6 +226,7 @@ class CartComponent extends Component {
             <img src={require("../../../res/image/Call.png").default} alt="#" />
             <input
               className="input_custom"
+              style={{ width: '90%' }}
               placeholder="Nhập số điện thoại"
               name="phone"
               type="number"
@@ -233,19 +237,22 @@ class CartComponent extends Component {
             <img src={require("../../../res/image/mail.png").default} alt="#" />
             <input
               className="input_custom"
+              style={{ width: '90%' }}
               placeholder="Nhập email"
               value={email}
               name="email"
               onChange={this.onChange}
             />
+            <input
+              className="input_custom"
+              style={{ marginLeft: 20, width: '90%' }}
+              placeholder="Nhập ghi chú nếu có"
+              value={note}
+              name="note"
+              onChange={this.onChange}
+            />
           </div>
-          <div
-            className="btn_Edit"
-            style={{ color: "#1890FF" }}
-            onClick={() => this.onSaveCustom()}
-          >
-            <p>Edit</p>
-          </div>
+
         </div>
         <div className="cart_amount_body">
           <div className="thongtin">
