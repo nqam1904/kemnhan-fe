@@ -6,6 +6,7 @@ import AccountContainer from "./admin/AccountContainer";
 import OrderContainer from "./admin/OrderContainer";
 import MediaContainer from "./admin/MediaContainer";
 import CustomerContainer from "./admin/CustomerContainer";
+import SettingContainer from './admin/SettingContainer';
 const routes = [
   {
     path: "/admin",
@@ -41,6 +42,11 @@ const routes = [
     path: "/admin/media",
     exact: false,
     main: () => <MediaContainer />
+  },
+  {
+    path: "/admin/setting",
+    exact: false,
+    main: () => <SettingContainer />
   },
   {
     path: "/admin/customer",
