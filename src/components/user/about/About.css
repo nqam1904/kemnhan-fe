@@ -1,5 +1,5 @@
 .about {
-  padding: 50px;
+  padding: 80px;
   display: flex;
   margin: 0 auto;
   justify-content: space-evenly;
@@ -12,8 +12,8 @@
   /* height: 206px; */
 }
 .about_video {
-  width:  40rem;
-  height: 455px;
+  min-width: 40%;
+  
 }
 .sub_text1 {
   font-style: normal;

@@ -103,7 +103,7 @@ class ProductsComponents extends Component {
           isFeature: res.data.isFeature,
           isActive: res.data.isActive,
           shopeeUrl: res.data.shopeeUrl,
-          selectCategory: res.data.categories[0].name,
+          selectCategory: res.data.categories,
           imagesId: res.data.images[0]?.key,
         }, () => {
           console.log(res.data)

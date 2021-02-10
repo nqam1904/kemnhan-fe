@@ -4,7 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import * as Types from "../../../redux/action/mesAction";
 import "./Cart.css";
 import CartItem from "./CartItem";
-import { currencyFormat } from "../../../shared/Function";
+import { currencyFormat, validateInput, isValidEmailAddress } from "../../../shared/Function";
 import { API_URL } from "../../../config/setting";
 import axios from "axios";
 class CartComponent extends Component {
@@ -21,6 +21,8 @@ class CartComponent extends Component {
       email: "",
       address: "",
       customer: [],
+      emailIsValid: "",
+      errorMessage: ''
     };
   }
   componentDidMount() {
@@ -104,7 +106,7 @@ class CartComponent extends Component {
   };
   payment = () => {
     const { cartItem } = this.props;
-    const { firstName, lastName, email, address, phone } = this.state;
+    const { firstName, lastName, email, address, phone, note } = this.state;
     const date = new Date();
     if (
       firstName === "" ||
@@ -113,8 +115,19 @@ class CartComponent extends Component {
       address === "" ||
       phone === ""
     ) {
-      return toast.warning("Vui lòng nhập đủ thồn tin cá nhân!");
-    } else {
+      return toast.warning("Vui lòng nhập đủ thồng tin cá nhân!");
+
+    } else if (!isValidEmailAddress(email)) {
+
+      toast.error("Nhập đúng định dạng email!");
+      return;
+    }
+    else if (!validateInput(phone)) {
+
+      toast.error("Số điện thoại phải có 10-11 chữ số");
+      return;
+    }
+    else {
       let listProduct = [];
       for (var item of cartItem) {
         listProduct.push({
@@ -123,14 +136,14 @@ class CartComponent extends Component {
           unitPrice: item.product.price,
           subtotal: item.product.price * item.quantity,
           discount: 0,
-          note: "",
+          note: note,
         });
       }
       axios
         .post(`${API_URL}/orders`, {
           data: date,
           expectDateDelivery: date,
-          note: "",
+          note: note,
           customer: {
             firstName: firstName,
             lastName: lastName,
@@ -150,6 +163,7 @@ class CartComponent extends Component {
         });
     }
   };
+
   onDeleteAll = () => {
     this.props.actDeleteAll();
     window.location.reload();
@@ -205,7 +219,6 @@ class CartComponent extends Component {
               style={{ marginLeft: 20, width: '90%' }}
               onChange={this.onChange}
               name="lastName"
-
               value={lastName}
               placeholder="Nhập tên"
             />{" "}
@@ -219,6 +232,9 @@ class CartComponent extends Component {
               placeholder="Nhập địa chỉ"
               style={{ width: '90%' }}
               name="address"
+              // onBlur={() => this.setState({
+              //   emailIsValid: isValidEmailAddress(this.state.email)
+              // })}
               value={address}
               onChange={this.onChange}
             />
@@ -230,6 +246,7 @@ class CartComponent extends Component {
               placeholder="Nhập số điện thoại"
               name="phone"
               type="number"
+              pattern="[0-9]*" inputmode="numeric"
               value={phone}
               onChange={this.onChange}
             />
@@ -241,6 +258,7 @@ class CartComponent extends Component {
               placeholder="Nhập email"
               value={email}
               name="email"
+              type="email"
               onChange={this.onChange}
             />
             <input
