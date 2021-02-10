@@ -7,7 +7,7 @@ import "./Navbar.css";
 class Navbar extends Component {
   render() {
     return (
-      <div className="nav" id="home">
+      <div className="nav">
         <div className="group-logo">
           <img
             src={require("../../../res/image/logo.png").default}
