@@ -5,6 +5,7 @@ import { history } from "../../../configureStore";
 import { userData } from '../../../config/setting';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import "./Login.css";
+import { isValidEmailAddress } from "../../../shared/Function";
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -49,7 +50,11 @@ class Login extends Component {
     if (email === "" || password === "") {
       toast.warn("Vui lòng nhập thông tin đăng nhập!");
       return;
-    } else {
+    } else if (!isValidEmailAddress(email)) {
+      toast.error("Nhập đúng định dạng email!");
+      return;
+    }
+    else {
       this.props.loginAction({
         email: email,
         password: password,

@@ -32,24 +32,30 @@ class AccountComponent extends Component {
   }
 
   onEdit = (id, status) => {
-    axios.put(`${API_URL}/orders/${id}`, {
-      status: status + 1
-    })
-      .then(res => {
-        if (res.data) {
-          this.getDataOrder();
-        }
-      }).catch(error => toast.error('Có lỗi xảy ra'));
+    if (window.confirm(`Bạn muốn thay đổi trạng thái đơn hàng?`)) {
+      axios.put(`${API_URL}/orders/${id}`, {
+        status: status + 1
+      })
+        .then(res => {
+          if (res.data) {
+            toast.success("Success!")
+            this.getDataOrder();
+          }
+        }).catch(error => toast.error('Có lỗi xảy ra'));
+    }
   };
   onDelete = (id) => {
-    axios.put(`${API_URL}/orders/${id}`, {
-      status: 4
-    })
-      .then(res => {
-        if (res.data) {
-          this.getDataOrder();
-        }
-      }).catch(error => toast.danger('Có lỗi xảy ra'));
+    if (window.confirm(`Bạn có muốn từ chối đơn hàng này? `)) {
+      axios.put(`${API_URL}/orders/${id}`, {
+        status: 4
+      })
+        .then(res => {
+          if (res.data) {
+            toast.success("Success!")
+            this.getDataOrder();
+          }
+        }).catch(error => toast.danger('Có lỗi xảy ra'));
+    }
   };
 
 
@@ -88,7 +94,7 @@ class AccountComponent extends Component {
     return (
       <>
         <h1 className="mt-10"> Danh mục hoá đơn</h1>
-        <ToastContainer autoClose={3000} />
+        <ToastContainer autoClose={2000} />
 
         <Table striped bordered hover responsive="lg">
           <thead>

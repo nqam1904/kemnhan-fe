@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Button, Modal, Table } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import ItemAccount from "./ItemAccount";
 import DataTable from "react-data-table-component";
+import { isValidEmailAddress, validateInput } from "../../../shared/Function";
 const roles = [
   { id: 1, name: "admin" },
   { id: 2, name: "staff" },
@@ -190,8 +191,16 @@ class AccountComponent extends Component {
     ) {
       toast.warning("Vui lòng điền đủ thông tin!");
       return;
-    }
+    } else if (!isValidEmailAddress(email)) {
 
+      toast.error("Nhập đúng định dạng email!");
+      return;
+    }
+    else if (!validateInput(phone)) {
+
+      toast.error("Số điện thoại phải có 10-11 chữ số");
+      return;
+    }
     if (id) {
       axios
         .put(`${API_URL}/users/${id}`, {
@@ -390,7 +399,6 @@ class AccountComponent extends Component {
                   </label>
                   <input
                     className="form-control"
-                    type="text"
                     placeholder="Nhập thông tin email"
                     name="email"
                     value={email}

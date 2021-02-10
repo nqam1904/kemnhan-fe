@@ -46,7 +46,7 @@ const cartReducers = (state = initialState, action) => {
                 state.splice(i2, 1)
             }
             if (state.length === 0) {
-                localStorage.clear('cart')
+                localStorage.removeItem('cart')
             }
             else {
                 localStorage.setItem('cart', JSON.stringify(state))

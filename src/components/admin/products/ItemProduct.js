@@ -28,7 +28,7 @@ const ItemProduct = props => {
             width="80"
             placeholderSrc={process.env.PUBLIC_URL + "/logo.png"} />
         </td>
-        <td>{currencyFormat(props.sellPrice)}</td>
+        <td>{currencyFormat(props.sellPrice)} VNĐ</td>
         <td>{props.soldQuantity}</td>
         <td>{props.unit}</td>
         <td>{props.stockQuantity}</td>

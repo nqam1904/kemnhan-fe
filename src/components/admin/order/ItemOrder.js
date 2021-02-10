@@ -1,8 +1,9 @@
 
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { Spinner, Button, Popover, OverlayTrigger } from 'react-bootstrap';
+import { Button, Popover, OverlayTrigger } from 'react-bootstrap';
 import { API_URL } from '../../../config/setting';
+import { currencyFormat } from '../../../shared/Function';
 
 const onStatus = (item) => {
     switch (item) {
@@ -14,6 +15,8 @@ const onStatus = (item) => {
             return "Hoàn thành đơn";
         case 4:
             return "Từ chối đơn hàng";
+        default:
+            return ""
     }
 }
 
@@ -61,7 +64,7 @@ const ItemOrder = props => {
                 <td>{props.index + 1}</td>
                 <td>{props.name}</td>
                 <td>{props.phone}</td>
-                <td>{props.amountTotal}</td>
+                <td>{currencyFormat(props.amountTotal)} VNĐ</td>
                 <td>{props.note}</td>
                 <td>{props.createDate.slice(0, 10).split('-').reverse().join('/')}</td>
                 <td>{onStatus(props.status).toString()}</td>
@@ -69,11 +72,11 @@ const ItemOrder = props => {
                 <td className="text-center">
                     {statusButton(props.status) === '' ?
                         (<OverlayTrigger trigger="click" placement="left" overlay={popover(userInfo)}>
-                            <Button variant="primary" className=" ml-10"><img src={require('../../../res/image/eye.png').default} style={{ tintColor: 'red' }} width={20} /> </Button>
+                            <Button variant="info" className=" ml-10"><img alt="imageEye" src={require('../../../res/image/information.png').default} style={{ tintColor: 'red' }} width={20} /> </Button>
                         </OverlayTrigger>) :
                         <>
                             <button onClick={() => props.onEdit()}
-                                className="btn btn-info mr-10">
+                                className="btn btn-primary mr-10">
                                 {statusButton(props.status)}
                             </button>
                             <button className="btn btn-danger" onClick={() => props.onDelete()}>

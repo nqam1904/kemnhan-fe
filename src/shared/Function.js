@@ -7,6 +7,7 @@ const formatSubstring = (value) => {
     }
   } else return 'Trống';
 };
+
 const currencyFormat = (num) => {
   if (num === 0) {
     return 0;
