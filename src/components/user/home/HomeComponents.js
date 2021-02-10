@@ -7,11 +7,44 @@ import ProductList from "../landingpage/ProductList";
 import AboutComponents from "../about/AboutComponents";
 import Footer from "../footer/Footer";
 import ScrollToTop from '../../../shared/ScrollToTop'
+import { Button, Modal } from 'react-bootstrap'
 class HomeComponents extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false
+    }
+  }
+  componentDidMount() {
+    // this.setState({
+    //   modal: true
+    // })
+  }
 
   render() {
+    const { modal } = this.state;
     return (
       <div className="wrapper">
+        <div class="pyro"><div class="before"></div><div class="after"></div></div>
+        <Modal show={modal}
+          {...this.props}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+          onHide={() => { this.setState({ modal: false }) }}>
+          <Modal.Header closeButton>
+            <Modal.Title>Kemnhanonline thông báo</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Kính chúc quý khách 1 năm mới an khang thịnh vượng, tấn tài tấn lộc, vạn sự như ý
+          </Modal.Body>
+          <Modal.Footer>
+
+            <Button variant="primary" onClick={() => { this.setState({ modal: false }) }}>
+              Đóng
+          </Button>
+          </Modal.Footer>
+        </Modal>
         <Navbar />
 
 
