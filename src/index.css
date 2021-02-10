@@ -47,16 +47,13 @@
         /* height: 455px; */
    
     }
-    .page_cart{
-        margin-top:100px;
-        /* padding: 65px 10px 20px 100px; */
-        display:flex;
-      flex-direction: column;
-      }
+ 
       .page_cart {
         margin-top: 100px;
         padding: 0;
+        margin-left: 2rem;
         display: flex;
+        flex-direction: column;
     }
     .card_cart {
         border: 1px solid #E5E5E5;
