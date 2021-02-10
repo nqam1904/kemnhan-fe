@@ -154,7 +154,7 @@ class CartComponent extends Component {
     this.props.actDeleteAll();
     window.location.reload();
   };
-  onSaveCustom = () => {};
+  onSaveCustom = () => { };
   render() {
     const {
       //   count,
@@ -177,7 +177,7 @@ class CartComponent extends Component {
             alt="empty"
             src={require("../../../res/image/empty.png").default}
           />
-          <Link to="/trang-chu" className="btn_back">
+          <Link to="/" className="btn_back">
             <span>Mua thêm sản phẩm</span>
           </Link>
         </div>

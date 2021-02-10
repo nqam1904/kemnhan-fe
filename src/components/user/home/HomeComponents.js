@@ -12,7 +12,6 @@ class HomeComponents extends Component {
     return (
       <div className="wrapper">
         <Navbar />
-
         <Switch>
           {routes.map((prop, key) => {
             if (prop.layout === `/trang-chu`) {
@@ -26,6 +25,7 @@ class HomeComponents extends Component {
                   )}
                   key={key}
                   path={prop.path}
+
                 />
               );
             }
@@ -33,6 +33,7 @@ class HomeComponents extends Component {
           })}
           {window.location.pathname !== "/chi-tiet-san-pham" && (
             <>
+
               <LandingPage />
               <ProductList />
               <AboutComponents />

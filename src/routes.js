@@ -5,6 +5,7 @@ import AboutContainer from "./containers/user/AboutContainer";
 import ProductContainer from "./containers/user/ProductContainer";
 import CartContainer from "./containers/user/CartContainer";
 import Navbar from "./components/user/navbar/Navbar";
+import ProductList from "./components/user/landingpage/ProductList";
 const routes = [
   {
     path: "/login",
@@ -23,17 +24,23 @@ const routes = [
     component: CartContainer,
     layout: "/trang-chu",
     title: "Giỏ hàng",
+
   },
   {
     path: "/about",
     component: AboutContainer,
     layout: "/trang-chu",
-    // title: "Sản phẩm",
   },
   {
-    path: "/nav",
+    path: "/home",
     component: Navbar,
-    layout: "/trang-chu"
+    layout: "/trang-chu",
+  },
+  {
+    path: "/product",
+    component: ProductList,
+    layout: "/trang-chu",
+
   },
   {
     path: "/chi-tiet-san-pham",
