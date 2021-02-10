@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { formatSubstring } from '../../../shared/Function'
+import { formatSubstring } from '../../../shared/Function';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 class CartItem extends Component {
     constructor(props) {
         super(props)
@@ -14,7 +15,7 @@ class CartItem extends Component {
                     <div className="item_delete_1" onClick={() => this.props.onDeleteItem()}>
                         <img src={require('../../../res/image/Delete.png').default} alt="delete" />
                     </div>
-                    <img src={item.product.image} alt={item.product.name} />
+                    <LazyLoadImage effect="blur" src={item.product.image} alt={item.product.name} />
                     <div className="mota">
                         <p className="title_item_cart">{item.product.name}</p>
                         <p className="title_item_cart">{formatSubstring(item.product.description)}</p>

@@ -5,6 +5,7 @@ import { API_URL } from "../../../config/setting";
 import { toast, ToastContainer } from "react-toastify";
 import { history } from "../../../configureStore";
 import { currencyFormat } from '../../../shared/Function';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 class ProductDetail extends Component {
   constructor(props) {
     super(props);
@@ -116,7 +117,11 @@ class ProductDetail extends Component {
               <div className="page_product_detail">
                 <div className="product_img">
                   {/* <img src={require('../../../res/image/image.png').default} /> */}
-                  <img src={selectedImage} alt="#" />
+                  <LazyLoadImage
+                    effect="blur"
+                    src={selectedImage}
+                    placeholderSrc={process.env.PUBLIC_URL + "/logo.png"}
+                    alt="#" />
                   {/* {selectedImage.length < 0 ?  <img className="image" src={`${API_URL}/static/${props.images}`} alt={props.name} /> : (<img src={selectedImage}/>)} */}
                   {/* <div className="product_img_slide">
                     {dataImage.map((x, index) => {
