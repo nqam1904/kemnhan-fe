@@ -62,7 +62,7 @@ class AboutComponents extends Component {
                             <div className="row">
                                 <div className="col-lg-6 col-sm-6 col-xs-6">
                                     <div style={{ textAlign: 'center' }}>
-                                        <img src={require('../../../res/image/about.png').default} width={350} alt="menu" />
+                                        <img src={require('../../../res/image/about.png').default} width={300} alt="menu" />
                                     </div>
                                 </div>
                                 <div className="col-lg-6 col-sm-6 col-xs-6">

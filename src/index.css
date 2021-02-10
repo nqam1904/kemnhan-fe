@@ -47,7 +47,9 @@
         /* height: 455px; */
    
     }
- 
+    #btnArrow{
+        margin-top:2rem
+    }
       .page_cart {
         margin-top: 100px;
         padding: 0;
@@ -65,7 +67,7 @@
         background-color: #fff;
     }
     .product_body{
-        width: 436px;
+        width: 350px;
         border: 1px solid #E5E5E5;
         position: relative;
         height:500px;
@@ -96,6 +98,17 @@
     font-weight: normal;
     font-size: 24px;
     line-height: 40px;
+    }
+    .content_price {
+        color: #FA541C;
+        font-size: 24px;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 70px;
+    }
+    .product_img img {
+        width: 350px;
     }
 }
 
