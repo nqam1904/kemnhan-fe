@@ -80,7 +80,6 @@ class AccountComponent extends Component {
           <Button type="button" className="btn btn-warning white mr-10" onClick={() => this.onEdit(data.id)}>Sửa</Button>
           <Button type="button" className="btn btn-danger white" onClick={() => this.onDelete(data.id)}>Xoá</Button>
         </>,
-
     }
 
   ];

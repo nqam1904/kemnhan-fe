@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { Form, Button, Container } from "react-bootstrap";
 import { history } from "../../../configureStore";
 import { userData } from '../../../config/setting';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import "./Login.css";
 class Login extends Component {
   constructor(props) {
@@ -95,7 +96,8 @@ class Login extends Component {
           </Button>
         </Form>
         <div className="logo">
-          <img
+          <LazyLoadImage
+            effect="blur"
             src={require("../../../res/image/logo.png").default}
             width="300"
             height="300"

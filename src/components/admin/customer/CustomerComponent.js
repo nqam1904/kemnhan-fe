@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import DataTable from "react-data-table-component";
-import { Button, Modal, Table } from "react-bootstrap";
-import { toast, ToastContainer } from "react-toastify";
+import { Button, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import axios from "axios";
+
 class CustomerComponent extends Component {
   constructor(props) {
     super(props);
@@ -14,6 +15,7 @@ class CustomerComponent extends Component {
       firstName: "",
       lastName: "",
       phone: "",
+      address: "",
       email: "",
       id: "",
     }
@@ -82,6 +84,7 @@ class CustomerComponent extends Component {
           lastName: res.data.lastName,
           phone: res.data.phone,
           email: res.data.email,
+          address: res.data.address,
           createDate: res.data.createDate,
           titleModal: "Thông tin khách hàng",
         });
@@ -111,6 +114,7 @@ class CustomerComponent extends Component {
       showModal,
       createDate,
       titleModal,
+      address
     } = this.state;
 
     return (
@@ -203,6 +207,20 @@ class CustomerComponent extends Component {
               </div>
 
               <div className="row">
+                <div className=" form-group col-6">
+                  <label>
+                    {" "}
+                    Địa chỉ
+                  </label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    disabled
+                    name="address"
+                    value={address}
+                    onChange={this.onChange}
+                  />
+                </div>
                 <div className=" form-group col-6">
                   <label>
                     {" "}
