@@ -28,9 +28,12 @@ const data = [
   },
 ];
 class Footer extends Component {
+
   render() {
+
     return (
       <div className="footer" id="footer">
+       
         <div className="list-item">
           <img
             src={require("../../../res/image/logo.png").default}
@@ -52,6 +55,7 @@ class Footer extends Component {
               </a>
             );
           })}
+
           <>
             <a href="tel:0977667866" className="item-footer">
               <img
@@ -64,6 +68,7 @@ class Footer extends Component {
             </a>
           </>
         </div>
+
       </div>
     );
   }

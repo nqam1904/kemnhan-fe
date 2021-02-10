@@ -6,12 +6,15 @@ import LandingPage from "../landingpage/LandingPage";
 import ProductList from "../landingpage/ProductList";
 import AboutComponents from "../about/AboutComponents";
 import Footer from "../footer/Footer";
-
+import ScrollToTop from '../../../shared/ScrollToTop'
 class HomeComponents extends Component {
+
   render() {
     return (
       <div className="wrapper">
         <Navbar />
+
+
         <Switch>
           {routes.map((prop, key) => {
             if (prop.layout === `/trang-chu`) {
@@ -40,7 +43,7 @@ class HomeComponents extends Component {
             </>
           )}
         </Switch>
-
+        <ScrollToTop />
         <Footer />
       </div>
     );
