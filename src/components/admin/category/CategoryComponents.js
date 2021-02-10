@@ -52,7 +52,7 @@ class CategoryComponents extends Component {
           categorys: res.data,
         });
       })
-      .catch((err) => { toast.danger('Lỗi liên hệ với kỹ thuật để hỗ trợ bạn') });
+      .catch((err) => { toast.error('Có lỗi xảy ra') });
   };
 
   onChange = (e) => {
@@ -91,17 +91,21 @@ class CategoryComponents extends Component {
           titleModal: 'Cập nhật danh mục',
           name: res.data.name
         });
-      }).catch(error => toast.danger('Có lỗi xảy ra'));
+      }).catch(error => toast.error('Có lỗi xảy ra'));
   }
   onDelete = (id) => {
     axios.delete(`${API_URL}/categories/${id}`)
       .then(res => {
-        toast.success('Xóa thành công')
-        this.getDataCategory();
+        if (window.confirm(`Bạn có muốn xóa danh mục này không ? `)) {
+          toast.success('Xóa thành công')
+          this.getDataCategory();
+        }
 
       }).catch(error => {
         toast.error(`${error}`)
       });
+
+
   }
   onSave = (e) => {
     e.preventDefault();
@@ -122,7 +126,7 @@ class CategoryComponents extends Component {
           this.getDataCategory();
         })
 
-      }).catch(error => toast.danger('Có lỗi xảy ra'))
+      }).catch(error => toast.error('Có lỗi xảy ra'))
     } else {
       try {
         axios.post(`${API_URL}/categories`, bodyFormData, {
@@ -139,7 +143,7 @@ class CategoryComponents extends Component {
             toast.success('Thêm thành công!');
             this.getDataCategory()
           })
-        }).catch(error => toast.danger('Có lỗi xảy ra'))
+        }).catch(error => toast.error('Có lỗi xảy ra'))
       } catch (error) {
         toast.error(`${error}`);
       }

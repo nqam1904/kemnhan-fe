@@ -59,11 +59,7 @@ const ItemOrder = props => {
         <>
             <tr>
                 <td>{props.index + 1}</td>
-                <td>{props.name}
-                    <OverlayTrigger trigger="click" placement="right" overlay={popover(userInfo)}>
-                        <Button variant="info" className=" ml-10"><img src={require('../../../res/image/eye.png').default} style={{ tintColor: 'red' }} width={20} /> </Button>
-                    </OverlayTrigger>
-                </td>
+                <td>{props.name}</td>
                 <td>{props.phone}</td>
                 <td>{props.amountTotal}</td>
                 <td>{props.note}</td>
@@ -72,7 +68,9 @@ const ItemOrder = props => {
 
                 <td className="text-center">
                     {statusButton(props.status) === '' ?
-                        <button className="btn btn-primary"><img src={require('../../../res/image/eye.png').default} style={{ tintColor: 'red' }} width={20} /></button> :
+                        (<OverlayTrigger trigger="click" placement="left" overlay={popover(userInfo)}>
+                            <Button variant="primary" className=" ml-10"><img src={require('../../../res/image/eye.png').default} style={{ tintColor: 'red' }} width={20} /> </Button>
+                        </OverlayTrigger>) :
                         <>
                             <button onClick={() => props.onEdit()}
                                 className="btn btn-info mr-10">

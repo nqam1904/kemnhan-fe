@@ -30,7 +30,7 @@ const data = [
 class Footer extends Component {
   render() {
     return (
-      <div className="footer">
+      <div className="footer" id="footer">
         <div className="list-item">
           <img
             src={require("../../../res/image/logo.png").default}

@@ -4,7 +4,7 @@ import ItemProductShow from "./ItemProductShow";
 import { API_URL } from "../../../config/setting";
 import "./ProductList.css";
 // import ProductDetail from "../product/ProductDetail";
-import {history} from "../../../configureStore";
+import { history } from "../../../configureStore";
 // import { Link } from "react-router-dom";
 
 class ProductList extends Component {
@@ -28,10 +28,10 @@ class ProductList extends Component {
     var result = null;
     if (products.length > 0) {
       const featureProduct = products.filter((x) => x.isFeature)
-      const productShow = featureProduct.length > 6 ? featureProduct.slice(0,6) : featureProduct
+      const productShow = featureProduct.length > 6 ? featureProduct.slice(0, 6) : featureProduct
       result = productShow.map((item, idx) => {
         return (
-          <div key={idx} className="item_product">
+          <div key={idx} className="item_product" id="product">
             <ItemProductShow
               name={item.name}
               id={item.id}

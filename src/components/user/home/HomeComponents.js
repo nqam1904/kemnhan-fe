@@ -12,6 +12,7 @@ class HomeComponents extends Component {
     return (
       <div className="wrapper">
         <Navbar />
+
         <Switch>
           {routes.map((prop, key) => {
             if (prop.layout === `/trang-chu`) {
@@ -38,6 +39,7 @@ class HomeComponents extends Component {
             </>
           )}
         </Switch>
+
         <Footer />
       </div>
     );

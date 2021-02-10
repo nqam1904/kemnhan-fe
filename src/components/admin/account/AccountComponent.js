@@ -97,7 +97,7 @@ class AccountComponent extends Component {
         });
       })
       .catch((err) => {
-        toast.danger("Có lỗi xảy ra");
+        toast.error("Có lỗi xảy ra");
       });
   }
   onChange = (e) => {
@@ -130,17 +130,16 @@ class AccountComponent extends Component {
       .catch((_) => { });
   };
   onDelete = (id) => {
-    this.setState({
-      loading: true,
-    });
+
     axios
       .delete(`${API_URL}/users/${id}`)
       .then((res) => {
-        toast.success("Xóa thành công");
-        this.getDataAccount();
-        this.setState({
-          loading: false,
-        });
+        if (window.confirm(`Bạn có muốn xóa tài khoản này không ? `)) {
+          toast.success("Xóa thành công");
+          this.getDataAccount();
+        }
+
+
       })
       .catch((error) => {
         toast.error(`${error}`);
@@ -217,7 +216,7 @@ class AccountComponent extends Component {
           this.getDataAccount();
         })
         .catch((err) => {
-          toast.danger("Có lỗi xảy ra");
+          toast.error("Có lỗi xảy ra");
         });
     } else {
       axios
@@ -440,6 +439,7 @@ class AccountComponent extends Component {
             </Modal.Footer>
           </form>
         </Modal>
+
       </>
     );
   }

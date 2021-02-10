@@ -27,7 +27,7 @@ class AccountComponent extends Component {
         });
       })
       .catch((err) => {
-        toast.danger("Có lỗi xảy ra");
+        toast.error("Có lỗi xảy ra");
       });
   }
 
@@ -39,7 +39,7 @@ class AccountComponent extends Component {
         if (res.data) {
           this.getDataOrder();
         }
-      }).catch(error => toast.danger('Có lỗi xảy ra'));
+      }).catch(error => toast.error('Có lỗi xảy ra'));
   };
   onDelete = (id) => {
     axios.put(`${API_URL}/orders/${id}`, {
@@ -90,7 +90,7 @@ class AccountComponent extends Component {
         <h1 className="mt-10"> Danh mục hoá đơn</h1>
         <ToastContainer autoClose={3000} />
 
-        <Table striped bordered hover variant="dark" responsive="lg">
+        <Table striped bordered hover responsive="lg">
           <thead>
             <tr>
               <th> # </th>

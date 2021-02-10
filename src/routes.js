@@ -1,12 +1,10 @@
 // import ProductComponents from "./components/user/product/ProductComponents";
 import Login from "./components/admin/login/Login";
 import HomeContainer from "./containers/admin/HomeContainer";
-// import CartComponent from "./components/user/cart/CartComponent";
-// import HomeComponents from "./components/user/home/HomeComponents";
-// import ProductDetail from "./components/user/product/ProductDetail";
-// import ProductList from "./components/user/landingpage/ProductList";
+import AboutContainer from "./containers/user/AboutContainer";
 import ProductContainer from "./containers/user/ProductContainer";
 import CartContainer from "./containers/user/CartContainer";
+import Navbar from "./components/user/navbar/Navbar";
 const routes = [
   {
     path: "/login",
@@ -26,12 +24,17 @@ const routes = [
     layout: "/trang-chu",
     title: "Giỏ hàng",
   },
-  // {
-  //   path: "/san-pham",
-  //   component: ProductList,
-  //   layout: "/trang-chu",
-  //   title: "Sản phẩm",
-  // },
+  {
+    path: "/about",
+    component: AboutContainer,
+    layout: "/trang-chu",
+    // title: "Sản phẩm",
+  },
+  {
+    path: "/nav",
+    component: Navbar,
+    layout: "/trang-chu"
+  },
   {
     path: "/chi-tiet-san-pham",
     component: ProductContainer,

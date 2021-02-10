@@ -31,7 +31,7 @@ class AboutComponents extends Component {
     render() {
         const { isShowModal, value } = this.state;
         return (
-            <div className="about">
+            <div className="about" id="about">
 
                 <div className="about_text">
                     <h2 className="sub_text">Chất lượng</h2>

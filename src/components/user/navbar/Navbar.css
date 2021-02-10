@@ -47,11 +47,16 @@
   height: 50px;
   margin-top: 8px;
 }
+.logo1{
+  max-width: 60px;
+  height: 60px;
+  margin-top: 0px;
+}
 .logo-title {
   position: relative;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 1px;
   width: 100px;
   height: 24px;
   margin-left: 18px;

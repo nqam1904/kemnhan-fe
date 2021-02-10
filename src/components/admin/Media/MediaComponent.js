@@ -51,7 +51,7 @@ class MediaComponent extends Component {
           media: res.data,
         });
       })
-      .catch((err) => { toast.danger('Lỗi liên hệ với kỹ thuật để hỗ trợ bạn') });
+      .catch((err) => { toast.error('Có lỗi xảy ra') });
   };
 
   onChange = (e) => {
@@ -90,7 +90,7 @@ class MediaComponent extends Component {
           titleModal: 'Cập nhật danh mục',
           value: res.data.value
         });
-      }).catch(error => toast.danger('Có lỗi xảy ra'));
+      }).catch(error => toast.error('Có lỗi xảy ra'));
   }
   onDelete = (id) => {
     axios.delete(`${API_URL}/categories/${id}`)
@@ -120,7 +120,7 @@ class MediaComponent extends Component {
           this.getDataMedia();
         })
 
-      }).catch(error => toast.danger('Có lỗi xảy ra'))
+      }).catch(error => toast.error('Có lỗi xảy ra'))
     }
 
   }
@@ -140,7 +140,7 @@ class MediaComponent extends Component {
           <tbody> {this.showMedia(media)} </tbody>
         </Table> */}
         <DataTable
-          title="Category"
+          title="Youtube"
           columns={this.columns}
           data={media}
           defaultSortField="title"
