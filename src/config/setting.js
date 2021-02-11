@@ -1,4 +1,4 @@
-const API_URL = 'http://103.159.50.98:3000';
+const API_URL = 'https://www.kemnhan.nguyenphamvn.com/api';
 
 const userData = {
   firstName: "",
