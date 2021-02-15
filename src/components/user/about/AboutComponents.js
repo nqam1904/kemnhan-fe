@@ -5,6 +5,7 @@ import VideoYoutube from './VideoYoutube';
 import axios from 'axios';
 import { API_URL } from '../../../config/setting';
 import { toast, ToastContainer } from "react-toastify";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 class AboutComponents extends Component {
     constructor(props) {
@@ -62,7 +63,7 @@ class AboutComponents extends Component {
                             <div className="row">
                                 <div className="col-lg-6 col-sm-6 col-xs-6">
                                     <div style={{ textAlign: 'center' }}>
-                                        <img src={require('../../../res/image/about.png').default} width={300} alt="menu" />
+                                        <LazyLoadImage src={require('../../../res/image/about.png').default} width={300} alt="menu" effect="blur" />
                                     </div>
                                 </div>
                                 <div className="col-lg-6 col-sm-6 col-xs-6">
