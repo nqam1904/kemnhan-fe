@@ -155,7 +155,7 @@ class CartComponent extends Component {
         })
         .then((res) => {
           toast.success("Success!");
-          // this.props.actDeleteAll();
+          this.props.actDeleteAll();
           window.location.reload();
         })
         .catch((err) => {
