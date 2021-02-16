@@ -55,7 +55,7 @@ const cartReducers = (state = initialState, action) => {
         //////////////////////////////////
         case types.REMOVE_All_CART:
             state = []
-            localStorage.clear('cart')
+            localStorage.removeItem('cart')
             return state
         default: return state
     }
