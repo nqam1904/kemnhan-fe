@@ -154,7 +154,7 @@ class ProductDetail extends Component {
                       <span>Mua Ngay</span>
                     </div>
                     <div className="btn_buy" onClick={() => window.open(shopeeUrl, '_blank')}>
-                      <span>Shoppe</span>
+                      <span>Shopee</span>
                     </div>
                   </div>
 
