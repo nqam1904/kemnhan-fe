@@ -18,7 +18,7 @@ class CartItem extends Component {
                     <LazyLoadImage effect="blur" src={item.product.image} alt={item.product.name} />
                     <div className="mota">
                         <p className="title_item_cart">{item.product.name}</p>
-                        <p className="title_item_cart">{formatSubstring(item.product.description)}</p>
+                        <p className="title_item_cart description__cart">{formatSubstring(item.product.description)}</p>
                     </div>
                 </div>
                 <div className="option_item">
