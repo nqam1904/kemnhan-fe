@@ -81,7 +81,7 @@
     .card_cart {
         border: 1px solid #E5E5E5;
         position: relative;
-        width: 420px;
+        width: 353px;
         margin-bottom:10px;
         border-radius: 12px;
         background-color: #fff;
@@ -89,7 +89,6 @@
     .cart_header{
         width: 100%;
         display: flex;
-        justify-content: space-around!important;
         box-sizing: border-box;
         padding: 20px;
         border-bottom: 1px solid #e5e5e5;

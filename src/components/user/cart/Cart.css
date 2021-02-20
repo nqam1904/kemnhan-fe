@@ -273,3 +273,7 @@ width: 24px;
   cursor: pointer;
 
 }
+.delete_item,
+ .item_delete_1:hover{
+  cursor: pointer;
+}
