@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import * as Types from "../../../redux/action/mesAction";
+import { history } from "../../../configureStore";
 import "./Cart.css";
 import CartItem from "./CartItem";
 import { currencyFormat, validateInput, isValidEmailAddress } from "../../../shared/Function";
@@ -30,7 +30,7 @@ class CartComponent extends Component {
       this.setState({
         layout: "container",
       });
-      toast.success(`${Types.MSG_CART_EMPTY}`);
+      // toast.success(`${Types.MSG_CART_EMPTY}`);
     } else {
       this.setState({
         showCustom: true,
@@ -38,9 +38,7 @@ class CartComponent extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    console.log("asd", this.props.cartItem !== prevProps.cartItem);
-  }
+
   showCartItem = () => {
     var result = null;
     const { cartItem } = this.props;
@@ -81,9 +79,13 @@ class CartComponent extends Component {
   };
 
   onDeleteItem = (id) => {
-    if (window.confirm("Are you sure you want to delete")) {
+    if (window.confirm("Bạn muốn xoá sản phẩm này")) {
       this.props.actDeleteItem(id);
-      window.location.reload();
+      // window.location.reload();
+      this.setState({
+        showCustom: false,
+        layout: "container",
+      })
     }
   };
   showTotalAmount = (cartItem) => {
@@ -115,7 +117,7 @@ class CartComponent extends Component {
       address === "" ||
       phone === ""
     ) {
-      return toast.warning("Vui lòng nhập đủ thồng tin cá nhân!");
+      return toast.warning("Vui lòng nhập đủ thông tin của bạn!");
 
     } else if (!isValidEmailAddress(email)) {
 
@@ -124,7 +126,7 @@ class CartComponent extends Component {
     }
     else if (!validateInput(phone)) {
 
-      toast.error("Số điện thoại phải có 10-11 chữ số");
+      toast.error("Số điện thoại phải có 10-11 chữ số!");
       return;
     }
     else {
@@ -154,9 +156,14 @@ class CartComponent extends Component {
           lines: listProduct,
         })
         .then((res) => {
-          toast.success("Success!");
+          // toast.success("Success!");
           this.props.actDeleteAll();
-          window.location.reload();
+          this.setState({
+            showCustom: false,
+            layout: "container",
+          })
+          history.push('/SuccessPayment')
+          // window.location.reload();
         })
         .catch((err) => {
           console.log(err);
@@ -166,7 +173,10 @@ class CartComponent extends Component {
 
   onDeleteAll = () => {
     this.props.actDeleteAll();
-    window.location.reload();
+    this.setState({
+      showCustom: false,
+      layout: "container",
+    })
   };
   onSaveCustom = () => { };
   render() {

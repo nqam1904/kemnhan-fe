@@ -6,6 +6,7 @@ import Home from "./components/user/home/HomeComponents";
 import Admin from "./containers/admin/App";
 import Login from "./containers/admin/LoginContainers";
 import NotFoundPageComponent from "./components/user/NotFoundPage/NotFoundPageComponent";
+import SuccessPayment from "./components/user/cart/SuccessPayment";
 
 const Page404 = () => {
   return <NotFoundPageComponent />;
@@ -14,6 +15,7 @@ const Page404 = () => {
 const App = ({ history }) => {
   return (
     <ConnectedRouter history={history}>
+      <Route component={SuccessPayment} path="/success" />
       <Switch>
         <Route component={Login} path="/login" />
         <Route component={Admin} path="/admin" />

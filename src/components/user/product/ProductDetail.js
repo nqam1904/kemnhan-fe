@@ -142,7 +142,7 @@ class ProductDetail extends Component {
                   <div className="product_content">
                     <p className="content">{name}</p>
                     <p className="content_price">
-                      {currencyFormat(sellPrice)}/{unit}
+                      {currencyFormat(sellPrice)}đ/{unit}
                     </p>
                     <p className="content_des">{description}</p>
                     <div id="btn_cart" onClick={() => this.addCart(id)} className="btn_mobile_cart">
@@ -153,8 +153,8 @@ class ProductDetail extends Component {
                     <div className="btn_buy" onClick={() => this.addCart(id)}>
                       <span>Mua Ngay</span>
                     </div>
-                    <div className="btn_buy" onClick={() => window.open(shopeeUrl, '_blank')}>
-                      <span>Shopee</span>
+                    <div className="btn_shopee" onClick={() => window.open(shopeeUrl, '_blank')}>
+                      <img src={require('../../../res/image/shopee.png').default} width={25} /><span>Shopee</span>
                     </div>
                   </div>
 

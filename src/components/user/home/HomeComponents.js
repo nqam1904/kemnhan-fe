@@ -8,6 +8,7 @@ import AboutComponents from "../about/AboutComponents";
 import Footer from "../footer/Footer";
 import ScrollToTop from '../../../shared/ScrollToTop'
 import { Button, Modal } from 'react-bootstrap'
+import SuccessPayment from "../cart/SuccessPayment";
 class HomeComponents extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +26,7 @@ class HomeComponents extends Component {
     const { modal } = this.state;
     return (
       <div className="wrapper">
-        <div class="pyro"><div class="before"></div><div class="after"></div></div>
+        {/* <div class="pyro"><div class="before"></div><div class="after"></div></div> */}
         <Modal show={modal}
           {...this.props}
           size="lg"
@@ -45,12 +46,11 @@ class HomeComponents extends Component {
           </Button>
           </Modal.Footer>
         </Modal>
+
         <Navbar />
-
-
         <Switch>
           {routes.map((prop, key) => {
-            if (prop.layout === `/trang-chu`) {
+            if (prop.layout === `/trang-chu` || prop.layout === `/success`) {
               return (
                 <Route
                   component={(props) => (

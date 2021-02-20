@@ -134,10 +134,8 @@ class AccountComponent extends Component {
     axios
       .delete(`${API_URL}/users/${id}`)
       .then((res) => {
-        if (window.confirm(`Bạn có muốn xóa tài khoản này không ? `)) {
-          toast.success("Xóa thành công");
-          this.getDataAccount();
-        }
+        toast.success("Xóa thành công");
+        this.getDataAccount();
 
 
       })

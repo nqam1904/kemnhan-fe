@@ -1,7 +1,11 @@
 @media (max-width:980px) {
+    .nav{
+        height: 150px;
+    }
     .page_product_detail {
         margin-top: 100px;
         padding: 0;
+        /* margin: 0 auto; */
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -42,11 +46,7 @@
         display: flex;
         flex-direction: column !important;
     }
-    .about_video {
-       /* display: none; */
-        /* height: 455px; */
-        /* width: 50%; */
-    }
+   
     #btnArrow{
         margin-top:2rem
     }
@@ -92,7 +92,7 @@
     .product_content,
     .content_des{
     font-family:'Roboto', sans-serif;
-    width: 400px;
+    width: 15.5rem;
     height: 168px;
     font-style: normal;
     font-weight: normal;

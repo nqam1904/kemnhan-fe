@@ -90,6 +90,19 @@ justify-content: center;
 padding: 24px !important;
 color: #fff;
 }
+.btn_shopee{
+    width: 200px;
+height: 42px;
+text-align: center;
+background: #fff0f6;
+border: 1px solid #fa541c;
+border-radius: 4px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 24px !important;
+color: #fa541c;
+}
 #btn_cart{
     display:none
 }
@@ -123,4 +136,9 @@ color: #fff;
     background: #fff0f6;
     border: 1px solid #fa541c;
     color: #fa541c !important;
+}
+.btn_shopee:hover{
+    cursor: pointer;
+    transition:0.5s all ease;
+    opacity:1;
 }

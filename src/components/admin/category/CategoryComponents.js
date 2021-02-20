@@ -96,10 +96,8 @@ class CategoryComponents extends Component {
   onDelete = (id) => {
     axios.delete(`${API_URL}/categories/${id}`)
       .then(res => {
-        if (window.confirm(`Bạn có muốn xóa danh mục này không ? `)) {
-          toast.success('Xóa thành công')
-          this.getDataCategory();
-        }
+        toast.success('Xóa thành công')
+        this.getDataCategory();
 
       }).catch(error => {
         toast.error(`${error}`)

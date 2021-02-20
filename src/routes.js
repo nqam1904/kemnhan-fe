@@ -6,6 +6,7 @@ import ProductContainer from "./containers/user/ProductContainer";
 import CartContainer from "./containers/user/CartContainer";
 import Navbar from "./components/user/navbar/Navbar";
 import ProductList from "./components/user/landingpage/ProductList";
+import SuccessPaymentContainer from './components/user/cart/SuccessPayment'
 const routes = [
   {
     path: "/login",
@@ -48,6 +49,12 @@ const routes = [
     layout: "/trang-chu",
     title: "Giỏ hàng",
   },
+  {
+    path: "/SuccessPayment",
+    component: SuccessPaymentContainer,
+    layout: "/success",
+    title: "Thành công",
+  }
 ];
 
 export default routes;

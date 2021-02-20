@@ -12,7 +12,7 @@ const currencyFormat = (num) => {
   if (num === 0) {
     return 0;
   } else {
-    return num?.toFixed().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    return num?.toFixed().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
   }
 };
 
