@@ -53,7 +53,7 @@ class Header extends Component {
             <Nav.Link as={Link} to="/admin/customer">Khách hàng</Nav.Link>
             <Nav.Link as={Link} to="/admin/order">Đơn hàng</Nav.Link>
             <Nav.Link as={Link} to="/admin/media">YouTube</Nav.Link>
-            <Nav.Link as={Link} to="/admin/setting">Thông báo</Nav.Link>
+            {/* <Nav.Link as={Link} to="/admin/setting">Thông báo</Nav.Link> */}
           </Nav>
           <Navbar bg="dark">
             <Navbar.Brand>Xin Chào: {user?.firstName + ' ' + user?.lastName}</Navbar.Brand>
