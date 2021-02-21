@@ -72,13 +72,17 @@ class HomeComponents extends Component {
     10, 20, 30, 40
   ]
   dataset = {
-    datasets: [{ data: this.data, backgroundColor: chartColors,
-      hoverBackgroundColor: chartColors }],
+    datasets: [{
+      data: this.data, backgroundColor: chartColors,
+      hoverBackgroundColor: chartColors
+    }],
     labels: this.labels
   }
   myData = {
-    datasets: [{ data: [1500000, 2000000, 1800000, 2500000], backgroundColor: chartColors,
-      hoverBackgroundColor: chartColors }],
+    datasets: [{
+      data: [1500000, 2000000, 1800000, 2500000], backgroundColor: chartColors,
+      hoverBackgroundColor: chartColors
+    }],
     labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4']
   }
   componentDidMount() {
@@ -87,17 +91,20 @@ class HomeComponents extends Component {
     }
   }
   render() {
-    const { isLogin } = this.state;
-    if (isLogin === true) {
+    if (!localStorage.getItem('token') && !localStorage.getItem('userData')) {
       return history.push("/login")
     }
     return (
       <>
         <Pie data={this.dataset} title="My amazing data" />
-        <Bar data={this.myData} title="My amazing data" options={{scales: {yAxes: [{
-          display: true,
-          ticks: {beginAtZero: true}
-        }]}}} />
+        <Bar data={this.myData} title="My amazing data" options={{
+          scales: {
+            yAxes: [{
+              display: true,
+              ticks: { beginAtZero: true }
+            }]
+          }
+        }} />
       </>
     );
   }

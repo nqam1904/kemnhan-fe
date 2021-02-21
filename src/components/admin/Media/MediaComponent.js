@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import ItemMedia from "./ItemMedia";
 import DataTable from "react-data-table-component";
+import { history } from "../../../configureStore";
 class MediaComponent extends Component {
   constructor(props) {
     super(props);
@@ -126,6 +127,9 @@ class MediaComponent extends Component {
   }
   render() {
     const { showModal, titleModal, value, media } = this.state;
+    if (!localStorage.getItem('token') && !localStorage.getItem('userData')) {
+      return history.push("/login");
+    }
     return (
       <>
         <h1 className="mt-10"> Link youtube</h1>

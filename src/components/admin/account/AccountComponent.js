@@ -6,6 +6,7 @@ import { API_URL } from "../../../config/setting";
 import ItemAccount from "./ItemAccount";
 import DataTable from "react-data-table-component";
 import { isValidEmailAddress, validateInput } from "../../../shared/Function";
+import { history } from "../../../configureStore";
 const roles = [
   { id: 1, name: "admin" },
   { id: 2, name: "staff" },
@@ -262,7 +263,9 @@ class AccountComponent extends Component {
       titleModal,
       isSetRole,
     } = this.state;
-
+    if (!localStorage.getItem('token') && !localStorage.getItem('userData')) {
+      return history.push("/login")
+    }
     return (
       <>
         <h1 className="mt-10"> Danh mục tài khoản </h1>

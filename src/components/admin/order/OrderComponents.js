@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Table, Popover } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import ItemOrder from "./ItemOrder";
+import { history } from "../../../configureStore";
 
 class AccountComponent extends Component {
   constructor(props) {
@@ -90,7 +91,9 @@ class AccountComponent extends Component {
 
   render() {
     const { orders } = this.state;
-
+    if (!localStorage.getItem('token') && !localStorage.getItem('userData')) {
+      return history.push("/login")
+    }
     return (
       <>
         <h1 className="mt-10"> Danh mục hoá đơn</h1>

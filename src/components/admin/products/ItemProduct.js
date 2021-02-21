@@ -34,14 +34,14 @@ const ItemProduct = props => {
         <td>{props.stockQuantity}</td>
         <td>{formatSubstring(props.description)}</td>
         <td className="text-center">
-          <Badge variant={props.isFeature === true ? 'primary' : 'danger'} onClick={() => props.onFeature()}>
-            {props.isFeature === true ? 'Kích hoạt' : 'Ẩn'}
+          <Badge variant={props.isFeature === true ? '' : ''} onClick={() => props.onFeature()}>
+            {props.isFeature === true ? <img src={require('../../../res/image/ic_eye.png').default} width={25} alt="" /> : <img src={require('../../../res/image/ic_no_eye.png').default} width={25} alt="" />}
           </Badge>
 
         </td>
         <td className="text-center">
-          <Badge variant={props.isActive === true ? 'primary' : 'danger'} onClick={() => props.onActive()}>
-            {props.isActive === true ? 'Kích hoạt' : 'Ẩn'}
+          <Badge variant={props.isActive === true ? '' : ''} onClick={() => props.onActive()}>
+            {props.isActive === true ? <img src={require('../../../res/image/ic_eye.png').default} width={25} alt="" /> : <img src={require('../../../res/image/ic_no_eye.png').default} width={25} alt="" />}
           </Badge>
 
         </td>

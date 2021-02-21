@@ -7,6 +7,7 @@ import OrderContainer from "./admin/OrderContainer";
 import MediaContainer from "./admin/MediaContainer";
 import CustomerContainer from "./admin/CustomerContainer";
 import SettingContainer from './admin/SettingContainer';
+import NewsContainer from './admin/NewsContainer';
 const routes = [
   {
     path: "/admin",
@@ -52,6 +53,11 @@ const routes = [
     path: "/admin/customer",
     exact: false,
     main: () => <CustomerContainer />,
+  },
+  {
+    path: "/admin/news",
+    exact: false,
+    main: () => <NewsContainer />,
   }
 ];
 export default routes;

@@ -150,6 +150,9 @@ class CategoryComponents extends Component {
   }
   render() {
     const { showModal, titleModal, name, categorys } = this.state;
+    if (!localStorage.getItem('token') && !localStorage.getItem('userData')) {
+      return history.push("/login")
+    }
     return (
       <>
         <h1 className="mt-10"> Danh mục sản phẩm </h1>

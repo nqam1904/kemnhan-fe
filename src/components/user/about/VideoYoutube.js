@@ -6,14 +6,14 @@ class VideoYoutube extends Component {
     event.target.playVideoAt(50);
   }
   onPlay(event) {
-    const player = event.target;
+    const player = event.target.pauseVideo();
     return player;
   }
   render() {
     const opts = {
       width: "100%",
       playerVars: {
-        autoplay: 1,
+        autoplay: 0,
       },
     };
     const { videoId } = this.props;

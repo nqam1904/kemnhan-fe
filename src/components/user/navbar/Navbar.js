@@ -34,6 +34,7 @@ class Navbar extends Component {
           <HashLink smooth to="#product">Sản phẩm</HashLink>
           <HashLink smooth to="#about">Giới thiệu</HashLink>
           <HashLink smooth to="#footer">Liên hệ</HashLink>
+          <HashLink smooth to="#news">Khuyễn mãi</HashLink>
           <Link to="/gio-hang">
             <div className="button-cart">
               <img

@@ -6,6 +6,7 @@ import { API_URL } from "../../../config/setting";
 import ItemProduct from "./ItemProduct";
 import "./Product.css";
 import { Spinner } from 'react-activity';
+import { history } from "../../../configureStore";
 
 class ProductsComponents extends Component {
   constructor(props) {
@@ -389,6 +390,9 @@ class ProductsComponents extends Component {
       isActive,
       loading
     } = this.state;
+    if (!localStorage.getItem('token') && !localStorage.getItem('userData')) {
+      return history.push("/login")
+    }
     const result = loading ? (
       <Spinner size={32} speed={1} animating={true} />
     ) : (
@@ -434,7 +438,7 @@ class ProductsComponents extends Component {
               <th>Số lượng</th>
               <th>Mô tả</th>
               <th>Nổi bật</th>
-              <th>Hiện thị</th>
+              <th>Hiển thị</th>
               <th>Hành động</th>
             </tr>
           </thead>

@@ -9,6 +9,7 @@ import Footer from "../footer/Footer";
 import ScrollToTop from '../../../shared/ScrollToTop'
 import { Button, Modal } from 'react-bootstrap'
 import SuccessPayment from "../cart/SuccessPayment";
+import NewsComponents from "../news/NewsComponents";
 class HomeComponents extends Component {
   constructor(props) {
     super(props);
@@ -73,6 +74,7 @@ class HomeComponents extends Component {
               <LandingPage />
               <ProductList />
               <AboutComponents />
+              <NewsComponents />
             </>
           )}
         </Switch>

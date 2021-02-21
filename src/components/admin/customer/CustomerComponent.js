@@ -4,6 +4,7 @@ import { Button, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import axios from "axios";
+import { history } from '../../../configureStore';
 
 class CustomerComponent extends Component {
   constructor(props) {
@@ -116,7 +117,9 @@ class CustomerComponent extends Component {
       titleModal,
       address
     } = this.state;
-
+    if (!localStorage.getItem('token') && !localStorage.getItem('userData')) {
+      return history.push("/login")
+    }
     return (
       <>
         <h1 className="mt-10"> Danh mục khách hàng </h1>
