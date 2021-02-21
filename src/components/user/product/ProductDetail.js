@@ -154,7 +154,7 @@ class ProductDetail extends Component {
                       <span>Mua Ngay</span>
                     </div>
                     <div className="btn_shopee" onClick={() => window.open(shopeeUrl, '_blank')}>
-                      <img src={require('../../../res/image/shopee.png').default} width={25} /><span>Shopee</span>
+                      <img src={require('../../../res/image/shopee.png').default} width={40} /><span style={{ marginLeft: 10 }}>Shopee</span>
                     </div>
                   </div>
 

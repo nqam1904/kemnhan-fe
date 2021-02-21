@@ -64,7 +64,9 @@ class CartComponent extends Component {
     if (quantity > 1) {
       const sl = -1;
       this.props.actUpdateItem(id, sl);
-      window.location.reload();
+      this.setState({
+        cartItem: this.props.cartItem
+      })
       console.log("subtract", quantity, sl, this.props.cartItem);
     }
   };
@@ -73,7 +75,9 @@ class CartComponent extends Component {
     if (quantity < 100) {
       const sl = 1;
       this.props.actUpdateItem(id, sl);
-      window.location.reload();
+      this.setState({
+        cartItem: this.props.cartItem
+      })
       console.log("plus", quantity, sl, this.props.cartItem);
     }
   };
@@ -82,10 +86,7 @@ class CartComponent extends Component {
     if (window.confirm("Bạn muốn xoá sản phẩm này")) {
       this.props.actDeleteItem(id);
       // window.location.reload();
-      this.setState({
-        showCustom: false,
-        layout: "container",
-      })
+      this.setState({ cart: this.props.cartItem })
     }
   };
   showTotalAmount = (cartItem) => {
