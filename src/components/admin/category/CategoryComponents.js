@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import ItemCategory from "./ItemCategory";
 import DataTable from "react-data-table-component";
+import { history } from "../../../configureStore";
 
 class CategoryComponents extends Component {
   constructor(props) {
