@@ -154,8 +154,16 @@
     .product_img img {
         width: 350px;
     }
+    .item__news{
+        width: 360px !important;
+    }
+    .content__news {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
 }
-
+ 
 /* mobile layout */
 
 .menu__btn {

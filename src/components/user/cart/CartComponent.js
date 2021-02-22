@@ -68,6 +68,7 @@ class CartComponent extends Component {
         cartItem: this.props.cartItem
       })
       console.log("subtract", quantity, sl, this.props.cartItem);
+      toast.success('Cập nhật thành công!');
     }
   };
 
@@ -78,6 +79,7 @@ class CartComponent extends Component {
       this.setState({
         cartItem: this.props.cartItem
       })
+      toast.success('Cập nhật thành công!')
       console.log("plus", quantity, sl, this.props.cartItem);
     }
   };
@@ -86,7 +88,17 @@ class CartComponent extends Component {
     if (window.confirm("Bạn muốn xoá sản phẩm này")) {
       this.props.actDeleteItem(id);
       // window.location.reload();
-      this.setState({ cart: this.props.cartItem })
+      toast.success('Cập nhật thành công!');
+      this.setState({
+        cart: this.props.cartItem
+      }, () => {
+        if (!localStorage.getItem("cart")) {
+          this.setState({
+            showCustom: false,
+            layout: 'container'
+          });
+        }
+      })
     }
   };
   showTotalAmount = (cartItem) => {
@@ -173,11 +185,16 @@ class CartComponent extends Component {
   };
 
   onDeleteAll = () => {
-    this.props.actDeleteAll();
-    this.setState({
-      showCustom: false,
-      layout: "container",
-    })
+    if (localStorage.getItem("cart")) {
+      this.props.actDeleteAll();
+      this.setState({
+        showCustom: false,
+        layout: "container",
+      })
+      toast.success('Thành công!');
+    }
+
+
   };
   onSaveCustom = () => { };
   render() {

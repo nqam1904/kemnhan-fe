@@ -49,6 +49,7 @@ class HomeComponents extends Component {
         </Modal>
 
         <Navbar />
+
         <Switch>
           {routes.map((prop, key) => {
             if (prop.layout === `/trang-chu` || prop.layout === `/success`) {
@@ -70,14 +71,15 @@ class HomeComponents extends Component {
           })}
           {window.location.pathname !== "/chi-tiet-san-pham" && (
             <>
-
+              {/* <NewsComponents /> */}
               <LandingPage />
               <ProductList />
               <AboutComponents />
-              <NewsComponents />
+
             </>
           )}
         </Switch>
+
         <ScrollToTop />
         <Footer />
       </div>
