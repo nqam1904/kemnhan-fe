@@ -7,7 +7,7 @@ import ItemProduct from "./ItemProduct";
 import "./Product.css";
 import { Spinner } from 'react-activity';
 import { history } from "../../../configureStore";
-
+// import { CSVLink } from "react-csv";
 class ProductsComponents extends Component {
   constructor(props) {
     super(props);
@@ -35,6 +35,8 @@ class ProductsComponents extends Component {
       media: [],
       selectImage: [],
       loading: false,
+      fileExcel: "",
+      isDowload: false
     };
     this.fileObj = [];
     this.fileArray = [];
@@ -87,6 +89,7 @@ class ProductsComponents extends Component {
     }
 
   };
+
   onEdit = (id) => {
     axios.get(`${API_URL}/products/${id}`)
       .then(res => {
@@ -178,6 +181,7 @@ class ProductsComponents extends Component {
       })
       .catch((error) => console.log("error", error));
   }
+
   onSaveImg = () => {
     const {
       name,
@@ -388,7 +392,9 @@ class ProductsComponents extends Component {
       // selectImage,
       isFeature,
       isActive,
-      loading
+      loading,
+      isDowload,
+      fileExcel
     } = this.state;
     if (!localStorage.getItem('token') && !localStorage.getItem('userData')) {
       return history.push("/login")
@@ -425,7 +431,35 @@ class ProductsComponents extends Component {
           >
             Thêm sản phẩm
           </Button>
+          <Button variant="success" className="mbt-10 ml-10" type="button" onClick={() => {
+            axios.get(`${API_URL}/products/export`, {
+              headers: {
+                "Content-Disposition": "attachment"
+              }
+            })
+              .then(res => {
+
+                this.setState({
+                  fileExcel: res.data,
+                  isDowload: !this.state.isDowload
+                }, () => {
+                  toast.success('Xuất file excel thành công');
+                })
+              })
+
+              .catch(err => console.error(err))
+          }} >Xuất Excel</Button>
+          {/* {isDowload ? <CSVLink
+
+            data={fileExcel}
+            filename={"products.csv"}
+            className="btn btn-success mbt-10 ml-10"
+            target="_blank"
+          >
+            Download Excel
+          </CSVLink> : ""} */}
         </div>
+
         <Table striped bordered hover responsive >
           <thead>
             <tr>
