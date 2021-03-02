@@ -4,7 +4,7 @@ import { API_URL } from '../../../config/setting';
 import { Badge } from 'react-bootstrap';
 import moment from 'moment'
 import './NewsStyle.css';
-import parse from 'html-react-parser'
+
 const ItemNews = props => {
 
   function onDelete(id) {
@@ -29,7 +29,10 @@ const ItemNews = props => {
             width="80"
             placeholderSrc={process.env.PUBLIC_URL + "/logo.png"} />
         </td>
-        <td>{props.content}</td>
+        <td dangerouslySetInnerHTML={{
+          __html: props.content
+        }}
+        ></td>
         <td>{moment(props.endDate).format("DD-MM-yyyy")}</td>
         <td className="text-center">
           <Badge className="status_active" variant={props.isActive === true ? 'success' : 'danger'} onClick={() => props.onActive()}>

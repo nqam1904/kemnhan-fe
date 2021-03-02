@@ -83,17 +83,17 @@ class NewsComponent extends Component {
   }
 
   onUpdate = (id) => {
-    axios.put(`${API_URL}/promotions/${id}`)
+    axios.get(`${API_URL}/promotions/${id}`)
       .then(res => {
         this.setState({
           showModal: true,
           titleModal: 'Cập nhật tin khuyến mãi',
           id: id,
-          name: "",
-          content: "",
-          endDate: new Date().toISOString(),
-          images: [],
-          isActive: false,
+          name: res.data.name,
+          content: res.data.content,
+          endDate: res.data.endDate,
+          media: res.data.images[0]?.key,
+          isActive: res.data.isActive,
         })
       }).catch(error => {
         toast.error(`${error}`)
@@ -141,32 +141,16 @@ class NewsComponent extends Component {
     return result;
   }
 
-  // onSaveImg = () => {
-  //   const { id, name, content, endDate, media, file } = this.state;
-  //   var bodyFormData = new FormData();
-  //   bodyFormData.append('name', name);
-  //   bodyFormData.append('content', content);
-  //   bodyFormData.append('endDate', endDate);
-  //   for (const file of media) {
-  //     bodyFormData.append('medias', file);
-  //   }
-  //   try {
-  //     axios.post(`${API_URL}/medias`, bodyFormData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data"
-  //       }
-  //     })
-  //   }
 
-  // }
   onSave = (e) => {
     e.preventDefault();
-    const { id, name, content, endDate, imageName, file, media, isActive } = this.state;
+    const { id, name, content, endDate, media, isActive } = this.state;
     if (name === '') {
       toast.warning('Vui lòng điền thông tin!');
       return;
     }
     var bodyFormData = new FormData();
+    var bodyFormData2 = new FormData();
     bodyFormData.append('name', name);
     bodyFormData.append('content', content);
     bodyFormData.append('endDate', endDate);
@@ -176,9 +160,18 @@ class NewsComponent extends Component {
       bodyFormData.append('images', file);
     }
     if (id) {
-      axios.put(`${API_URL}/promotions/${id}`, {
-        name: name,
+      bodyFormData2.append('name', name);
+      bodyFormData2.append('content', content);
+      bodyFormData2.append('endDate', endDate);
+      bodyFormData2.append('isActive', isActive);
+      bodyFormData2.append('slug', name);
+      bodyFormData2.append('images', media);
+      axios.put(`${API_URL}/promotions`, bodyFormData2, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
       }).then(res => {
+        console.log(res.data);
         this.setState({ showModal: !this.state.showModal, name: "", id: null }, () => {
           toast.success('Cập nhật thành công!');
           this.getDataCategory();
@@ -234,7 +227,7 @@ class NewsComponent extends Component {
               <th>Tiêu đề</th>
               <th>Hình ảnh</th>
               <th>Nội dung</th>
-              <th>Ngày kết thúc chương trình</th>
+              <th>Ngày kết thúc</th>
               <th>Hiện thị</th>
               <th>Hành động</th>
             </tr>
@@ -293,22 +286,18 @@ class NewsComponent extends Component {
                     </div>
                   </div>
                 </div>
-              ) : ""}
+              ) : (<div style={{ marginBottom: 10 }}></div>)}
+
               <label>Ngày kết thúc chương trình</label>
               <DatePicker id="example-datepicker"
                 value={endDate}
                 onChange={(v, f) => this.handleChangeDate(v, f)} />
-              {/* <label>Mô tả</label>
-              <CKEditor
-                data={content}
-                onChange={this.onChangeEditor}
-              /> */}
+              <br />
+              <label>Mô tả</label>
               <div>
                 <CKEditor
                   data={content}
                   onChange={this.onEditorChange} />
-
-
               </div>
             </Modal.Body>
             <Modal.Footer>
