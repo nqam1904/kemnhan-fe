@@ -8,12 +8,10 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 240, 246, 0.07) 0%,
-    rgba(255, 240, 246, 0.5) 31.05%,
-    #fff0f6 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(255, 240, 246, 0.07) 0%,
+      rgba(255, 240, 246, 0.5) 31.05%,
+      #fff0f6 100%);
   background-image: url(../../../res/image/header.png);
   background-repeat: no-repeat;
   background-position: center center;
@@ -21,6 +19,7 @@
   /* background-color: #FEFFE6; */
   /* z-index: 1; */
 }
+
 .nav .links a {
   margin-top: 20px;
   display: inline-block;
@@ -36,23 +35,27 @@
 .nav .links .mainlink {
   color: #e0501b;
 }
+
 .group-logo {
   display: flex;
   justify-content: center;
   margin-top: 6px;
   margin-left: 80px;
 }
+
 .logo {
   position: relative;
   max-width: 50px;
   height: 50px;
   margin-top: 8px;
 }
-.logo1{
+
+.logo1 {
   max-width: 60px;
   height: 60px;
   margin-top: 0px;
 }
+
 .logo-title {
   position: relative;
   justify-content: center;
@@ -62,6 +65,7 @@
   height: 24px;
   margin-left: 18px;
 }
+
 .button-cart {
   position: absolute;
   top: 13px;
@@ -76,52 +80,65 @@
   box-sizing: border-box;
   border-radius: 4px;
 }
+
 .button-cart:hover {
   cursor: pointer;
 }
+
 .button-cart .ic_cart {
   width: 24px;
   height: 24px;
   margin-right: 8px;
 }
+
 .button-cart .title_cart {
   color: #fa541c;
   padding-top: 13px;
 }
 
- 
+
 .footer__modal {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start !important;
-    padding: .75rem;
-    border-top: 1px solid #dee2e6;
-    border-bottom-right-radius: calc(.3rem - 1px);
-    border-bottom-left-radius: calc(.3rem - 1px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start !important;
+  padding: .75rem;
+  border-top: 1px solid #dee2e6;
+  border-bottom-right-radius: calc(.3rem - 1px);
+  border-bottom-left-radius: calc(.3rem - 1px);
 }
-.footer__modal span{
+
+.footer__modal span {
   margin-left: 10px;
 }
-.content__news{
+
+.content__news {
   display: flex;
   justify-content: space-between;
   text-align: center
 }
-.list__news{
-  overflow-y:scroll;
+
+.list__news {
+  overflow-y: scroll;
   height: 500px;
 }
-.custom__link:hover{
-  cursor: pointer;
-}
-.image__news{
 
-margin: 20px;
-}
-.image__news:hover{
+.custom__link:hover {
   cursor: pointer;
 }
-.item__news{
+
+.image__news {
+
+  margin: 20px;
+}
+
+.image__news:hover {
+  cursor: pointer;
+}
+
+.item__news {
   width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

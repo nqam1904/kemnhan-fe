@@ -22,19 +22,6 @@ const isValidEmailAddress = (text) => {
 const validateInput = (checkingText) => {
   /* reg exp để kiểm tra xem chuỗi có chỉ bao gồm 10 - 11 chữ số hay không */
 
-  // const regexp = /^\d{10,11}$/;2
-  // const checkingResult = regexp.exec(checkingText);
-  // if (checkingResult !== null) {
-  //   return {
-  //     isInputValid: true,
-  //     errorMessage: ''
-  //   };
-  // } else {
-  //   return {
-  //     isInputValid: false,
-  //     errorMessage: 'Số điện thoại phải có 10 - 11 chữ số.'
-  //   };
-  // }
   return !!checkingText.match(/^\d{10,11}$/)
 }
 export { formatSubstring, currencyFormat, isValidEmailAddress, validateInput };

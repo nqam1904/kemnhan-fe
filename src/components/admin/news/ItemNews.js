@@ -4,6 +4,7 @@ import { API_URL } from '../../../config/setting';
 import { Badge } from 'react-bootstrap';
 import moment from 'moment'
 import './NewsStyle.css';
+import { formatSubstring } from '../../../shared/Function';
 
 const ItemNews = props => {
 
@@ -19,7 +20,7 @@ const ItemNews = props => {
   return (
     <>
       <tr>
-        <td>{props.index + 1}</td>
+        <td>{props.id}</td>
         <td>{props.name}</td>
         <td>
           <LazyLoadImage
@@ -30,13 +31,13 @@ const ItemNews = props => {
             placeholderSrc={process.env.PUBLIC_URL + "/logo.png"} />
         </td>
         <td dangerouslySetInnerHTML={{
-          __html: props.content
+          __html: formatSubstring(props.content)
         }}
         ></td>
         <td>{moment(props.endDate).format("DD-MM-yyyy")}</td>
         <td className="text-center">
-          <Badge className="status_active" variant={props.isActive === true ? 'success' : 'danger'} onClick={() => props.onActive()}>
-            {props.isActive === true ? "Hiển thị" : "Ẩn"}
+          <Badge className="status_active" onClick={() => props.onActive()}>
+            {props.isActive === true ? <img src={require('../../../res/image/ic_eye.png').default} width={25} alt="" /> : <img src={require('../../../res/image/ic_no_eye.png').default} width={25} alt="" />}
           </Badge>
         </td>
         <td className="text-center">

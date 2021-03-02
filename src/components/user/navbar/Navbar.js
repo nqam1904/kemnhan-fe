@@ -4,7 +4,9 @@ import { HashLink } from 'react-router-hash-link';
 import NavbarMobile from './NavbarMobile'
 import "./Navbar.css";
 import { Modal } from "react-bootstrap";
-import { API_NEWS } from "../../../config/setting";
+import { API_NEWS, API_URL } from "../../../config/setting";
+import axios from "axios";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 class Navbar extends Component {
 
@@ -12,11 +14,58 @@ class Navbar extends Component {
     super(props);
     this.state = {
       show: false,
-      selectedNews: Math.floor(Math.random() * API_NEWS.length)
+      data: [],
+      loading: false,
+      // selectedNews: Math.floor(Math.random() * API_NEWS.length)
+      selectedNews: 0
     }
+  }
+  async componentDidMount() {
+    this.setState({
+      show: true,
+
+    })
+    await this.getPromotions();
+
+  }
+  getPromotions = () => {
+    const { loading } = this.state
+    this.setState({
+      loading: true
+    })
+    axios.get(`${API_URL}/promotions`)
+      .then(res => {
+        this.setState({
+          data: res.data,
+          loading: false,
+        })
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
   handleClose = () => this.setState({ show: false });
   render() {
+    const { data, loading } = this.state;
+    const result = loading === false ? data.map((item, index) => {
+      if (this.state.selectedNews === index) {
+        return (
+          <div>
+            <LazyLoadImage
+              effect="blur"
+              src={`${API_URL}/static/${item.images[0]?.key}`}
+              alt={item.name}
+              width="450"
+              placeholderSrc={process.env.PUBLIC_URL + "/logo.png"} />
+            <h3>{item.name}</h3>
+            <p dangerouslySetInnerHTML={{
+              __html: item.content
+            }}></p>
+          </div>
+        )
+      }
+    }) : <img src={require('../../../res/image/loading.gif').default} alt="" width={200} />
+
     return (
       <div className="nav">
         <div className="group-logo">
@@ -48,7 +97,7 @@ class Navbar extends Component {
           <a className="custom__link" onClick={() => {
             this.setState({
               show: true,
-              selectedNews: Math.floor(Math.random() * API_NEWS.length)
+              selectedNews: 0
             })
           }}> Khuyễn mãi</a>
           <Link to="/gio-hang">
@@ -72,22 +121,17 @@ class Navbar extends Component {
           <Modal.Body scrollable="true">
             <div className="content__news">
               <div className="item__news">
-                {API_NEWS.map((item, index) => {
-                  if (this.state.selectedNews === index) {
-                    return (
-                      <>
-                        <img src={item.image} alt="" width="200" />
-                        <p>{item.name}</p>
-                        <p>{item.description}</p>
-                      </>
-                    )
-                  }
-                })}
+                {result}
               </div>
               <div className="list__news">
-                {API_NEWS.map((item, index) => (
+                {this.state.data.map((item, index) => (
                   <div className="image__news" onClick={() => this.setState({ selectedNews: index })}>
-                    <img src={item.image} alt="" width="200" />
+                    <LazyLoadImage
+                      effect="blur"
+                      src={`${API_URL}/static/${item.images[0]?.key}`}
+                      alt={item.name}
+                      width="200"
+                      placeholderSrc={process.env.PUBLIC_URL + "/logo.png"} />
                   </div>
                 ))}
               </div>
@@ -95,7 +139,7 @@ class Navbar extends Component {
           </Modal.Body>
 
           <div className="footer__modal">
-            <img src={require('../../../res/image/logo.png').default} width={25} />
+            <img src={require('../../../res/image/logo.png').default} width={25} alt="" />
             <span>Kemnhanonline</span>
           </div>
 

@@ -160,21 +160,16 @@ class NewsComponent extends Component {
       bodyFormData.append('images', file);
     }
     if (id) {
-      bodyFormData2.append('name', name);
-      bodyFormData2.append('content', content);
-      bodyFormData2.append('endDate', endDate);
-      bodyFormData2.append('isActive', isActive);
-      bodyFormData2.append('slug', name);
-      bodyFormData2.append('images', media);
-      axios.put(`${API_URL}/promotions`, bodyFormData2, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
+      axios.put(`${API_URL}/promotions/${id}`, {
+        name: name,
+        content: content,
+        slug: name,
+        endDate: endDate
       }).then(res => {
         console.log(res.data);
         this.setState({ showModal: !this.state.showModal, name: "", id: null }, () => {
           toast.success('Cập nhật thành công!');
-          this.getDataCategory();
+          this.getDataPromotion();
         })
 
       }).catch(error => toast.error('Có lỗi xảy ra'))
@@ -215,7 +210,12 @@ class NewsComponent extends Component {
         <div className="text-right">
           <Button type="button" variant="primary" className="mbt-10"
             onClick={() => {
-              this.setState({ showModal: true })
+              this.setState({
+                showModal: true,
+                name: "",
+                content: "",
+                endDate: new Date().toISOString(),
+              })
             }}
 
           >Thêm khuyến mãi</Button>
@@ -242,9 +242,7 @@ class NewsComponent extends Component {
           onHide={() => {
             this.setState({
               showModal: false,
-              name: "",
-              content: "",
-              endDate: new Date().toISOString(),
+
             });
           }}
         >
