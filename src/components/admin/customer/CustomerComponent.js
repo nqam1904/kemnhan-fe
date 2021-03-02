@@ -123,6 +123,11 @@ class CustomerComponent extends Component {
     return (
       <>
         <h1 className="mt-10"> Danh mục khách hàng </h1>
+        <div className="text-right">
+          <Button variant="success" className="mbt-10 ml-10" type="button" onClick={() => {
+            window.open('https://kemnhanonline.vn/api/customers/export', '_blank')
+          }} >Xuất Excel</Button>
+        </div>
         <DataTable
           title="Khách hàng"
           columns={this.columns}

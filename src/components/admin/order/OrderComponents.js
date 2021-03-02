@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { API_URL } from "../../../config/setting";
 import ItemOrder from "./ItemOrder";
@@ -98,7 +98,11 @@ class AccountComponent extends Component {
       <>
         <h1 className="mt-10"> Danh mục hoá đơn</h1>
         <ToastContainer autoClose={2000} />
-
+        <div className="text-right">
+          <Button variant="success" className="mbt-10 ml-10" type="button" onClick={() => {
+            window.open('https://kemnhanonline.vn/api/orders/export', '_blank')
+          }} >Xuất Excel</Button>
+        </div>
         <Table striped bordered hover responsive="lg">
           <thead>
             <tr>

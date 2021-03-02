@@ -133,8 +133,6 @@ class CategoryComponents extends Component {
             'Content-Type': 'multipart/form-data'
           },
         }).then(res => {
-
-
           this.setState({
             showModal: !this.state.showModal,
             name: ""
