@@ -145,16 +145,22 @@ class ProductDetail extends Component {
                       {currencyFormat(sellPrice)}đ/{unit}
                     </p>
                     <p className="content_des">{description}</p>
-                    <div id="btn_cart" onClick={() => this.addCart(id)} className="btn_mobile_cart">
-                      <p>Mua ngay</p>
+                    <div id="btn_cart" onClick={() => { this.addCart(id); history.push('gio-hang') }} className="btn_mobile_cart">
+                      <img src={require('../../../res/image/ic_cart.png').default} width={35} /><p>Mua ngay</p>
                     </div>
                   </div>
                   <div className="option_detail">
                     <div className="btn_buy" onClick={() => this.addCart(id)}>
-                      <span>Mua Ngay</span>
+                      <img src={require('../../../res/image/ic_cart.png').default} width={35} alt="" /><span>Thêm vào giỏ hàng</span>
+                    </div>
+                    <div className="btn_buy" onClick={() => {
+                      this.addCart(id);
+                      history.push('gio-hang')
+                    }}>
+                      <span>Mua ngay</span>
                     </div>
                     <div className="btn_shopee" onClick={() => window.open(shopeeUrl, '_blank')}>
-                      <img src={require('../../../res/image/shopee.png').default} width={40} /><span style={{ marginLeft: 10 }}>Shopee</span>
+                      <img src={require('../../../res/image/shopee.png').default} width={40} alt="" /><span style={{ marginLeft: 10 }}>Shopee</span>
                     </div>
                   </div>
 

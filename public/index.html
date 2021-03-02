@@ -16,6 +16,23 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <title>Kemnhanonline</title>
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '482643826419811');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=482643826419811&ev=PageView&noscript=1" /></noscript>
 </head>
 
 <body>
@@ -42,6 +59,7 @@
     logged_in_greeting="Chào bạn! bạn tìm hiểu sản phẩm Kem phải không ạ?"
     logged_out_greeting="Chào bạn! bạn tìm hiểu sản phẩm Kem phải không ạ?">
   </div>
+
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
   <!--

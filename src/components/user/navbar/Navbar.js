@@ -22,7 +22,7 @@ class Navbar extends Component {
   }
   async componentDidMount() {
     this.setState({
-      show: true,
+      show: false,
 
     })
     await this.getPromotions();
@@ -55,7 +55,7 @@ class Navbar extends Component {
               effect="blur"
               src={`${API_URL}/static/${item.images[0]?.key}`}
               alt={item.name}
-              width="450"
+              width="300"
               placeholderSrc={process.env.PUBLIC_URL + "/logo.png"} />
             <h3>{item.name}</h3>
             <p dangerouslySetInnerHTML={{
