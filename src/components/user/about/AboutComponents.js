@@ -41,7 +41,7 @@ class AboutComponents extends Component {
                         Kem không chỉ ngon mà còn đảm bảo chất lượng,
                         sức khỏe 100%. được bộ y tế cấp phép và
                         chứng nhận thực phẩm sạch các bạn nhé.
-                            </p>
+                    </p>
                     <div className="btn_image" onClick={() => {
                         this.setState({
                             isShowModal: !isShowModal
@@ -84,11 +84,11 @@ class AboutComponents extends Component {
                         </Modal.Body>
 
                     </Modal>
-                </div >
+                </div>
                 <div className="about_video">
                     <VideoYoutube videoId={value.split("https://www.youtube.com/watch?v=")[1]} />
                 </div>
-            </div >
+            </div>
 
         );
     }

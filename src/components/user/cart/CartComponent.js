@@ -210,7 +210,6 @@ class CartComponent extends Component {
       phone,
     } = this.state;
     const { cartItem } = this.props;
-    console.log();
     const emptyCart = (
       <div className="description_cart">
         <div className="page_empty">
@@ -251,14 +250,11 @@ class CartComponent extends Component {
               placeholder="Nhập tên"
             />{" "}
             <br />
-            <img
-              src={require("../../../res/image/Location.png").default}
-              alt="#"
-            />
+
             <input
               className="input_custom"
               placeholder="Nhập địa chỉ"
-              style={{ width: '90%' }}
+              style={{ marginLeft: 20, width: '90%' }}
               name="address"
               // onBlur={() => this.setState({
               //   emailIsValid: isValidEmailAddress(this.state.email)
@@ -267,10 +263,10 @@ class CartComponent extends Component {
               onChange={this.onChange}
             />
             <br />
-            <img src={require("../../../res/image/Call.png").default} alt="#" />
+
             <input
               className="input_custom"
-              style={{ width: '90%' }}
+              style={{ marginLeft: 20, width: '90%' }}
               placeholder="Nhập số điện thoại"
               name="phone"
               type="number"
@@ -279,10 +275,10 @@ class CartComponent extends Component {
               onChange={this.onChange}
             />
             <br />
-            <img src={require("../../../res/image/mail.png").default} alt="#" />
+
             <input
               className="input_custom"
-              style={{ width: '90%' }}
+              style={{ marginLeft: 20, width: '90%' }}
               placeholder="Nhập email"
               value={email}
               name="email"
@@ -318,7 +314,7 @@ class CartComponent extends Component {
     );
     return (
       <div className={layout}>
-        <ToastContainer autoClose={3000} />
+        <ToastContainer autoClose={2000} />
         <div className="page_cart">
           <div className="card_cart">
             <div className="cart_header">

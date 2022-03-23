@@ -13,6 +13,8 @@ class Login extends Component {
       email: "",
       password: "",
       isSuccess: false,
+      count: 0,
+      changeDevMode: false,
     };
   }
   componentDidUpdate(prevProps) {
@@ -61,6 +63,17 @@ class Login extends Component {
       });
     }
   };
+  DevMode = () => {
+    const { count, changeDevMode } = this.state;
+    this.setState({ count: count + 1 })
+    if (count === 7) {
+      this.setState({
+        changeDevMode: !changeDevMode,
+        email: 'dev@gmail.com'
+      })
+    }
+
+  }
   render() {
     const { email, password, isSuccess } = this.state;
     // console.log(userData)
@@ -73,16 +86,33 @@ class Login extends Component {
         <ToastContainer autoClose={3000} />
         <Form>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Nhập email"
-              value={email}
-              // type="text"
-              autoComplete="off"
-              name="email"
-              onChange={this.onChange}
-            />
+            {this.state.changeDevMode === false ? (
+              <>
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Nhập email"
+                  value={email}
+                  // type="text"
+                  autoComplete="off"
+                  name="email"
+                  onChange={this.onChange}
+                />
+              </>
+            ) : (
+              <>
+                <Form.Label>DEV</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Nhập tên dev"
+                  value={email}
+                  // type="text"
+                  autoComplete="off"
+                  name="email"
+                  onChange={this.onChange}
+                />
+              </>
+            )}
           </Form.Group>
 
           <Form.Group controlId="formBasicPassword">
@@ -100,7 +130,7 @@ class Login extends Component {
             Đăng nhập
           </Button>
         </Form>
-        <div className="logo">
+        <div className="logo" onClick={this.DevMode}>
           <LazyLoadImage
             effect="blur"
             src={require("../../../res/image/logo.png").default}

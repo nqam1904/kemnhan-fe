@@ -20,8 +20,6 @@ const App = ({ history }) => {
         <Route component={Login} path="/login" />
         <Route component={Admin} path="/admin" />
         <Route component={Home} path="/" />
-        {/* <Route component={Page404} /> */}
-        {/* <Redirect from="/" to="/" /> */}
       </Switch>
     </ConnectedRouter>
   );

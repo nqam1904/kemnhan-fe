@@ -39,7 +39,6 @@ class ProductList extends Component {
               images={item.images[0].key}
               isFeature={item.isFeature}
               isActive={item.isActive}
-              //   getProduct={this.getProduct}
               propsURL={`/trang-chu/chi-tiet-san-pham?id=${item.id}`}
             />
           </div>
