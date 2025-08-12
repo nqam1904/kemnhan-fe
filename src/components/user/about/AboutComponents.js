@@ -5,6 +5,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { API_URL } from '../../../config/setting';
 import './About.css';
 import VideoYoutube from './VideoYoutube';
+import ImageAssets from '../../../constants/ImagesAsset';
 
 class AboutComponents extends Component {
     constructor(props) {
@@ -63,7 +64,7 @@ class AboutComponents extends Component {
                             <div className="row">
                                 <div className="col-lg-6 col-sm-6 col-xs-6">
                                     <div style={{ textAlign: 'center' }}>
-                                        <LazyLoadImage src={require('../../../res/image/about.png').default} width={300} alt="menu" effect="blur" />
+                                        <LazyLoadImage src={ImageAssets.about} width={300} alt="menu" effect="blur" />
                                     </div>
                                 </div>
                                 <div className="col-lg-6 col-sm-6 col-xs-6">

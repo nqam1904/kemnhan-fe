@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { history } from '../../../configureStore';
+import ImageAssets from '../../../constants/ImagesAsset';
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -22,7 +23,7 @@ class Header extends Component {
         return (
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top">
                 <Navbar.Brand as={Link} to="/admin">
-                    <img src={require('../../../res/image/logo.png').default} width={50} height={50} alt="#" />
+                    <img src={ImageAssets.logo} width={50} height={50} alt="#" />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">

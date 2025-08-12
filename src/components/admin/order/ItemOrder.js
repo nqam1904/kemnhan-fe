@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import { API_URL } from '../../../config/setting';
+import ImageAssets from '../../../constants/ImagesAsset';
 import { currencyFormat } from '../../../utils/Function';
 
 const onStatus = (item) => {
@@ -75,12 +76,7 @@ const ItemOrder = (props) => {
                     {statusButton(props.status) === '' ? (
                         <OverlayTrigger trigger="click" placement="left" overlay={popover(userInfo)}>
                             <Button variant="info" className=" ml-10">
-                                <img
-                                    alt="imageEye"
-                                    src={require('../../../res/image/information.png').default}
-                                    style={{ tintColor: 'red' }}
-                                    width={20}
-                                />{' '}
+                                <img alt="imageEye" src={ImageAssets.information} style={{ tintColor: 'red' }} width={20} />
                             </Button>
                         </OverlayTrigger>
                     ) : (

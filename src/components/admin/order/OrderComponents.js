@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
 import { API_URL } from '../../../config/setting';
-import ItemOrder from './ItemOrder';
 import { history } from '../../../configureStore';
+import ItemOrder from './ItemOrder';
 
 class AccountComponent extends Component {
     constructor(props) {

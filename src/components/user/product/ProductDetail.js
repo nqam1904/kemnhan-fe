@@ -102,23 +102,7 @@ class ProductDetail extends Component {
                         <ToastContainer autoClose={2000} />
                         <div className="page_product_detail">
                             <div className="product_img">
-                                {/* <img src={require('../../../res/image/image.png').default} /> */}
                                 <LazyLoadImage effect="blur" src={selectedImage} placeholderSrc={ImageAssets.logo} alt="product" />
-                                {/* {selectedImage.length < 0 ?  <img className="image" src={`${API_URL}/static/${props.images}`} alt={props.name} /> : (<img src={selectedImage}/>)} */}
-                                {/* <div className="product_img_slide">
-                    {dataImage.map((x, index) => {
-                      return (
-                        <figure key={index}>
-                          <img
-                            key={index}
-                            src={`${API_URL}/static/${x.key}`}
-                            onClick={(e) => this.handleClick(x)}
-                            alt={x.name}
-                          />
-                        </figure>
-                      );
-                    })}
-                  </div> */}
                             </div>
                             <div className="product_body">
                                 <div className="product_content">

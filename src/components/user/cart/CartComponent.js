@@ -167,7 +167,9 @@ class CartComponent extends Component {
                     });
                     history.push('/SuccessPayment');
                 })
-                .catch((_) => {});
+                .catch((_) => {
+                    toast.error('Có lỗi xảy ra');
+                });
         }
     };
 
@@ -181,7 +183,9 @@ class CartComponent extends Component {
             toast.success('Thành công!');
         }
     };
-    onSaveCustom = () => {};
+    onSaveCustom = () => {
+        toast.error('Có lỗi xảy ra');
+    };
     render() {
         const { note, cart, showCustom, layout, firstName, lastName, email, address, phone } = this.state;
         const { cartItem } = this.props;
