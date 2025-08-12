@@ -8,7 +8,6 @@ class Header extends Component {
         this.state = { logout: false };
     }
 
-
     onLogout = () => {
         localStorage.clear('token');
         localStorage.clear('userData');

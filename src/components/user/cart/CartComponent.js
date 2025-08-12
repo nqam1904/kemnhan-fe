@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { API_URL } from '../../../config/setting';
 import { history } from '../../../configureStore';
+import ImageAssets from '../../../constants/ImagesAsset';
 import { currencyFormat, isValidEmailAddress, validateInput } from '../../../utils/Function';
 import './Cart.css';
 import CartItem from './CartItem';
@@ -159,14 +160,12 @@ class CartComponent extends Component {
                     lines: listProduct,
                 })
                 .then((_) => {
-                    // toast.success("Success!");
                     this.props.actDeleteAll();
                     this.setState({
                         showCustom: false,
                         layout: 'container',
                     });
                     history.push('/SuccessPayment');
-                    // window.location.reload();
                 })
                 .catch((_) => { });
         }
@@ -189,7 +188,7 @@ class CartComponent extends Component {
         const emptyCart = (
             <div className="description_cart">
                 <div className="page_empty">
-                    <img className="img_empty_cart" alt="empty" src={require('../../../res/image/empty.png').default} />
+                    <img className="img_empty_cart" alt="empty" src={ImageAssets.empty} />
                     <Link to="/" className="btn_back">
                         <span>Mua thêm sản phẩm</span>
                     </Link>
@@ -226,9 +225,6 @@ class CartComponent extends Component {
                             placeholder="Nhập địa chỉ"
                             style={{ marginLeft: 20, width: '90%' }}
                             name="address"
-                            // onBlur={() => this.setState({
-                            //   emailIsValid: isValidEmailAddress(this.state.email)
-                            // })}
                             value={address}
                             onChange={this.onChange}
                         />
@@ -298,7 +294,7 @@ class CartComponent extends Component {
                                     </p>
                                 </div>
                                 <div className="delete_item" onClick={() => this.onDeleteAll()}>
-                                    <img src={require('../../../res/image/Delete.png').default} alt="delete" />
+                                    <img src={ImageAssets.delete} alt="delete" />
                                     <p className="text_delete">Xoá Tất cả</p>
                                 </div>
                             </div>

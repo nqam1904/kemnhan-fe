@@ -25,7 +25,7 @@ class AboutComponents extends Component {
                     value: res.data[0].value,
                 });
             })
-            .catch((_error) => { });
+            .catch((_error) => {});
     };
     render() {
         const { isShowModal, value } = this.state;

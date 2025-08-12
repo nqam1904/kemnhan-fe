@@ -11,7 +11,6 @@ export function categoryApi(data) {
     })
         .then((response) => response.json())
         .then((result) => {
-            
             return result;
         })
         .catch((_error) => {});

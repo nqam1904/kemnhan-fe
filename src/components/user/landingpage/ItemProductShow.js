@@ -5,7 +5,6 @@ import { history } from '../../../configureStore';
 import ImageAssets from '../../../constants/ImagesAsset';
 import './ItemProductShow.css';
 const ItemProductShow = (props) => {
-
     return (
         <div className="card_item" onClick={() => history.push(`/chi-tiet-san-pham?id=${props.id}`)}>
             <LazyLoadImage

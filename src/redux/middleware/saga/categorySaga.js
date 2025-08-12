@@ -6,7 +6,7 @@ const error = 'Không thể kết nối được với máy chủ';
 function* categorySaga(action) {
     try {
         const response = yield categoryApi(action.data);
-    
+
         if (response === undefined) {
             yield put({ type: Types.CATEGORY_ERROR, error });
         } else {

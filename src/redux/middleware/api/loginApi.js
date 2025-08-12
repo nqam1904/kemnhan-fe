@@ -13,5 +13,5 @@ export function loginApi(input) {
         .then((result) => {
             return result;
         })
-        .catch((_error) => { });
+        .catch((_error) => {});
 }

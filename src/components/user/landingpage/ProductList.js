@@ -20,7 +20,7 @@ class ProductList extends Component {
             .then((res) => {
                 this.setState({ products: res.data });
             })
-            .catch((_err) => { });
+            .catch((_err) => {});
     }
     showProduct = (products) => {
         var result = null;

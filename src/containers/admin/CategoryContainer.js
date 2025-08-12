@@ -13,7 +13,6 @@ class CategoryContainer extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    
     return {
         loading: state.categoryReducers.loading,
         data: state.categoryReducers.data,

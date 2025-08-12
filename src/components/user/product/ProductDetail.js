@@ -60,17 +60,17 @@ class ProductDetail extends Component {
                         dataImage: res.data.images,
                         loading: false,
                     },
-                    () => { }
+                    () => {}
                 )
             )
-            .catch((_) => { });
+            .catch((_) => {});
     };
     handleClick = (image) => {
         this.setState(
             {
                 selectedImage: `${API_URL}/static/${image.key}`,
             },
-            () => { }
+            () => {}
         );
     };
     addCart = () => {
