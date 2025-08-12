@@ -1,13 +1,12 @@
 .logo {
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 100px;
-  /* background-color: red; */
-  /* background-color:#fff !important; */
-
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 100px;
+    /* background-color: red; */
+    /* background-color:#fff !important; */
 }
 .layout {
-  height: 100vh;
+    height: 100vh;
 }

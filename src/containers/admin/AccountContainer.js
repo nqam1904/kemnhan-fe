@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
-import AccountComponent from '../../components/admin/account/AccountComponent'
+import AccountComponent from '../../components/admin/account/AccountComponent';
 import { connect } from 'react-redux';
 import { loginAction, logOutAction } from '../../redux/action/loginAction';
 
 class AccountContainer extends Component {
     render() {
-        return (
-            <AccountComponent {...this.props} />
-        );
+        return <AccountComponent {...this.props} />;
     }
 }
 const mapStateToProps = (state) => {
-
     return {
         loading: state.loginReducers.loading,
         error: state.loginReducers.error,
@@ -26,7 +23,7 @@ const mapDispatchToProps = (dispatch) => {
         },
         logOutAction: () => {
             dispatch(logOutAction());
-        }
+        },
     };
 };
 

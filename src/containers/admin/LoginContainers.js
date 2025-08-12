@@ -1,12 +1,10 @@
 import React from 'react';
-import { connect } from "react-redux";
-import LoginComponent from '../../components/admin/login/Login'
+import { connect } from 'react-redux';
+import LoginComponent from '../../components/admin/login/Login';
 import { loginAction } from '../../redux/action/loginAction';
 class LoginContainer extends React.Component {
     render() {
-        return (
-            <LoginComponent {...this.props} />
-        );
+        return <LoginComponent {...this.props} />;
     }
 }
 const mapStateToProps = (state) => {
@@ -22,7 +20,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         loginAction: (data) => {
             dispatch(loginAction(data));
-        }
+        },
     };
 };
 

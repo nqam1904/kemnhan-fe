@@ -1,11 +1,11 @@
-import * as Types from "../../action/loginAction"
+import * as Types from '../../action/loginAction';
 import { put, takeEvery } from 'redux-saga/effects';
 import { loginApi } from '../api/loginApi';
-const error = "Không kết nối được với máy chủ";
+const error = 'Không kết nối được với máy chủ';
 function* loginSaga(action) {
     try {
         const response = yield loginApi(action.data);
-        console.log('res saga', response)
+    
         if (response.is_success !== true) {
             yield put({ type: Types.LOGIN_ERROR, error });
         } else {

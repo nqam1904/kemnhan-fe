@@ -1,53 +1,53 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
 }
 
 .App-logo {
-  animation: logoRotate 20s infinite linear;
+    animation: logoRotate 20s infinite linear;
 }
 .App-header {
-  min-height: 50vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes logoRotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 .center {
-  max-width: 500px;
-  margin: auto;
+    max-width: 500px;
+    margin: auto;
 }
 .white {
-  color: #fff !important;
+    color: #fff !important;
 }
 .mt-10 {
-  margin-top: 10px !important;
+    margin-top: 10px !important;
 }
 .ml-10 {
-  margin-left: 10px !important;
+    margin-left: 10px !important;
 }
 .mr-10 {
-  margin-right: 10px !important;
+    margin-right: 10px !important;
 }
 .mb-10 {
-  margin-bottom: 10px !important;
+    margin-bottom: 10px !important;
 }

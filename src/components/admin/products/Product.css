@@ -1,14 +1,12 @@
-.sub_text{
-    color:red !important;
-     
+.sub_text {
+    color: red !important;
 }
-.show_image{
+.show_image {
     display: flex;
     padding: 20px;
 }
-.show_image img{
+.show_image img {
     margin-right: 20px;
-
 }
 /* .testimonial-group, .row {
     overflow-x: auto;
@@ -18,5 +16,3 @@
     display: inline-block;
     float: none;
   } */
-
- 

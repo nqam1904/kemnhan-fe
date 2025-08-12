@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
-import CartComponent from '../../components/user/cart/CartComponent';
 import { connect } from 'react-redux';
-import { actDeleteAll, actDeleteItem, actUpdateItem } from '../../redux/action/cartAction'
+import CartComponent from '../../components/user/cart/CartComponent';
+import { actDeleteAll, actDeleteItem, actUpdateItem } from '../../redux/action/cartAction';
 class CartContainer extends Component {
     render() {
-        return (
-            <CartComponent {...this.props} />
-        );
+        return <CartComponent {...this.props} />;
     }
 }
-
 
 const mapStateToProps = (state) => {
-    // console.log(state)
     return {
-        cartItem: state.cartReducers
-    }
-}
+        cartItem: state.cartReducers,
+    };
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -27,9 +23,9 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actDeleteItem(id));
         },
         actDeleteAll: () => {
-            dispatch(actDeleteAll())
-        }
-    }
-}
+            dispatch(actDeleteAll());
+        },
+    };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(CartContainer);

@@ -1,144 +1,139 @@
 .nav {
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 200px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  background: linear-gradient(180deg,
-      rgba(255, 240, 246, 0.07) 0%,
-      rgba(255, 240, 246, 0.5) 31.05%,
-      #fff0f6 100%);
-  background-image: url(../../../res/image/header.png);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  /* background-color: #FEFFE6; */
-  /* z-index: 1; */
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    background: linear-gradient(180deg, rgba(255, 240, 246, 0.07) 0%, rgba(255, 240, 246, 0.5) 31.05%, #fff0f6 100%);
+    /* background image set inline via React to avoid css-loader resolving public asset */
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    /* background-color: #FEFFE6; */
+    /* z-index: 1; */
 }
 
 .nav .links a {
-  margin-top: 20px;
-  display: inline-block;
-  margin-left: 40px;
-  font-family: "Roboto Mono", monospace;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  color: #871400;
-  line-height: 30px;
+    margin-top: 20px;
+    display: inline-block;
+    margin-left: 40px;
+    font-family: 'Roboto Mono', monospace;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    color: #871400;
+    line-height: 30px;
 }
 
 .nav .links .mainlink {
-  color: #e0501b;
+    color: #e0501b;
 }
 
 .group-logo {
-  display: flex;
-  justify-content: center;
-  margin-top: 6px;
-  margin-left: 80px;
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+    margin-left: 80px;
 }
 
 .logo {
-  position: relative;
-  max-width: 50px;
-  height: 50px;
-  margin-top: 8px;
+    position: relative;
+    max-width: 50px;
+    height: 50px;
+    margin-top: 8px;
 }
 
 .logo1 {
-  max-width: 60px;
-  height: 60px;
-  margin-top: 0px;
+    max-width: 60px;
+    height: 60px;
+    margin-top: 0px;
 }
 
 .logo-title {
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1px;
-  width: 100px;
-  height: 24px;
-  margin-left: 18px;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1px;
+    width: 100px;
+    height: 24px;
+    margin-left: 18px;
 }
 
 .button-cart {
-  position: absolute;
-  top: 13px;
-  right: 78px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 170px;
-  height: 40px;
-  background: #fff0f6;
-  border: 1px solid #fa541c;
-  box-sizing: border-box;
-  border-radius: 4px;
+    position: absolute;
+    top: 13px;
+    right: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 170px;
+    height: 40px;
+    background: #fff0f6;
+    border: 1px solid #fa541c;
+    box-sizing: border-box;
+    border-radius: 4px;
 }
 
 .button-cart:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .button-cart .ic_cart {
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
 }
 
 .button-cart .title_cart {
-  color: #fa541c;
-  padding-top: 13px;
+    color: #fa541c;
+    padding-top: 13px;
 }
 
-
 .footer__modal {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-start !important;
-  padding: .75rem;
-  border-top: 1px solid #dee2e6;
-  border-bottom-right-radius: calc(.3rem - 1px);
-  border-bottom-left-radius: calc(.3rem - 1px);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start !important;
+    padding: 0.75rem;
+    border-top: 1px solid #dee2e6;
+    border-bottom-right-radius: calc(0.3rem - 1px);
+    border-bottom-left-radius: calc(0.3rem - 1px);
 }
 
 .footer__modal span {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
 .content__news {
-  display: flex;
-  justify-content: space-between;
-  text-align: center
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
 }
 
 .list__news {
-  overflow-y: scroll;
-  height: 500px;
+    overflow-y: scroll;
+    height: 500px;
 }
 
 .custom__link:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .image__news {
-
-  margin: 20px;
+    margin: 20px;
 }
 
 .image__news:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .item__news {
-  width: 30rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 30rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ItemAccount = props => {
+const ItemAccount = (props) => {
     function onDelete(id) {
         if (window.confirm(`Bạn có muốn xóa ${props.lastName} ? `)) {
             props.onDelete(id);
@@ -21,9 +21,7 @@ const ItemAccount = props => {
                 <td>{props.createDate.slice(0, 10).split('-').reverse().join('/')}</td>
                 <td>{props.writeDate.slice(0, 10).split('-').reverse().join('/')}</td>
                 <td className="text-center">
-                    <button
-                        className="btn btn-warning mr-10 white"
-                        onClick={() => onEdit(props.id)}>
+                    <button className="btn btn-warning mr-10 white" onClick={() => onEdit(props.id)}>
                         Sửa
                     </button>
                     <button className="btn btn-danger" onClick={() => onDelete(props.id)}>
@@ -33,6 +31,6 @@ const ItemAccount = props => {
             </tr>
         </>
     );
-}
+};
 
 export default ItemAccount;

@@ -1,45 +1,44 @@
-import *as Types from '../action/loginAction';
+import * as Types from '../action/loginAction';
 
 const initialState = {
     result: null,
     loading: false,
     data: null,
-    error: null
-}
+    error: null,
+};
 const loginReducers = (state = initialState, action) => {
-    // console.log(action)
     switch (action.type) {
         case Types.LOGIN:
             return Object.assign({}, state, {
                 loading: true,
                 error: null,
-                data: null
-            })
+                data: null,
+            });
         case Types.LOGIN_SUCCESS:
-            localStorage.setItem("token", action.response.access_token)
+            localStorage.setItem('token', action.response.access_token);
             return Object.assign({}, state, {
                 result: true,
                 loading: false,
                 error: false,
-                data: action.response
-            })
+                data: action.response,
+            });
 
         case Types.LOGIN_ERROR:
             return Object.assign({}, state, {
                 result: false,
                 loading: false,
                 data: null,
-                error: action.error
-            })
+                error: action.error,
+            });
         case Types.LOGOUT:
             return Object.assign({}, state, {
                 loading: false,
                 data: null,
-                error: null
-            })
+                error: null,
+            });
         default:
-            return state
+            return state;
     }
-}
+};
 
 export default loginReducers;

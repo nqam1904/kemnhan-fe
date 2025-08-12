@@ -1,7 +1,6 @@
 .landing img {
-  background-size: contain;
-  background-repeat: no-repeat;
-  width:100%;
-  /* z-index: 1; */
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100%;
+    /* z-index: 1; */
 }
- 

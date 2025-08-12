@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
-import { formatSubstring } from '../../../shared/Function';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import ImageAssets from '../../../constants/ImagesAsset';
+import { formatSubstring } from '../../../utils/Function';
 class CartItem extends Component {
     constructor(props) {
-        super(props)
-        this.state = {}
+        super(props);
+        this.state = {};
     }
     render() {
         var { item } = this.props;
-        console.log(item)
+
         return (
             <div className="cart_item">
                 <div className="content_item">
                     <div className="item_delete_1" onClick={() => this.props.onDeleteItem()}>
-                        <img src={require('../../../res/image/Delete.png').default} alt="delete" />
+                        <img src={ImageAssets.delete} alt="delete" />
                     </div>
                     <LazyLoadImage effect="blur" src={item.product.image} alt={item.product.name} />
                     <div className="mota">
@@ -22,9 +23,9 @@ class CartItem extends Component {
                     </div>
                 </div>
                 <div className="option_item">
-                    <img src={require('../../../res/image/tru.png').default} alt="tru" onClick={() => this.props.subItem()} />
+                    <img src={ImageAssets.tru} alt="minus" onClick={() => this.props.subItem()} />
                     <div className="quantity">{item.quantity}</div>
-                    <img src={require('../../../res/image/plus.png').default} alt="plus" onClick={() => this.props.plusItem()} />
+                    <img src={ImageAssets.plus} alt="plus" onClick={() => this.props.plusItem()} />
                 </div>
             </div>
         );
