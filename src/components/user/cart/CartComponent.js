@@ -167,7 +167,7 @@ class CartComponent extends Component {
                     });
                     history.push('/SuccessPayment');
                 })
-                .catch((_) => { });
+                .catch((_) => {});
         }
     };
 
@@ -181,7 +181,7 @@ class CartComponent extends Component {
             toast.success('Thành công!');
         }
     };
-    onSaveCustom = () => { };
+    onSaveCustom = () => {};
     render() {
         const { note, cart, showCustom, layout, firstName, lastName, email, address, phone } = this.state;
         const { cartItem } = this.props;
