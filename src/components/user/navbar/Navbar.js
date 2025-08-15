@@ -121,18 +121,19 @@ class Navbar extends Component {
                     >
                         Liên hệ
                     </Link>
-                    <button
-                        type="button"
-                        className="custom__link"
-                        onClick={() => {
+                    <Link
+                        to="/"
+                        onClick={(e) => {
+                            e.preventDefault();
                             this.setState({
                                 show: true,
                                 selectedNews: 0,
                             });
                         }}
                     >
-                        Khuyễn mãi
-                    </button>
+                        Khuyến mãi
+                    </Link>
+
                     <Link to="/gio-hang">
                         <div className="button-cart">
                             <img src={ImageAssets.icCart} alt="cart" className="ic_cart" />
