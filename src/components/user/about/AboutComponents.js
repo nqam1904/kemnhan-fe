@@ -82,9 +82,9 @@ class AboutComponents extends Component {
                         </Modal.Body>
                     </Modal>
                 </div>
-                <div className="about_video">
+                {/* <div className="about_video">
                     <VideoYoutube videoId={value.split('https://www.youtube.com/watch?v=')[1]} />
-                </div>
+                </div> */}
             </div>
         );
     }
