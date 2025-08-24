@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es6"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": "./src",
+    "paths": {
+      "assets/*": ["assets/*"],
+      "components/*": ["components/*"],
+      "constants/*": ["constants/*"],
+      "config/*": ["config/*"],
+      "config-global": ["config-global.ts"],
+      "hooks/*": ["hooks/*"],
+      "layouts/*": ["layouts/*"],
+      "pages/*": ["pages/*"],
+      "routes/*": ["routes/*"],
+      "redux/*": ["redux/*"],
+      "views/*": ["views/*"],
+      "store/*": ["store/*"],
+      "types/*": ["types/*"],
+      "utils/*": ["utils/*"],
+      "auth/*": ["auth/*"]
+    }
+  },
+  "include": [
+    "src",
+    "src/types"
+  ],
+  "exclude": [
+    "src/pages/admin/**",
+    "src/pages/user/**",
+    "src/views/**",
+    "src/routes.ts"
+  ]
+}

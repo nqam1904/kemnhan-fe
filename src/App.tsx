@@ -1,0 +1,25 @@
+import 'global.css';
+
+// ----------------------------------------------------------------------
+
+import { Router } from 'routes/sections';
+
+import { AuthProvider as JwtAuthProvider } from 'auth/context/jwt';
+
+import { ToastContainer } from 'react-toastify';
+import { ProgressBar } from './components/progress-bar';
+import ReduxProvider from './store/provider';
+import { buildProvidersTree } from './utils/providerTree';
+
+// ----------------------------------------------------------------------
+
+const ProvidersTree = buildProvidersTree([[ReduxProvider], [JwtAuthProvider], [ProgressBar]]);
+
+export default function App() {
+    return (
+        <ProvidersTree>
+            <ToastContainer />
+            <Router />
+        </ProvidersTree>
+    );
+}

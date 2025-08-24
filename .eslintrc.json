@@ -7,25 +7,36 @@
   },
   "extends": [
     "react-app",
-    "react-app/jest",
-    "plugin:prettier/recommended"
+    "react-app/jest"
   ],
-  "plugins": ["unused-imports"],
-  "parser": "@babel/eslint-parser",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "requireConfigFile": false,
-    "babelOptions": {
-      "presets": ["react-app"],
-      "envName": "development"
-    }
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "project": "./tsconfig.json"
   },
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "rules": {
     "react/prop-types": "off",
     "no-unused-vars": "off",
-    "unused-imports/no-unused-imports": "error",
-    "unused-imports/no-unused-vars": [
-      "warn",
-      { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
-    ]
-  }
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "rules": {
+        "no-undef": "off"
+      }
+    }
+  ]
 }
