@@ -1,3 +1,3 @@
 export * from './loading-screen';
 
-export * from './SplashScreen';
+export * from './splash-screen';

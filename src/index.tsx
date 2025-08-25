@@ -3,7 +3,7 @@ import 'react-activity/dist/react-activity.css';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import 'react-toastify/dist/ReactToastify.css';
 import App from './app';
-import './App.css';
+import './app.css';
 import './index.css';
 import { buildProvidersTree } from 'utils/providerTree';
 import { StrictMode, Suspense } from 'react';

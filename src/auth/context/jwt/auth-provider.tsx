@@ -56,7 +56,7 @@ export function AuthProvider({ children }: Props) {
             console.error(error);
             setState({ user: null, loading: false });
         }
-    }, [setState, dispatch]);
+    }, []);
 
     useEffect(() => {
         checkUserSession();

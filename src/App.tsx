@@ -7,7 +7,7 @@ import { Router } from 'routes/sections';
 import { AuthProvider as JwtAuthProvider } from 'auth/context/jwt';
 
 import { ToastContainer } from 'react-toastify';
-import { ProgressBar } from './components/progress-bar';
+import { ProgressBar } from './components';
 import ReduxProvider from './store/provider';
 import { buildProvidersTree } from './utils/providerTree';
 

@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { SplashScreen } from 'components/loading-screen';
+import { SplashScreen } from '@/components';
 
 const Jwt = {
     SignInPage: lazy(() =>
@@ -11,6 +11,7 @@ const Jwt = {
 
 export const authRoutes = [
     {
+        path: '',
         element: (
             <Suspense fallback={<SplashScreen />}>
                 <Outlet />

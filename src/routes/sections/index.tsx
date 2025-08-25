@@ -1,32 +1,32 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 
 import { authRoutes } from './auth';
-import { mainRoutes } from './main';
 import { dashboardRoutes } from './dashboard';
+import { mainRoutes } from './main';
 
 // ----------------------------------------------------------------------
 
 export function Router() {
-  return useRoutes([
-    {
-      path: '/',
-      /**
-       * Skip home page
-       * element: <Navigate to={CONFIG.auth.redirectPath} replace />,
-       */
-      element: <Navigate to="/" replace />,
-    },
+    return useRoutes([
+        {
+            path: '/',
+            /**
+             * Skip home page
+             * element: <Navigate to={CONFIG.auth.redirectPath} replace />,
+             */
+            element: <Navigate to="/trang-chu" replace />,
+        },
 
-    // Auth
-    ...authRoutes,
+        // Auth
+        ...authRoutes,
 
-    // Dashboard
-    ...dashboardRoutes,
+        // Dashboard
+        ...dashboardRoutes,
 
-    // Main
-    ...mainRoutes,
+        // Main
+        ...mainRoutes,
 
-    // No match
-    { path: '*', element: <Navigate to="/404" replace /> },
-  ]);
+        // No match
+        { path: '*', element: <Navigate to="/404" replace /> },
+    ]);
 }

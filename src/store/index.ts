@@ -4,7 +4,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 
-import { CONFIG } from 'config-global';
+import { CONFIG } from '@/config-global';
 
 import { RTKQueryApi } from './create-api';
 import rootReducer from './reducers';

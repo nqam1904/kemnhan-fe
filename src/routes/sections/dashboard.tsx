@@ -1,19 +1,21 @@
-import AccountContainer from 'pages/admin/AccountContainer';
-import CategoryContainer from 'pages/admin/CategoryContainer';
-import CustomerContainer from 'pages/admin/CustomerContainer';
-import HeaderContainer from 'pages/admin/HeaderContainer';
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { LoadingScreen } from 'components/loading-screen';
+import { LoadingScreen } from '@/components';
+import { AuthGuard } from 'auth/guard';
+import { DashboardLayout } from 'layouts/dashboard/main';
 
-import HomeContainer from 'pages/admin/HomeContainer';
-import MediaContainer from 'pages/admin/MediaContainer';
-import NewsContainer from 'pages/admin/NewsContainer';
-import NotFoundContainer from 'pages/admin/NotFoundContainer';
-import OrderContainer from 'pages/admin/OrderContainer';
-import ProductContainer from 'pages/admin/ProductContainer';
-import SettingContainer from 'pages/admin/SettingContainer';
+const AccountPage = lazy(() => import('pages/dashboard/account-page'));
+const HomePage = lazy(() => import('pages/dashboard/home-page'));
+const CategoryPage = lazy(() => import('pages/dashboard/category-page'));
+const CustomerPage = lazy(() => import('pages/dashboard/customer-page'));
+const Index = lazy(() => import('pages/dashboard'));
+const MediaPage = lazy(() => import('pages/dashboard/media-page'));
+const NewsPage = lazy(() => import('pages/dashboard/news-page'));
+const NotFoundPage = lazy(() => import('pages/dashboard/not-found-page'));
+const OrderPage = lazy(() => import('pages/dashboard/order-page'));
+const ProductPage = lazy(() => import('pages/dashboard/product-page'));
+const SettingPage = lazy(() => import('pages/dashboard/setting-page'));
 
 export const dashboardRoutes = [
     {
@@ -25,25 +27,29 @@ export const dashboardRoutes = [
         children: [
             {
                 element: (
-                    <Suspense fallback={<LoadingScreen />}>
-                        <Outlet />
-                    </Suspense>
+                    <AuthGuard>
+                        <DashboardLayout>
+                            <Suspense fallback={<LoadingScreen />}>
+                                <Outlet />
+                            </Suspense>
+                        </DashboardLayout>
+                    </AuthGuard>
                 ),
                 path: 'dashboard',
                 children: [
-                    { index: true, element: <HomeContainer /> },
-                    { path: 'account', element: <AccountContainer /> },
-                    { path: 'category', element: <CategoryContainer /> },
-                    { path: 'customer', element: <CustomerContainer /> },
-                    { path: 'header', element: <HeaderContainer /> },
-                    { path: 'media', element: <MediaContainer /> },
-                    { path: 'news', element: <NewsContainer /> },
-                    { path: 'order', element: <OrderContainer /> },
-                    { path: 'product', element: <ProductContainer /> },
-                    { path: 'setting', element: <SettingContainer /> },
-                    { path: '*', element: <NotFoundContainer /> },
+                    { index: true, element: <Index /> },
+                    { path: 'home', element: <HomePage /> },
+                    { path: 'account', element: <AccountPage /> },
+                    { path: 'category', element: <CategoryPage /> },
+                    { path: 'customer', element: <CustomerPage /> },
+                    { path: 'media', element: <MediaPage /> },
+                    { path: 'news', element: <NewsPage /> },
+                    { path: 'order', element: <OrderPage /> },
+                    { path: 'product', element: <ProductPage /> },
+                    { path: 'setting', element: <SettingPage /> },
                 ],
             },
+            { path: 'dashboard/*', element: <NotFoundPage /> },
         ],
     },
 ];

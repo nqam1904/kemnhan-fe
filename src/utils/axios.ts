@@ -2,7 +2,7 @@ import type { AxiosRequestConfig } from 'axios';
 
 import axios from 'axios';
 
-import { CONFIG } from 'config-global';
+import { CONFIG } from '@/config-global';
 
 // ----------------------------------------------------------------------
 
@@ -43,7 +43,9 @@ export const endpoints = {
         resetPassword: '',
         authorizeMe: 'api/v1/auth/me',
     },
-    user: {
-        profile: '',
+    main: {
+        products: 'products',
+        settings: 'settings',
+        promotions: 'promotions',
     },
 };

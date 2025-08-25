@@ -19,7 +19,7 @@ export type ConfigValue = {
 // ----------------------------------------------------------------------
 
 export const CONFIG: ConfigValue = {
-    appName: process.env.REACT_APP_APP_NAME || 'kemnhanonline',
+    appName: process.env.REACT_APP_APP_NAME || 'Kemnhanonline',
     appVersion: process.env.REACT_APP_APP_VERSION || packageJson.version,
     serverUrl: process.env.REACT_APP_SERVER_URL || '',
     imageUrl: process.env.REACT_APP_IMAGE_URL || '',

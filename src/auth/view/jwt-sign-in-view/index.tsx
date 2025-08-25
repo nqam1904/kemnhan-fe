@@ -3,16 +3,16 @@ import { Button, Card, Form } from 'react-bootstrap';
 
 import { useRouter } from 'routes/hooks';
 
-import CustomAlert from 'components/custom-alert/CustomAlert';
-
 import { useAuthContext } from 'auth/hooks';
 
+import { CustomAlert } from '@/components';
 import { STORAGE_ACCESS_TOKEN, STORAGE_REFRESH_TOKEN } from 'auth/context/jwt';
 import { useLazyGetAuthorizeMeQuery, useSignInMutation } from 'store/apis/auth';
 import { BackgroundImage, LoginContainer, Logo, LogoWrapper, Wrapper } from './styles';
+import { isValidEmailAddress } from '@/utils/format-string';
 
-const LOGO = process.env.PUBLIC_URL + '/assets/images/logo.png';
-const BG_IMAGE = process.env.PUBLIC_URL + '/assets/images/bg3.png';
+const LOGO = '/assets/images/logo.png';
+const BACKGROUND_IMAGE = '/assets/images/bg3.png';
 
 export const JwtSignInView: React.FC = () => {
     const [errorUsername, setErrorUsername] = useState<string>('');
@@ -55,17 +55,38 @@ export const JwtSignInView: React.FC = () => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        onFinish({ email, password });
+
+        let hasError = false;
+
+        const trimmedEmail = email?.trim() || '';
+        const trimmedPassword = password?.trim() || '';
+
+        if (!trimmedEmail) {
+            setErrorUsername('Vui lòng nhập email.');
+            hasError = true;
+        } else if (!isValidEmailAddress(trimmedEmail)) {
+            setErrorUsername('Email không hợp lệ.');
+            hasError = true;
+        }
+
+        if (!trimmedPassword) {
+            setErrorPassword('Vui lòng nhập mật khẩu.');
+            hasError = true;
+        }
+
+        if (hasError) return;
+
+        onFinish({ email: trimmedEmail, password: trimmedPassword });
     };
 
     return (
         <Wrapper>
-            <BackgroundImage src={BG_IMAGE} alt="background" />
+            <BackgroundImage src={BACKGROUND_IMAGE} alt="background" />
 
             <LoginContainer>
                 <LogoWrapper>
                     <Logo src={LOGO} alt="logo" />
-                    <h3 style={{ marginTop: 10 }}>Đăng nhập eKYC Portal</h3>
+                    <h3 style={{ marginTop: 10 }}>Đăng nhập Portal</h3>
                 </LogoWrapper>
 
                 <Card>
@@ -89,7 +110,7 @@ export const JwtSignInView: React.FC = () => {
                             </Form.Group>
 
                             <Form.Group controlId="loginPassword" className="mt-3">
-                                <Form.Label>Password</Form.Label>
+                                <Form.Label>Mật khẩu</Form.Label>
                                 <Form.Control
                                     type="password"
                                     placeholder="Nhập mật khẩu"
@@ -120,8 +141,6 @@ export const JwtSignInView: React.FC = () => {
                         </div>
                     </Card.Body>
                 </Card>
-
-                <div className="text-center text-muted my-3">Hoặc</div>
             </LoginContainer>
         </Wrapper>
     );

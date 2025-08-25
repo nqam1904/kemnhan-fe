@@ -5,19 +5,19 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     background-color: #000;
-    height: calc(100vh - 32px);
+    position: relative;
+    min-height: 100vh;
     padding: 16px;
 `;
 
 const BackgroundImage = styled.img`
-    max-width: 485px;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-
-    @media (max-width: 768px) {
-        max-width: 90%;
-        margin-bottom: 24px;
-        display: none;
-    }
+    height: 100%;
+    object-fit: fill ;
+    z-index: 0;
 `;
 
 const LoginContainer = styled.div`
@@ -28,6 +28,8 @@ const LoginContainer = styled.div`
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     background-color: white;
     margin-left: 74px;
+    position: relative;
+    z-index: 1;
 
     @media (max-width: 768px) {
         margin-left: 0;

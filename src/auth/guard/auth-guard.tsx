@@ -3,9 +3,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'routes/hooks';
 import { paths } from 'routes/paths';
 
-import { CONFIG } from 'config-global';
+import { CONFIG } from '@/config-global';
 
-import { SplashScreen } from 'components/loading-screen';
+import { SplashScreen } from '@/components';
 
 import { useAuthContext } from '../hooks';
 
@@ -59,7 +59,6 @@ export function AuthGuard({ children }: Props) {
 
     useEffect(() => {
         checkPermissions();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [authenticated, loading]);
 
     if (isChecking) {

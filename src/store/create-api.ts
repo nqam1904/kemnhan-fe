@@ -9,7 +9,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { isEmpty } from 'lodash';
 import { Mutex } from 'utils/mutex';
 
-import { CONFIG } from 'config-global';
+import { CONFIG } from '@/config-global';
 
 import { STORAGE_ACCESS_TOKEN, STORAGE_REFRESH_TOKEN } from 'auth/context/jwt';
 import { signOut as jwtSignOut } from 'auth/context/jwt/action';
@@ -175,7 +175,7 @@ export const RTKQueryApi = createApi({
     // * Common config for all resquest
     baseQuery: dynamicBaseQuery,
 
-    tagTypes: ['User'],
+    tagTypes: [],
     refetchOnMountOrArgChange: true,
 
     // * endpoints (call request)
