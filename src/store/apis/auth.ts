@@ -3,7 +3,7 @@ import { endpoints } from 'utils/axios';
 import { RTKQueryApi } from '../create-api';
 
 import { setTokens } from '../slices/auth';
-import type { SignInRequest, SignInResponse, SignUpRequest, SignUpResponse } from '../types/auth';
+import type { SignInRequest, SignInResponse } from '../types/auth';
 
 export const authApi = RTKQueryApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -16,27 +16,20 @@ export const authApi = RTKQueryApi.injectEndpoints({
             async onQueryStarted(_record, { dispatch, queryFulfilled }) {
                 const { data: result } = await queryFulfilled;
 
-                if (result?.data) {
-                    const { token = '', refreshToken = '' } = result.data;
-                    dispatch(setTokens({ accessToken: token, refreshToken }));
+                if (result) {
+                    const { access_token = '' } = result;
+                    dispatch(setTokens({ accessToken: access_token }));
                 }
             },
         }),
-        signUp: builder.mutation<SignUpResponse, SignUpRequest>({
-            query: (body) => ({
-                url: endpoints.auth.signUp,
-                method: 'POST',
-                body,
-            }),
-        }),
-        getAuthorizeMe: builder.query<any, void>({
-            query: () => ({
-                url: endpoints.auth.authorizeMe,
+
+        getAuthorizeMe: builder.query<any, { id: number }>({
+            query: ({ id }) => ({
+                url: `${endpoints.auth.authorizeMe}/${id}`,
                 method: 'GET',
             }),
         }),
     }),
 });
 
-// Export hooks for usage in functional components
-export const { useSignInMutation, useSignUpMutation, useLazyGetAuthorizeMeQuery } = authApi;
+export const { useSignInMutation, useLazyGetAuthorizeMeQuery } = authApi;

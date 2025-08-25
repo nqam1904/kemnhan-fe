@@ -1,17 +1,11 @@
 export type User = {
-  id: string;
-  createdAt: string;
-  avatar: string | null;
-  email: string;
-  firstName: string;
-  lastName: string;
+    firstName: string;
+    lastName: string;
+    isActive: boolean;
+    phone: string;
+    email: string;
+    role: string;
+    id: number;
+    createDate: string;
+    writeDate: string;
 };
-
-export type UserProfileResponse = {
-  data: User;
-};
-
-export interface UserResponse {
-  //   data: TResponseApi<User[]>;
-  data: User;
-}

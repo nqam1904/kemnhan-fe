@@ -7,7 +7,7 @@ import { useSetState } from 'hooks/use-set-state';
 import { setTokens } from 'store/slices/auth';
 
 import { AuthContext } from '../auth-context';
-import { STORAGE_ACCESS_TOKEN, STORAGE_REFRESH_TOKEN } from './constant';
+import { STORAGE_ACCESS_TOKEN, STORAGE_USER } from './constant';
 import { setSession } from './utils';
 
 import type { AuthState } from '../../types';
@@ -36,16 +36,14 @@ export function AuthProvider({ children }: Props) {
             const accessToken =
                 sessionStorage.getItem(STORAGE_ACCESS_TOKEN) ||
                 localStorage.getItem(STORAGE_ACCESS_TOKEN);
-            const refreshToken =
-                sessionStorage.getItem(STORAGE_REFRESH_TOKEN) ||
-                localStorage.getItem(STORAGE_REFRESH_TOKEN);
 
             if (accessToken) {
-                setSession(accessToken, refreshToken);
-                dispatch(setTokens({ accessToken, refreshToken: refreshToken ?? '' }));
-                const user = {};
-                if (!isEmpty(user)) {
-                    setState({ user: { ...user, accessToken, refreshToken }, loading: false });
+                setSession(accessToken);
+                dispatch(setTokens({ accessToken }));
+                const user = localStorage.getItem(STORAGE_USER);
+                const userData = JSON.parse(user || '{}');
+                if (!isEmpty(userData)) {
+                    setState({ user: { ...userData, accessToken }, loading: false });
                 } else {
                     setState({ user: null, loading: false });
                 }
@@ -60,7 +58,6 @@ export function AuthProvider({ children }: Props) {
 
     useEffect(() => {
         checkUserSession();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // ----------------------------------------------------------------------

@@ -6,10 +6,10 @@ import { useRouter } from 'routes/hooks';
 import { useAuthContext } from 'auth/hooks';
 
 import { CustomAlert } from '@/components';
-import { STORAGE_ACCESS_TOKEN, STORAGE_REFRESH_TOKEN } from 'auth/context/jwt';
-import { useLazyGetAuthorizeMeQuery, useSignInMutation } from 'store/apis/auth';
-import { BackgroundImage, LoginContainer, Logo, LogoWrapper, Wrapper } from './styles';
 import { isValidEmailAddress } from '@/utils/format-string';
+import { setLocalStorage } from 'auth/context/jwt';
+import { useSignInMutation } from 'store/apis/auth';
+import { BackgroundImage, LoginContainer, Logo, LogoWrapper, Wrapper } from './styles';
 
 const LOGO = '/assets/images/logo.png';
 const BACKGROUND_IMAGE = '/assets/images/bg3.png';
@@ -22,7 +22,6 @@ export const JwtSignInView: React.FC = () => {
     const { checkUserSession } = useAuthContext();
     const router = useRouter();
     const [authen] = useSignInMutation();
-    const [authorize] = useLazyGetAuthorizeMeQuery();
 
     const onFinish = async (values: any) => {
         const body = {
@@ -31,15 +30,11 @@ export const JwtSignInView: React.FC = () => {
         };
         try {
             const response = await authen(body).unwrap();
-            const { code, data } = response || {};
-            if (code === 200) {
-                const { token = '' } = data || {};
-                localStorage.setItem(STORAGE_ACCESS_TOKEN, token);
-                localStorage.setItem(STORAGE_REFRESH_TOKEN, token);
-                const resAuthorize = await authorize().unwrap();
-                const { code: authoCode, data: authoData } = resAuthorize || {};
-                const { status } = authoData || {};
-                if (authoCode === 200 && status === 1) {
+            const { is_success, user } = response || {};
+            if (is_success) {
+                const { access_token = '' } = response || {};
+                await setLocalStorage(access_token, JSON.stringify(user));
+                if (user.role === 'admin') {
                     setErrorUsername('');
                     setErrorPassword('');
                     await checkUserSession?.();

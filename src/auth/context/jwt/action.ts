@@ -1,6 +1,3 @@
-import axios, { endpoints } from 'utils/axios';
-
-import { STORAGE_KEY } from './constant';
 import { setLocalStorage, setSession } from './utils';
 
 // ----------------------------------------------------------------------
@@ -51,41 +48,41 @@ export type SignUpParams = {
 /** **************************************
  * Sign up
  *************************************** */
-export const signUp = async ({
-    email,
-    password,
-    firstName,
-    lastName,
-}: SignUpParams): Promise<void> => {
-    const params = {
-        email,
-        password,
-        firstName,
-        lastName,
-    };
+// export const signUp = async ({
+//     email,
+//     password,
+//     firstName,
+//     lastName,
+// }: SignUpParams): Promise<void> => {
+//     const params = {
+//         email,
+//         password,
+//         firstName,
+//         lastName,
+//     };
 
-    try {
-        const res = await axios.post(endpoints.auth.signUp, params);
+//     try {
+//         const res = await axios.post(endpoints.auth.signUp, params);
 
-        const { accessToken } = res.data;
+//         const { accessToken } = res.data;
 
-        if (!accessToken) {
-            throw new Error('Access token not found in response');
-        }
+//         if (!accessToken) {
+//             throw new Error('Access token not found in response');
+//         }
 
-        sessionStorage.setItem(STORAGE_KEY, accessToken);
-    } catch (error) {
-        console.error('Error during sign up:', error);
-        throw error;
-    }
-};
+//         sessionStorage.setItem(STORAGE_KEY, accessToken);
+//     } catch (error) {
+//         console.error('Error during sign up:', error);
+//         throw error;
+//     }
+// };
 
 /** **************************************
  * Sign out
  *************************************** */
 export const signOut = async (): Promise<void> => {
     try {
-        await setSession(null, null);
+        await setSession(null);
         await setLocalStorage(null, null);
     } catch (error) {
         console.error('Error during sign out:', error);

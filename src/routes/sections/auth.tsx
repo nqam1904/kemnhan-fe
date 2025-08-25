@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 
+import { GuestGuard } from '@/auth/guard';
 import { SplashScreen } from '@/components';
 
 const Jwt = {
@@ -8,7 +9,19 @@ const Jwt = {
         import('auth/view/jwt-sign-in-view').then((m) => ({ default: m.JwtSignInView }))
     ),
 };
-
+const authJwt = {
+    path: '',
+    children: [
+        {
+            path: 'sign-in',
+            element: (
+                <GuestGuard>
+                    <Jwt.SignInPage />
+                </GuestGuard>
+            ),
+        },
+    ],
+};
 export const authRoutes = [
     {
         path: '',
@@ -17,11 +30,6 @@ export const authRoutes = [
                 <Outlet />
             </Suspense>
         ),
-        children: [
-            {
-                path: 'sign-in',
-                element: <Jwt.SignInPage />,
-            },
-        ],
+        children: [authJwt],
     },
 ];

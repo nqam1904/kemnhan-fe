@@ -2,7 +2,7 @@ import { paths } from 'routes/paths';
 
 import axios from 'utils/axios';
 
-import { STORAGE_ACCESS_TOKEN, STORAGE_KEY, STORAGE_REFRESH_TOKEN } from './constant';
+import { STORAGE_ACCESS_TOKEN, STORAGE_KEY, STORAGE_USER } from './constant';
 
 // ----------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ export function tokenExpired(exp: number) {
 
 // ----------------------------------------------------------------------
 
-export async function setSession(accessToken: string | null, refreshToken: string | null) {
+export async function setSession(accessToken: string | null) {
     try {
         if (accessToken) {
             sessionStorage.setItem(STORAGE_ACCESS_TOKEN, accessToken);
@@ -79,12 +79,6 @@ export async function setSession(accessToken: string | null, refreshToken: strin
             sessionStorage.removeItem(STORAGE_ACCESS_TOKEN);
             delete axios.defaults.headers.common.Authorization;
         }
-
-        if (refreshToken) {
-            sessionStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken);
-        } else {
-            sessionStorage.removeItem(STORAGE_REFRESH_TOKEN);
-        }
     } catch (error) {
         console.error('Error during set session:', error);
         throw error;
@@ -92,7 +86,7 @@ export async function setSession(accessToken: string | null, refreshToken: strin
 }
 
 // ----------------------------------------------------------------------
-export async function setLocalStorage(accessToken: string | null, refreshToken: string | null) {
+export async function setLocalStorage(accessToken: string | null, user: string | null) {
     try {
         if (accessToken) {
             localStorage.setItem(STORAGE_ACCESS_TOKEN, accessToken);
@@ -101,11 +95,10 @@ export async function setLocalStorage(accessToken: string | null, refreshToken: 
             localStorage.removeItem(STORAGE_ACCESS_TOKEN);
             delete axios.defaults.headers.common.Authorization;
         }
-
-        if (refreshToken) {
-            localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken);
+        if (user) {
+            localStorage.setItem(STORAGE_USER, user);
         } else {
-            localStorage.removeItem(STORAGE_REFRESH_TOKEN);
+            localStorage.removeItem(STORAGE_USER);
         }
     } catch (error) {
         console.error('Error during set session:', error);

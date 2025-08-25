@@ -6,21 +6,20 @@ import type {
 } from '@reduxjs/toolkit/query/react';
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { isEmpty } from 'lodash';
 import { Mutex } from 'utils/mutex';
 
 import { CONFIG } from '@/config-global';
 
-import { STORAGE_ACCESS_TOKEN, STORAGE_REFRESH_TOKEN } from 'auth/context/jwt';
+import { STORAGE_ACCESS_TOKEN } from 'auth/context/jwt';
 import { signOut as jwtSignOut } from 'auth/context/jwt/action';
 
 import errors from './errors';
 import { isErrorWithMessage, isFetchBaseQueryError } from './helpers';
-import { setTokens } from './slices/auth';
+// import { setTokens } from './slices/auth';
 import { showNotify } from './slices/notify';
 
 import type { RootState } from '.';
-import type { RefreshTokenResponse } from './types/auth';
+// import type { RefreshTokenResponse } from './types/auth';
 import type { NotifyState } from './types/notify';
 
 const signOut = jwtSignOut;
@@ -109,37 +108,35 @@ const dynamicBaseQuery: BaseQueryFn<any | FetchArgs, unknown, FetchBaseQueryErro
                 try {
                     /* A call to the refresh token endpoint to get a new access token. */
                     // Refresh to get new access token
-                    const { tokens } = (api.getState() as RootState).auth;
-                    const currentToken =
-                        sessionStorage.getItem(STORAGE_REFRESH_TOKEN) ||
-                        localStorage.getItem(STORAGE_REFRESH_TOKEN);
-                    const availableToken = currentToken || tokens?.refreshToken;
-
-                    const { data } = await baseQueryInit()(
-                        {
-                            url: 'auth/refresh-token',
-                            method: 'POST',
-                            params: {
-                                refreshToken: availableToken,
-                            },
-                        },
-                        api,
-                        extraOptions
-                    );
-
-                    if (!isEmpty(data)) {
-                        const { token, refreshToken } = data as RefreshTokenResponse['data'];
-                        api.dispatch(setTokens({ accessToken: token, refreshToken }));
-                        localStorage.setItem(STORAGE_ACCESS_TOKEN, token);
-                        localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken);
-                        window.location.reload();
-                    } else {
-                        // api.dispatch(disconnectSocket());
-                        await signOut();
-                        window.location.reload();
-                    }
-                    await signOut();
-                    window.location.reload();
+                    // const { tokens } = (api.getState() as RootState).auth;
+                    // const currentToken =
+                    //     sessionStorage.getItem(STORAGE_ACCESS_TOKEN) ||
+                    //     localStorage.getItem(STORAGE_ACCESS_TOKEN);
+                    // const availableToken = currentToken || tokens?.refreshToken;
+                    // const { data } = await baseQueryInit()(
+                    //     {
+                    //         url: 'auth/refresh-token',
+                    //         method: 'POST',
+                    //         params: {
+                    //             refreshToken: availableToken,
+                    //         },
+                    //     },
+                    //     api,
+                    //     extraOptions
+                    // );
+                    // if (!isEmpty(data)) {
+                    //     const { token, refreshToken } = data as RefreshTokenResponse['data'];
+                    //     api.dispatch(setTokens({ accessToken: token, refreshToken }));
+                    //     localStorage.setItem(STORAGE_ACCESS_TOKEN, token);
+                    //     localStorage.setItem(STORAGE_ACCESS_TOKEN, refreshToken);
+                    //     window.location.reload();
+                    // } else {
+                    //     // api.dispatch(disconnectSocket());
+                    //     await signOut();
+                    //     window.location.reload();
+                    // }
+                    // await signOut();
+                    // window.location.reload();
                 } finally {
                     // release must be called once the mutex should be released again.
                     release();

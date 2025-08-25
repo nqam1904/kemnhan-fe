@@ -5,7 +5,6 @@ import type { RootState } from '..';
 const initialState: any = {
   tokens: {
     accessToken: '',
-    refreshToken: '',
   },
 };
 

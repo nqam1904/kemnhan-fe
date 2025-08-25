@@ -34,14 +34,11 @@ export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
 
 export const endpoints = {
     auth: {
-        signIn: 'api/v1/auth/login',
-        signUp: '',
-        forgotPassword: '',
-        changePassword: '',
-        verifyForgotPassword: '',
-        resendForgotPassword: '',
-        resetPassword: '',
-        authorizeMe: 'api/v1/auth/me',
+        signIn: 'auth/login',
+        authorizeMe: 'users',
+    },
+    dashboard: {
+        users: 'users',
     },
     main: {
         products: 'products',
