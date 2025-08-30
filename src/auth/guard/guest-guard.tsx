@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { useAuthContext } from '../hooks';
-import { useRouter, useSearchParams } from '@/routes/hooks';
-import { CONFIG } from '@/config-global';
 import { SplashScreen } from '@/components';
+import { CONFIG } from '@/config-global';
+import { useRouter, useSearchParams } from '@/routes/hooks';
+import { useAuthContext } from '../hooks';
 
 // ----------------------------------------------------------------------
 

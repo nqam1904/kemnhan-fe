@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 
+import ClearableInput from '@/components/clearable-input';
+import { isValidEmailAddress, validatePhoneNumber } from '@/utils/format-string';
 import ImageAssets from 'constants/ImagesAsset';
 import { fNumber } from 'utils/format-number';
-import './Cart.css';
 import CartItem from './cart-item';
-import { isValidEmailAddress, validatePhoneNumber } from '@/utils/format-string';
+import './Cart.css';
 
 interface CartComponentProps {
     cartItem: any[];
@@ -195,61 +196,59 @@ function CartComponent(props: CartComponentProps) {
             </div>
             <div className="cart_custom_body">
                 <div className="cart_custom_detail">
-                    <input
+                    <ClearableInput
                         className="input_custom"
                         style={{ marginLeft: 20, width: '90%' }}
-                        onChange={onChange}
+                        onChange={onChange as any}
                         name="firstName"
                         value={firstName}
                         placeholder="Nhập họ"
                     />{' '}
                     <br />
-                    <input
+                    <ClearableInput
                         className="input_custom"
                         style={{ marginLeft: 20, width: '90%' }}
-                        onChange={onChange}
+                        onChange={onChange as any}
                         name="lastName"
                         value={lastName}
                         placeholder="Nhập tên"
                     />{' '}
                     <br />
-                    <input
+                    <ClearableInput
                         className="input_custom"
                         placeholder="Nhập địa chỉ"
                         style={{ marginLeft: 20, width: '90%' }}
                         name="address"
                         value={address}
-                        onChange={onChange}
+                        onChange={onChange as any}
                     />
                     <br />
-                    <input
+                    <ClearableInput
                         className="input_custom"
                         style={{ marginLeft: 20, width: '90%' }}
                         placeholder="Nhập số điện thoại"
                         name="phone"
-                        type="number"
-                        pattern="[0-9]*"
-                        inputMode="numeric"
-                        value={phone.toString()}
-                        onChange={onChange}
+                        type="tel"
+                        value={phone}
+                        onChange={onChange as any}
                     />
                     <br />
-                    <input
+                    <ClearableInput
                         className="input_custom"
                         style={{ marginLeft: 20, width: '90%' }}
                         placeholder="Nhập email"
                         value={email}
                         name="email"
                         type="email"
-                        onChange={onChange}
+                        onChange={onChange as any}
                     />
-                    <input
+                    <ClearableInput
                         className="input_custom"
                         style={{ marginLeft: 20, width: '90%' }}
                         placeholder="Nhập ghi chú nếu có"
                         value={note}
                         name="note"
-                        onChange={onChange}
+                        onChange={onChange as any}
                     />
                 </div>
             </div>

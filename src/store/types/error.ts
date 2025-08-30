@@ -1,4 +1,4 @@
 export type TResponseErrorWithMessage = {
-  error: string;
-  message: string;
+    error: string;
+    message: string;
 };

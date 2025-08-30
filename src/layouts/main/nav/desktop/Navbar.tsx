@@ -1,3 +1,4 @@
+import { paths } from '@/routes/paths';
 import { useGetPromotionsQuery } from '@/store/apis/promotions';
 import ImageAssets from 'constants/ImagesAsset';
 import { useEffect, useState } from 'react';
@@ -7,7 +8,6 @@ import { Link } from 'react-router-dom';
 import resolveImageUrl from 'utils/image-url';
 import '../Navbar.css';
 import NavbarMobile from '../mobile/NavbarMobile';
-import { paths } from '@/routes/paths';
 
 interface Promotion {
     name: string;

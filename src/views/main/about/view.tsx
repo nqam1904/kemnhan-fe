@@ -8,7 +8,7 @@ import './about.css';
 function AboutComponents() {
     const [isShowModal, setIsShowModal] = useState<boolean>(false);
     const [value, setValue] = useState<any>({});
-    
+
     const { data: aboutData } = useGetAboutQuery();
     useEffect(() => {
         if (aboutData) {

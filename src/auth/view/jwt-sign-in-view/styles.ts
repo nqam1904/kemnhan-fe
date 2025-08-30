@@ -16,7 +16,7 @@ const BackgroundImage = styled.img`
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: fill ;
+    object-fit: fill;
     z-index: 0;
 `;
 

@@ -9,7 +9,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     return (
         <div>
             <Navbar />
-            {children}
+            <div className="d-flex flex-column flex-fill p-4">{children}</div>
         </div>
     );
 }

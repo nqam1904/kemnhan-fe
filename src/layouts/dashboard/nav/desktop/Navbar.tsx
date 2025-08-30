@@ -1,22 +1,30 @@
-import React, { useState } from 'react';
+import { signOut } from '@/auth/context/jwt/action';
+import { useAuthContext } from '@/auth/hooks/use-auth-context';
+import ImageAssets from '@/constants/ImagesAsset';
+import { useRouter } from '@/routes/hooks';
+import { paths } from '@/routes/paths';
+import React from 'react';
 import { Navbar as BsNavbar, Button, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { paths } from '@/routes/paths';
-
-import ImageAssets from 'constants/ImagesAsset';
 
 const Navbar: React.FC = () => {
-    const [, setLogout] = useState(false);
+    const router = useRouter();
+    const { user, setState } = useAuthContext();
 
     const onLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userData');
-        setLogout(true);
+        signOut()
+            .then(() => {
+                setState({ user: null });
+                router.refresh();
+            })
+            .catch(() => {
+                setState({ user: null });
+                router.refresh();
+            });
     };
 
-    const user = JSON.parse(localStorage.getItem('token') || 'null');
     return (
-        <BsNavbar collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top">
+        <BsNavbar collapseOnSelect expand="lg" bg="light" variant="light" sticky="top">
             <BsNavbar.Brand as={Link} to={paths.dashboard.root}>
                 <img src={ImageAssets.logo} width={50} height={50} alt="#" />
             </BsNavbar.Brand>
@@ -45,12 +53,14 @@ const Navbar: React.FC = () => {
                         Tin khuyến mãi
                     </Nav.Link>
                 </Nav>
-                <BsNavbar bg="dark">
-                    <BsNavbar.Brand>
-                        Xin Chào: {user?.firstName + ' ' + user?.lastName}
-                    </BsNavbar.Brand>
-                </BsNavbar>
-                <Button onClick={onLogout} type="button" variant="outline-success">
+                {user && (
+                    <BsNavbar bg="light">
+                        <BsNavbar.Brand>
+                            Xin Chào: {user?.firstName + ' ' + user?.lastName}
+                        </BsNavbar.Brand>
+                    </BsNavbar>
+                )}
+                <Button onClick={onLogout} type="button" variant="outline-danger">
                     Đăng xuất
                 </Button>
             </BsNavbar.Collapse>

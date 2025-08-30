@@ -21,7 +21,7 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "craco.config.js"],
   "exclude": [
     "node_modules"
   ]

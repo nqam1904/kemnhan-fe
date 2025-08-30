@@ -1,15 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { StrictMode, Suspense } from 'react';
 import 'react-activity/dist/react-activity.css';
+import { createRoot } from 'react-dom/client';
+import { HelmetProvider } from 'react-helmet-async';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import { BrowserRouter } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+import { buildProvidersTree } from 'utils/providerTree';
 import App from './app';
 import './app.css';
 import './index.css';
-import { buildProvidersTree } from 'utils/providerTree';
-import { StrictMode, Suspense } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { createRoot } from 'react-dom/client';
-import { HelmetProvider } from 'react-helmet-async';
 
 const ProvidersTree = buildProvidersTree([
     [StrictMode],

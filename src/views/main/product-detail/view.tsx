@@ -132,7 +132,10 @@ function ProductDetail(props: ProductDetailProps) {
                                 >
                                     <span>Mua ngay</span>
                                 </div>
-                                <div className="btn_shopee" onClick={() => window.open(shopeeUrl, '_blank')}>
+                                <div
+                                    className="btn_shopee"
+                                    onClick={() => window.open(shopeeUrl, '_blank')}
+                                >
                                     <img src={ImageAssets.shopee} width={40} alt="shopee" />
                                     <span style={{ marginLeft: 10 }}>Shopee</span>
                                 </div>

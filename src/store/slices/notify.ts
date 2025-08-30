@@ -6,26 +6,26 @@ import type { RootState } from '..';
 import type { NotifyState } from '../types/notify';
 
 const initialState: NotifyState = {
-  type: 'success',
-  placement: 'topRight',
-  message: 'Success',
-  description: '',
-  duration: 5,
+    type: 'success',
+    placement: 'topRight',
+    message: 'Success',
+    description: '',
+    duration: 5,
 };
 
 const notifySlice = createSlice({
-  name: 'notify',
-  initialState,
-  reducers: {
-    showNotify: (state, { payload }: PayloadAction<NotifyState>) => {
-      const newState = {
-        ...state,
-        ...payload,
-      };
+    name: 'notify',
+    initialState,
+    reducers: {
+        showNotify: (state, { payload }: PayloadAction<NotifyState>) => {
+            const newState = {
+                ...state,
+                ...payload,
+            };
 
-      return newState;
+            return newState;
+        },
     },
-  },
 });
 
 export const { showNotify } = notifySlice.actions;

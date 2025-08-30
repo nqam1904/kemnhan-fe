@@ -1,12 +1,12 @@
-import { CONFIG } from '@/config-global';
-import axios from 'axios';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useGetCustomersQuery, useLazyGetCustomerByIdQuery } from '@/store/apis/customers';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { toast } from 'react-toastify';
 
 const CustomerComponent: React.FC = () => {
-    const [customers, setCustomers] = useState<any[]>([]);
+    const { data: customers = [], isLoading } = useGetCustomersQuery();
+    const [getCustomerById] = useLazyGetCustomerByIdQuery();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [titleModal, setTitleModal] = useState<string>('');
     const [firstName, setFirstName] = useState<string>('');
@@ -17,37 +17,24 @@ const CustomerComponent: React.FC = () => {
     const [createDate, setCreateDate] = useState<string>('');
     const [id, setId] = useState<string>('');
 
-    const getDataAccount = useCallback(() => {
-        axios
-            .get(`${CONFIG.serverUrl}/customers`)
-            .then((res) => {
-                setCustomers(res.data || []);
-            })
-            .catch((_err) => {
-                toast.error('Có lỗi xảy ra');
-            });
-    }, []);
+    // Data is loaded via RTK Query hook
 
-    useEffect(() => {
-        getDataAccount();
-    }, [getDataAccount]);
-
-    const onEdit = useCallback((customerId: any) => {
-        axios
-            .get(`${CONFIG.serverUrl}/customers/${customerId}`)
-            .then((res) => {
-                setId(customerId);
-                setShowModal(true);
-                setTitleModal('Thông tin khách hàng');
-                setFirstName(res.data.firstName || '');
-                setLastName(res.data.lastName || '');
-                setPhone(res.data.phone || '');
-                setEmail(res.data.email || '');
-                setAddress(res.data.address || '');
-                setCreateDate(res.data.createDate || '');
-            })
-            .catch((_err) => {});
-    }, []);
+    const onEdit = useCallback(async (customerId: any) => {
+        try {
+            const res = await getCustomerById(customerId).unwrap();
+            setId(customerId);
+            setShowModal(true);
+            setTitleModal('Thông tin khách hàng');
+            setFirstName(res.firstName || '');
+            setLastName(res.lastName || '');
+            setPhone(res.phone || '');
+            setEmail(res.email || '');
+            setAddress(res.address || '');
+            setCreateDate(res.createDate || '');
+        } catch (error) {
+            toast.error('Có lỗi xảy ra');
+        }
+    }, [getCustomerById]);
 
     const columns = useMemo(
         () => [
@@ -78,7 +65,7 @@ const CustomerComponent: React.FC = () => {
 
     return (
         <>
-            <h1 className="mt-10"> Danh mục khách hàng </h1>
+            <h1 className="mt-10">Khách hàng</h1>
             <div className="text-right">
                 <Button
                     variant="success"
@@ -98,6 +85,7 @@ const CustomerComponent: React.FC = () => {
                 defaultSortFieldId="title"
                 pagination
                 responsive={true}
+                progressPending={isLoading}
             />
 
             <Modal

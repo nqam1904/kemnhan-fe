@@ -1,75 +1,117 @@
-import { CONFIG } from '@/config-global';
-import axios from 'axios';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import ClearableInput from '@/components/clearable-input';
+import {
+    useCreateUserMutation,
+    useDeleteUserMutation,
+    useLazyGetListUserQuery,
+    useUpdateUserMutation,
+} from '@/store/apis/account';
+import type { Account as AccountModel } from '@/store/types/account';
+import { fDate } from '@/utils/format-time';
+import React, { useLayoutEffect, useMemo, useState } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { toast, ToastContainer } from 'react-toastify';
+import * as z from 'zod';
 
-import { isValidEmailAddress, validatePhoneNumber } from 'utils/format-string';
+import { ROLE_OPTIONS } from '@/constants/enums';
+import ImageAssets from '@/constants/ImagesAsset';
 
-const roles = [
-    { id: 1, name: 'admin' },
-    { id: 2, name: 'staff' },
-];
+type AccountForm = {
+    id: string | number | null;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    password?: string;
+    email: string;
+    role: string;
+};
 
-const AccountComponent: React.FC = () => {
-    const [users, setUsers] = useState<any[]>([]);
-    const [id, setId] = useState<string>('');
+type FormErrors = Partial<
+    Record<'firstName' | 'lastName' | 'phone' | 'password' | 'email' | 'role', string>
+>;
+
+const AccountView: React.FC = () => {
+    const [listUser, { isLoading }] = useLazyGetListUserQuery();
+    const [createUser] = useCreateUserMutation();
+    const [updateUser] = useUpdateUserMutation();
+    const [deleteUser] = useDeleteUserMutation();
+    const [account, setAccount] = useState<AccountModel[]>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [titleModal, setTitleModal] = useState<string>('');
-    const [firstName, setFirstName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
-    const [phone, setPhone] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [isSetRole, setIsSetRole] = useState<string>('');
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [confirmDelete, setConfirmDelete] = useState<{ show: boolean; id: any; label: string }>({
+        show: false,
+        id: null,
+        label: '',
+    });
 
-    const getDataAccount = useCallback(() => {
-        axios
-            .get(`${CONFIG.serverUrl}/users`)
-            .then((res) => {
-                setUsers(res.data || []);
-            })
-            .catch((_) => {
-                toast.error('Có lỗi xảy ra');
-            });
+    const initialForm: AccountForm = {
+        id: null,
+        firstName: '',
+        lastName: '',
+        phone: '',
+        password: '',
+        email: '',
+        role: '',
+    };
+
+    const [form, setForm] = useState<AccountForm>(initialForm);
+    const [errors, setErrors] = useState<FormErrors>({});
+
+    const schema = z.object({
+        firstName: z.string().min(1, 'Vui lòng nhập họ'),
+        lastName: z.string().min(1, 'Vui lòng nhập tên'),
+        phone: z.string().min(10, 'Số điện thoại phải có 10-11 chữ số'),
+        password: z
+            .union([z.literal(''), z.string().min(6, 'Mật khẩu tối thiểu 6 ký tự')])
+            .optional(),
+        email: z.string().email('Nhập đúng định dạng email'),
+        role: z.string().min(1, 'Vui lòng chọn chức vụ'),
+    });
+
+    const getData = async () => {
+        try {
+            const res = await listUser().unwrap();
+            setAccount(res || []);
+        } catch (error) {
+            console.log(error, 'error');
+        }
+    };
+
+    useLayoutEffect(() => {
+        getData();
     }, []);
 
-    useEffect(() => {
-        getDataAccount();
-    }, [getDataAccount]);
+    const onEdit = (data: any) => {
+        setForm({
+            id: data.id ?? null,
+            firstName: data.firstName || '',
+            lastName: data.lastName || '',
+            phone: data.phone || '',
+            password: '',
+            email: data.email || '',
+            role: data.role || '',
+        });
+        setTitleModal('Sửa tài khoản');
+        setShowPassword(false);
+        setShowModal(true);
+    };
 
-    const onEdit = useCallback((userId: any) => {
-        axios
-            .get(`${CONFIG.serverUrl}/users/${userId}`)
-            .then((res) => {
-                setId(userId);
-                setShowModal(true);
-                setFirstName(res.data.firstName || '');
-                setLastName(res.data.lastName || '');
-                setPhone(res.data.phone || '');
-                setPassword(res.data.password || '');
-                setEmail(res.data.email || '');
-                setIsSetRole(res.data.role || '');
-                setTitleModal('Cập nhật tài khoản');
-            })
-            .catch((_) => {});
-    }, []);
+    const onDelete = async (userId: any) => {
+        try {
+            await deleteUser({ id: userId }).unwrap();
+            toast.success('Xóa thành công');
+            getData();
+        } catch (error) {
+            toast.error(`${error}`);
+        }
+    };
 
-    const onDelete = useCallback(
-        (userId: any) => {
-            axios
-                .delete(`${CONFIG.serverUrl}/users/${userId}`)
-                .then((_) => {
-                    toast.success('Xóa thành công');
-                    getDataAccount();
-                })
-                .catch((error) => {
-                    toast.error(`${error}`);
-                });
-        },
-        [getDataAccount]
-    );
+    const onRequestDelete = (user: any) => {
+        const name = `${user.firstName || ''} ${user.lastName || ''}`.trim();
+        const label = name || user.email || `#${user.id}`;
+        setConfirmDelete({ show: true, id: user.id, label });
+    };
 
     const columns = useMemo(
         () => [
@@ -111,28 +153,34 @@ const AccountComponent: React.FC = () => {
                 selector: 'createDate',
                 sortable: true,
                 right: true,
+                cell: (row: any) => {
+                    return <span>{fDate(row.createDate, 'DD/MM/YYYY')}</span>;
+                },
             },
             {
                 name: 'Ngày chỉnh sửa',
                 selector: 'writeDate',
                 sortable: true,
                 right: true,
+                cell: (row: any) => {
+                    return <span>{fDate(row.writeDate, 'DD/MM/YYYY')}</span>;
+                },
             },
             {
-                name: 'Hành động',
+                name: 'Chức năng',
                 selector: (data: any) => (
                     <>
                         <Button
                             type="button"
                             className="btn btn-warning white mr-10"
-                            onClick={() => onEdit(data.id)}
+                            onClick={() => onEdit(data)}
                         >
                             Sửa
                         </Button>
                         <Button
                             type="button"
                             className="btn btn-danger white"
-                            onClick={() => onDelete(data.id)}
+                            onClick={() => onRequestDelete(data)}
                         >
                             Xoá
                         </Button>
@@ -143,114 +191,66 @@ const AccountComponent: React.FC = () => {
         [onDelete, onEdit]
     );
 
-    const onSave = useCallback(
-        (e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            if (
-                firstName === '' ||
-                lastName === '' ||
-                phone === '' ||
-                password === '' ||
-                email === '' ||
-                isSetRole === ''
-            ) {
-                toast.warning('Vui lòng điền đủ thông tin!');
-                return;
-            } else if (!isValidEmailAddress(email)) {
-                toast.error('Nhập đúng định dạng email!');
-                return;
-            } else if (!validatePhoneNumber(phone)) {
-                toast.error('Số điện thoại phải có 10-11 chữ số');
-                return;
+    const resetForm = () => {
+        setForm(initialForm);
+    };
+
+    const onSave = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        // Do not toggle native Bootstrap validation classes; use Zod-driven errors instead
+
+        const { id, ...payload } = form;
+        const schemaToUse = form.id
+            ? schema
+            : schema.extend({ password: z.string().min(6, 'Mật khẩu tối thiểu 6 ký tự') });
+
+        const parsed = schemaToUse.safeParse(payload as Required<Omit<AccountForm, 'id'>>);
+        if (!parsed.success) {
+            const fieldErrors: FormErrors = {};
+            parsed.error.issues.forEach((issue) => {
+                const field = issue.path[0] as keyof FormErrors;
+                if (field && !fieldErrors[field]) {
+                    fieldErrors[field] = issue.message;
+                }
+            });
+            setErrors(fieldErrors);
+            return;
+        }
+        setErrors({});
+
+        try {
+            const body: any = { ...parsed.data };
+            if (!body.password) {
+                delete body.password;
             }
 
-            if (id) {
-                axios
-                    .put(`${CONFIG.serverUrl}/users/${id}`, {
-                        firstName,
-                        lastName,
-                        phone,
-                        password,
-                        email,
-                        role: isSetRole,
-                    })
-                    .then((_) => {
-                        setShowModal(false);
-                        setFirstName('');
-                        setLastName('');
-                        setPhone('');
-                        setPassword('');
-                        setEmail('');
-                        setIsSetRole('');
-                        setId('');
-                        toast.success('Cập nhật thành công!');
-                        getDataAccount();
-                    })
-                    .catch((_) => {
-                        toast.error('Có lỗi xảy ra');
-                    });
+            if (form.id) {
+                await updateUser({ id: form.id, body }).unwrap();
+                toast.success('Cập nhật thành công!');
             } else {
-                axios
-                    .post(`${CONFIG.serverUrl}/users/${id}`, {
-                        firstName,
-                        lastName,
-                        phone,
-                        password,
-                        email,
-                        role: isSetRole,
-                    })
-                    .then((_) => {
-                        setShowModal(false);
-                        setFirstName('');
-                        setLastName('');
-                        setPhone('');
-                        setPassword('');
-                        setEmail('');
-                        setIsSetRole('');
-                        setId('');
-                        toast.success('Thêm thành công!');
-                        getDataAccount();
-                    })
-                    .catch((_) => {
-                        toast.error('Có lỗi xảy ra');
-                    });
+                await createUser({ body }).unwrap();
+                toast.success('Thêm thành công!');
             }
-        },
-        [email, firstName, getDataAccount, id, isSetRole, lastName, password, phone]
-    );
 
-    const handleChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-            const { name, value } = e.target;
-            switch (name) {
-                case 'firstName':
-                    setFirstName(value);
-                    break;
-                case 'lastName':
-                    setLastName(value);
-                    break;
-                case 'phone':
-                    setPhone(value);
-                    break;
-                case 'password':
-                    setPassword(value);
-                    break;
-                case 'email':
-                    setEmail(value);
-                    break;
-                case 'isSetRole':
-                    setIsSetRole(value);
-                    break;
-                default:
-                    break;
-            }
-        },
-        []
-    );
+            setShowModal(false);
+            resetForm();
+            getData();
+        } catch (error: any) {
+            // If API returns field-level error for phone, reflect it in UI
+            toast.error('Có lỗi xảy ra');
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target as { name: string; value: string };
+        const nextValue = name === 'phone' ? value.replace(/\D/g, '').slice(0, 11) : value;
+        setForm((prev) => ({ ...prev, [name]: nextValue }));
+        setErrors((prev) => ({ ...prev, [name]: undefined }));
+    };
 
     return (
         <>
-            <h1 className="mt-10"> Danh mục tài khoản </h1>
+            <h1 className="mt-10">Tài khoản</h1>
             <ToastContainer autoClose={3000} />
 
             <div className="text-right">
@@ -258,150 +258,175 @@ const AccountComponent: React.FC = () => {
                     type="button"
                     className="btn btn-primary mbt-10"
                     onClick={() => {
-                        setShowModal(true);
+                        resetForm();
                         setTitleModal('Thêm tài khoản');
-                        setId('');
-                        setFirstName('');
-                        setLastName('');
-                        setPhone('');
-                        setPassword('');
-                        setEmail('');
-                        setIsSetRole('');
+                        setShowModal(true);
                     }}
                 >
                     Thêm tài khoản
                 </Button>
             </div>
             <DataTable
-                title="Account"
+                title="Tài khoản"
                 columns={columns}
-                data={users}
+                data={account}
                 defaultSortFieldId="title"
                 pagination
+                progressPending={isLoading}
                 responsive={true}
             />
-            {/* <table responsive="lg" id="example" className="table table-bordered">
-          <thead>
-            <tr>
-              <th> # </th>
-              <th> Họ tên </th>
-              <th> Số điện thoại </th>
-              <th> Email </th>
-              <th> Chức vụ </th>
-              <th> Ngày tạo </th>
-              <th> Ngày chỉnh sửa </th>
-              <th>Chức năng</th>
-            </tr>
-          </thead>
-          <tbody> {this.showAccount(users)} </tbody>
-        </table> */}
 
             <Modal
                 show={showModal}
                 size="lg"
                 onHide={() => {
                     setShowModal(false);
+                    setErrors({});
                 }}
             >
-                <form onSubmit={onSave}>
+                <form noValidate onSubmit={onSave}>
                     <Modal.Header closeButton {...({} as any)}>
                         <Modal.Title {...({} as any)}> {titleModal} </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        <div className="mb-3">
+                            <small className="text-danger">* là giá trị bắt buộc</small>
+                        </div>
                         <div className="row">
                             <div className="form-group col-6">
                                 <label>
-                                    {' '}
-                                    Họ <sup className="sub_text">*</sup>
+                                    Họ <sup className="sub_text text-danger">*</sup>
                                 </label>
-                                <input
-                                    className="form-control"
+                                <ClearableInput
+                                    className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
                                     name="firstName"
-                                    value={firstName}
+                                    value={form.firstName}
                                     placeholder="Nhập họ"
-                                    onChange={handleChange}
+                                    onChange={handleChange as any}
+                                    required
                                 />
+                                <div className="invalid-feedback">{errors.firstName}</div>
                             </div>
                             <div className=" form-group col-6">
                                 <label>
-                                    {' '}
-                                    Tên <sup className="sub_text">*</sup>
+                                    Tên <sup className="sub_text text-danger">*</sup>
                                 </label>
-                                <input
-                                    className="form-control"
+                                <ClearableInput
+                                    className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
                                     name="lastName"
                                     placeholder="Nhập tên"
-                                    value={lastName}
-                                    onChange={handleChange}
+                                    value={form.lastName}
+                                    onChange={handleChange as any}
+                                    required
                                 />
+                                <div className="invalid-feedback">{errors.lastName}</div>
                             </div>
                         </div>
                         <div className="row">
                             <div className=" form-group col-6">
                                 <label>
-                                    {' '}
-                                    Mật khẩu <sup className="sub_text">*</sup>
+                                    Mật khẩu <sup className="sub_text text-danger">*</sup>
                                 </label>
-                                <input
-                                    className="form-control"
-                                    type="password"
-                                    name="password"
-                                    placeholder="Nhập mật khẩu"
-                                    value={password}
-                                    onChange={handleChange}
-                                />
+                                <div className="input-group">
+                                    <Form.Control
+                                        className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                                        type={showPassword ? 'text' : 'password'}
+                                        name="password"
+                                        placeholder="Nhập mật khẩu"
+                                        value={form.password}
+                                        onChange={handleChange}
+                                        required={!form.id}
+                                    />
+                                    <div className="input-group-append">
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-secondary"
+                                            onClick={() => setShowPassword((v) => !v)}
+                                            aria-label={
+                                                showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'
+                                            }
+                                        >
+                                            <img
+                                                src={
+                                                    showPassword
+                                                        ? ImageAssets.icNoEye
+                                                        : ImageAssets.icEye
+                                                }
+                                                alt={showPassword ? 'Hide' : 'Show'}
+                                                style={{ width: 20, height: 20 }}
+                                            />
+                                        </button>
+                                    </div>
+                                </div>
+                                <div
+                                    className={`invalid-feedback ${errors.password ? 'd-block' : ''}`}
+                                >
+                                    {errors.password}
+                                </div>
                             </div>
                             <div className=" form-group col-6">
                                 <label>
-                                    {' '}
-                                    Số điện thoại <sup className="sub_text">*</sup>
+                                    Số điện thoại <sup className="sub_text text-danger">*</sup>
                                 </label>
-                                <input
-                                    className="form-control"
-                                    type="number"
+                                <ClearableInput
+                                    className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
+                                    type="tel"
                                     name="phone"
                                     placeholder="Nhập thông tin số thoại điện"
-                                    value={phone.toString()}
-                                    onChange={handleChange}
+                                    value={form.phone}
+                                    onChange={handleChange as any}
+                                    onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => {
+                                        const text = e.clipboardData.getData('text');
+                                        if (/\D/.test(text)) e.preventDefault();
+                                    }}
+                                    inputMode="numeric"
+                                    maxLength={11}
+                                    required
                                 />
+                                <div className="invalid-feedback">{errors.phone}</div>
                             </div>
                         </div>
 
                         <div className="row">
                             <div className=" form-group col-6">
                                 <label>
-                                    {' '}
-                                    Email <sup className="sub_text">*</sup>{' '}
+                                    Email <sup className="sub_text text-danger">*</sup>
                                 </label>
-                                <input
-                                    className="form-control"
+                                <ClearableInput
+                                    className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                                    type="email"
                                     placeholder="Nhập thông tin email"
                                     name="email"
-                                    value={email}
-                                    onChange={handleChange}
+                                    value={form.email}
+                                    onChange={handleChange as any}
+                                    required
                                 />
+                                <div className="invalid-feedback">{errors.email}</div>
                             </div>
                             <div className=" form-group col-6">
                                 <label>
-                                    Chức vụ <sup className="sub_text">*</sup>
+                                    Chức vụ <sup className="sub_text text-danger">*</sup>
                                 </label>
-                                <select
-                                    className="form-control"
-                                    size={1 as any}
+                                <Form.Control
+                                    as="select"
                                     onChange={handleChange}
-                                    value={isSetRole}
-                                    name="isSetRole"
+                                    value={form.role}
+                                    name="role"
+                                    required
+                                    className={`${errors.role ? 'is-invalid' : ''}`}
                                 >
-                                    <option>---Chức vụ---</option>
-                                    {roles.map((item: any, index: any) => {
+                                    <option value="" disabled>
+                                        Chức vụ
+                                    </option>
+                                    {ROLE_OPTIONS.map((item: any, index: any) => {
                                         return (
                                             <option value={item.name} key={index}>
-                                                {' '}
                                                 {item.name}
                                             </option>
                                         );
                                     })}
-                                </select>
+                                </Form.Control>
+                                <div className="invalid-feedback">{errors.role}</div>
                             </div>
                         </div>
                     </Modal.Body>
@@ -421,8 +446,40 @@ const AccountComponent: React.FC = () => {
                     </Modal.Footer>
                 </form>
             </Modal>
+            <Modal
+                show={confirmDelete.show}
+                onHide={() => setConfirmDelete({ show: false, id: null, label: '' })}
+                centered
+            >
+                <Modal.Header closeButton {...({} as any)}>
+                    <Modal.Title {...({} as any)}>Xác nhận xoá</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Bạn có chắc muốn xoá tài khoản "{confirmDelete.label}" không?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="secondary"
+                        type="button"
+                        onClick={() => setConfirmDelete({ show: false, id: null, label: '' })}
+                    >
+                        Huỷ
+                    </Button>
+                    <Button
+                        variant="danger"
+                        type="button"
+                        onClick={async () => {
+                            if (!confirmDelete.id) return;
+                            await onDelete(confirmDelete.id);
+                            setConfirmDelete({ show: false, id: null, label: '' });
+                        }}
+                    >
+                        Xoá
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 };
 
-export default AccountComponent;
+export default AccountView;

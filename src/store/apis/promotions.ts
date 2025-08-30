@@ -1,15 +1,49 @@
 import { endpoints } from '@/utils/axios';
 import { RTKQueryApi } from '../create-api';
+import type {
+    Promotion,
+    PromotionCreateRequest,
+    PromotionListResponse,
+    PromotionUpdateRequest,
+} from '../types/promotion';
 
 export const promotionsApi = RTKQueryApi.injectEndpoints({
     endpoints: (builder) => ({
-        getPromotions: builder.query<any, void>({
+        getPromotions: builder.query<PromotionListResponse, void>({
             query: () => ({
                 url: endpoints.main.promotions,
                 method: 'GET',
             }),
         }),
+        createPromotion: builder.mutation<Promotion, { body: PromotionCreateRequest | FormData }>({
+            query: ({ body }) => ({
+                url: endpoints.main.promotions,
+                method: 'POST',
+                body,
+            }),
+        }),
+        updatePromotion: builder.mutation<
+            Promotion,
+            { id: string | number; body: PromotionUpdateRequest }
+        >({
+            query: ({ id, body }) => ({
+                url: `${endpoints.main.promotions}/${id}`,
+                method: 'PUT',
+                body,
+            }),
+        }),
+        deletePromotion: builder.mutation<{ success: boolean } | void, { id: string | number }>({
+            query: ({ id }) => ({
+                url: `${endpoints.main.promotions}/${id}`,
+                method: 'DELETE',
+            }),
+        }),
     }),
 });
 
-export const { useGetPromotionsQuery } = promotionsApi;
+export const {
+    useGetPromotionsQuery,
+    useCreatePromotionMutation,
+    useUpdatePromotionMutation,
+    useDeletePromotionMutation,
+} = promotionsApi;

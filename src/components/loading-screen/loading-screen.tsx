@@ -1,5 +1,5 @@
 type Props = {};
 
 export function LoadingScreen({ ...other }: Props) {
-  return <div />;
+    return <div />;
 }

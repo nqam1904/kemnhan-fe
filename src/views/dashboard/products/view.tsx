@@ -1,15 +1,23 @@
-import { CONFIG } from '@/config-global';
-import axios from 'axios';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Spinner } from 'react-activity';
 import { Button, Form, Modal, Table } from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
 
+import {
+    useCreateProductMutation,
+    useDeleteProductMutation,
+    useGetProductsQuery,
+    useUpdateProductMutation,
+} from '@/store/apis/products';
+import axiosInstance, { endpoints } from '@/utils/axios';
 import ItemProduct from './item-product';
 import './product.css';
 
 const ProductsComponents: React.FC = () => {
-    const [products, setProducts] = useState<any[]>([]);
+    const { data: products = [], isLoading, refetch } = useGetProductsQuery();
+    const [createProduct] = useCreateProductMutation();
+    const [updateProduct] = useUpdateProductMutation();
+    const [deleteProduct] = useDeleteProductMutation();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [titleModal, setTitleModal] = useState<string>('');
     const [id, setId] = useState<string>('');
@@ -31,22 +39,17 @@ const ProductsComponents: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const getDataCategory = useCallback(() => {
-        axios
-            .get(`${CONFIG.serverUrl}/categories`)
+        axiosInstance
+            .get(endpoints.dashboard.categories)
             .then((res) => {
                 setCategory(res.data || []);
             })
-            .catch((_err) => {});
+            .catch((_err) => { });
     }, []);
 
     const getDateProduct = useCallback(() => {
-        axios
-            .get(`${CONFIG.serverUrl}/products`)
-            .then((res) => {
-                setProducts(res.data || []);
-            })
-            .catch((_err) => {});
-    }, []);
+        refetch();
+    }, [refetch]);
 
     useEffect(() => {
         getDateProduct();
@@ -64,8 +67,8 @@ const ProductsComponents: React.FC = () => {
     }, []);
 
     const onEdit = useCallback((productId: any) => {
-        axios
-            .get(`${CONFIG.serverUrl}/products/${productId}`)
+        axiosInstance
+            .get(`${endpoints.main.products}/${productId}`)
             .then((res) => {
                 setId(productId);
                 setShowModal(true);
@@ -83,50 +86,48 @@ const ProductsComponents: React.FC = () => {
                 setSelectCategory(res.data.categories || '');
                 setImagesId(res.data.images?.[0]?.key ? [res.data.images[0].key] : []);
             })
-            .catch((_error) => {});
+            .catch((_error) => { });
     }, []);
 
     const onDelete = useCallback(
-        (productId: any) => {
-            axios
-                .delete(`${CONFIG.serverUrl}/products/${productId}`)
-                .then((_) => {
-                    toast.success('Xóa thành công');
-                    getDateProduct();
-                })
-                .catch((error) => {
-                    toast.error(`${error}`);
-                });
+        async (productId: any) => {
+            try {
+                await deleteProduct({ id: productId }).unwrap();
+                toast.success('Xóa thành công');
+                getDateProduct();
+            } catch (error) {
+                toast.error(`${error}`);
+            }
         },
-        [getDateProduct]
+        [deleteProduct, getDateProduct]
     );
 
     const onFeature = useCallback(
         (productId: any, feature: any) => {
-            axios
-                .put(`${CONFIG.serverUrl}/products/${productId}`, {
+            axiosInstance
+                .put(`${endpoints.main.products}/${productId}`, {
                     isFeature: !feature,
                 })
                 .then((_) => {
                     toast.success('Cập nhật thành công');
                     getDateProduct();
                 })
-                .catch((_error) => {});
+                .catch((_error) => { });
         },
         [getDateProduct]
     );
 
     const onActive = useCallback(
         (productId: any, active: any) => {
-            axios
-                .put(`${CONFIG.serverUrl}/products/${productId}`, {
+            axiosInstance
+                .put(`${endpoints.main.products}/${productId}`, {
                     isActive: !active,
                 })
                 .then((_) => {
                     toast.success('Cập nhật thành công');
                     getDateProduct();
                 })
-                .catch((_error) => {});
+                .catch((_error) => { });
         },
         [getDateProduct]
     );
@@ -137,15 +138,15 @@ const ProductsComponents: React.FC = () => {
         if (media && (media as FileList).length !== undefined) {
             Array.from(media as FileList).forEach((file) => bodyFormData.append('medias', file));
         }
-        axios
-            .post(`${CONFIG.serverUrl}/media`, bodyFormData, {
+        axiosInstance
+            .post(`media`, bodyFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             })
             .then((res) => {
-                axios
-                    .post(`${CONFIG.serverUrl}/products`, {
+                createProduct({
+                    body: {
                         name,
                         unit,
                         description,
@@ -158,7 +159,8 @@ const ProductsComponents: React.FC = () => {
                         shopeeUrl,
                         categoriesId: [parseInt(String(selectCategory), 10)],
                         imagesId: res.data.mediasId,
-                    })
+                    },
+                })
                     .then((_) => {
                         setShowModal(false);
                         setId('');
@@ -173,9 +175,9 @@ const ProductsComponents: React.FC = () => {
                         toast.success('Thêm sản phẩm thành công!');
                         getDateProduct();
                     })
-                    .catch((_error) => {});
+                    .catch((_error) => { });
             })
-            .catch((_) => {});
+            .catch((_) => { });
     }, [
         description,
         displayPrice,
@@ -190,12 +192,14 @@ const ProductsComponents: React.FC = () => {
         soldQuantity,
         stockQuantity,
         unit,
+        createProduct,
     ]);
 
     const onPutImg = useCallback(
         (productId: any) => {
-            axios
-                .put(`${CONFIG.serverUrl}/products/${productId}`, {
+            updateProduct({
+                id: productId,
+                body: {
                     name,
                     unit,
                     description,
@@ -206,7 +210,8 @@ const ProductsComponents: React.FC = () => {
                     isActive,
                     shopeeUrl,
                     categoriesId: [parseInt(String(selectCategory), 10)],
-                })
+                },
+            })
                 .then((_) => {
                     setShowModal(false);
                     setId('');
@@ -219,7 +224,7 @@ const ProductsComponents: React.FC = () => {
                     setImagesId([]);
                     getDateProduct();
                 })
-                .catch((_error) => {});
+                .catch((_error) => { });
         },
         [
             description,
@@ -233,6 +238,7 @@ const ProductsComponents: React.FC = () => {
             shopeeUrl,
             stockQuantity,
             unit,
+            updateProduct,
         ]
     );
 
@@ -326,7 +332,7 @@ const ProductsComponents: React.FC = () => {
         ));
     }, [onActive, onDelete, onEdit, onFeature, products]);
 
-    const result = loading ? <Spinner size={32} speed={1} animating={true} /> : renderedProducts;
+    const result = loading || isLoading ? <Spinner size={32} speed={1} animating={true} /> : renderedProducts;
 
     return (
         <>

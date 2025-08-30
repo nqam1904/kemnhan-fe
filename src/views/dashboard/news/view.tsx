@@ -1,182 +1,212 @@
-import { CONFIG } from '@/config-global';
-import axios from 'axios';
-import CKEditor from 'ckeditor4-react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Form, Modal, Table } from 'react-bootstrap';
+import ImageAssets from '@/constants/ImagesAsset';
+import {
+    useCreatePromotionMutation,
+    useDeletePromotionMutation,
+    useGetPromotionsQuery,
+    useUpdatePromotionMutation,
+} from '@/store/apis/promotions';
+import type { Promotion } from '@/store/types/promotion';
+import { formatSubstring } from '@/utils/format-string';
+import { fDate } from '@/utils/format-time';
+import resolveImageUrl from '@/utils/image-url';
+import React, { useMemo, useState } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
+import DataTable from 'react-data-table-component';
 import { toast, ToastContainer } from 'react-toastify';
 import DatePicker from 'reactstrap-date-picker';
-import ItemNews from './item-news';
 
-const NewsComponent: React.FC = () => {
-    const [fileArray, setFileArray] = useState<string[]>([]);
-    const [data, setData] = useState<any[]>([]);
-    const [name, setName] = useState<string>('');
-    const [content, setContent] = useState<string>('');
-    const [endDate, setEndDate] = useState<string>(new Date().toISOString());
-    const [isActive, setIsActive] = useState<boolean>(false);
+const NewsView: React.FC = () => {
+    const { data: promotions = [], isLoading, refetch } = useGetPromotionsQuery();
+    const [createPromotion] = useCreatePromotionMutation();
+    const [updatePromotion] = useUpdatePromotionMutation();
+    const [deletePromotion] = useDeletePromotionMutation();
+
+    type PromotionForm = {
+        id: string | number | null;
+        name: string;
+        content: string;
+        endDate: string;
+        isActive: boolean;
+        images: File[];
+    };
+
+    const initialForm: PromotionForm = {
+        id: null,
+        name: '',
+        content: '',
+        endDate: new Date().toISOString(),
+        isActive: false,
+        images: [],
+    };
+
+    const [form, setForm] = useState<PromotionForm>(initialForm);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [titleModal, setTitleModal] = useState<string>('Thêm tin khuyến mãi');
-    const [id, setId] = useState<string>('');
-    const [media, setMedia] = useState<FileList | File[]>([]);
-    const [imageName, setImageName] = useState<string>('');
+    const [confirmDelete, setConfirmDelete] = useState<{ show: boolean; id: any; label: string }>(
+        { show: false, id: null, label: '' }
+    );
+    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-    const getDataPromotion = useCallback(() => {
-        axios
-            .get(`${CONFIG.serverUrl}/promotions`)
-            .then((res) => {
-                setData(res.data || []);
-            })
-            .catch((_err) => {});
-    }, []);
+    const resetForm = () => {
+        setForm(initialForm);
+        setImagePreviews([]);
+    };
 
-    useEffect(() => {
-        getDataPromotion();
-    }, [getDataPromotion]);
+    const onEdit = (record: Promotion) => {
+        setForm({
+            id: record.id,
+            name: record.name || '',
+            content: record.content || '',
+            endDate: record.endDate || new Date().toISOString(),
+            isActive: Boolean(record.isActive),
+            images: [],
+        });
+        setTitleModal('Cập nhật tin khuyến mãi');
+        setShowModal(true);
+    };
 
-    const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        const { name, value } = e.target;
-        if (name === 'name') setName(value);
-    }, []);
+    const onRequestDelete = (record: Promotion) => {
+        const label = record.name || `#${record.id}`;
+        setConfirmDelete({ show: true, id: record.id, label });
+    };
 
-    const onEditorChange = useCallback((evt: any) => {
-        setContent(evt.editor.getData());
-    }, []);
-
-    const uploadMultipleFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            const previews = Array.from(e.target.files).map((file: any) =>
-                URL.createObjectURL(file)
-            );
-            setFileArray(previews);
-            setMedia(e.target.files);
+    const onToggleActive = async (record: Promotion) => {
+        try {
+            await updatePromotion({ id: record.id, body: { isActive: !record.isActive } }).unwrap();
+            toast.success('Cập nhật thành công');
+            refetch();
+        } catch (_e) {
+            // ignore
         }
-    }, []);
+    };
 
-    const handleChangeDate = useCallback((value: string, _formattedValue: string) => {
-        setEndDate(value);
-    }, []);
+    const onDelete = async (id: any) => {
+        try {
+            await deletePromotion({ id }).unwrap();
+            toast.success('Xóa thành công');
+            refetch();
+        } catch (error) {
+            toast.error('Có lỗi xảy ra');
+        }
+    };
 
-    const onUpdate = useCallback((promotionId: any) => {
-        axios
-            .get(`${CONFIG.serverUrl}/promotions/${promotionId}`)
-            .then((res) => {
-                setShowModal(true);
-                setTitleModal('Cập nhật tin khuyến mãi');
-                setId(promotionId);
-                setName(res.data.name || '');
-                setContent(res.data.content || '');
-                setEndDate(res.data.endDate || new Date().toISOString());
-                setImageName(res.data.images?.[0]?.key || '');
-                setIsActive(Boolean(res.data.isActive));
-            })
-            .catch((error) => {
-                toast.error(`${error}`);
-            });
-    }, []);
+    const onSave = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!form.name.trim()) {
+            toast.warning('Vui lòng điền thông tin!');
+            return;
+        }
 
-    const onDelete = useCallback(
-        (promotionId: any) => {
-            axios
-                .delete(`${CONFIG.serverUrl}/promotions/${promotionId}`)
-                .then((_) => {
-                    toast.success('Xóa thành công');
-                    getDataPromotion();
-                })
-                .catch((error) => {
-                    toast.error(`${error}`);
-                });
-        },
-        [getDataPromotion]
-    );
-
-    const onActive = useCallback(
-        (promotionId: any, currentActive: any) => {
-            axios
-                .put(`${CONFIG.serverUrl}/promotions/${promotionId}`, {
-                    isActive: !currentActive,
-                })
-                .then((_) => {
-                    toast.success('Cập nhật thành công');
-                    getDataPromotion();
-                })
-                .catch((_error) => {});
-        },
-        [getDataPromotion]
-    );
-
-    const showPromotion = useMemo(() => {
-        if (!data || data.length === 0) return null;
-        return data.map((item: any, index: any) => (
-            <ItemNews
-                key={index}
-                id={item.id}
-                images={item.images[0]?.key}
-                name={item.name}
-                endDate={item.endDate}
-                content={item.content}
-                isActive={item.isActive}
-                onDelete={onDelete}
-                onUpdate={onUpdate}
-                onActive={() => onActive(item.id, item.isActive)}
-            />
-        ));
-    }, [data, onActive, onDelete, onUpdate]);
-
-    const onSave = useCallback(
-        (e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            if (name === '') {
-                toast.warning('Vui lòng điền thông tin!');
-                return;
-            }
-            const bodyFormData = new FormData();
-            bodyFormData.append('name', name);
-            bodyFormData.append('content', content);
-            bodyFormData.append('endDate', endDate);
-            bodyFormData.append('isActive', String(isActive));
-            bodyFormData.append('slug', name);
-            if (media && (media as FileList).length !== undefined) {
-                Array.from(media as FileList).forEach((file) =>
-                    bodyFormData.append('images', file)
-                );
-            }
-            if (id) {
-                axios
-                    .put(`${CONFIG.serverUrl}/promotions/${id}`, {
-                        name,
-                        content,
-                        slug: name,
-                        endDate,
-                    })
-                    .then((_) => {
-                        setShowModal(false);
-                        setName('');
-                        setContent('');
-                        setId('');
-                        toast.success('Cập nhật thành công!');
-                        getDataPromotion();
-                    })
-                    .catch((_) => toast.error('Có lỗi xảy ra'));
+        try {
+            if (form.id) {
+                await updatePromotion({
+                    id: form.id,
+                    body: {
+                        name: form.name,
+                        content: form.content,
+                        slug: form.name,
+                        endDate: form.endDate,
+                    },
+                }).unwrap();
+                toast.success('Cập nhật thành công!');
             } else {
-                axios
-                    .post(`${CONFIG.serverUrl}/promotions`, bodyFormData, {
-                        headers: { 'Content-Type': 'multipart/form-data' },
-                    })
-                    .then((_) => {
-                        setShowModal(false);
-                        setName('');
-                        setContent('');
-                        setEndDate(new Date().toISOString());
-                        setMedia([]);
-                        setFileArray([]);
-                        toast.success('Thêm thành công!');
-                        getDataPromotion();
-                    })
-                    .catch((_) => {});
+                const bodyFormData = new FormData();
+                bodyFormData.append('name', form.name);
+                bodyFormData.append('content', form.content);
+                bodyFormData.append('endDate', form.endDate);
+                bodyFormData.append('isActive', String(form.isActive));
+                bodyFormData.append('slug', form.name);
+                if (form.images && form.images.length > 0) {
+                    form.images.forEach((file) => bodyFormData.append('images', file));
+                }
+                await createPromotion({ body: bodyFormData }).unwrap();
+                toast.success('Thêm thành công!');
             }
-        },
-        [content, endDate, getDataPromotion, id, isActive, media, name]
+
+            setShowModal(false);
+            resetForm();
+            refetch();
+        } catch (_e) {
+            toast.error('Có lỗi xảy ra');
+        }
+    };
+
+    const columns = useMemo(
+        () => [
+            { name: '#', selector: 'id', sortable: true },
+            { name: 'Tiêu đề', selector: 'name', sortable: true },
+            {
+                name: 'Hình ảnh',
+                selector: (row: Promotion) => row.images?.[0]?.key || '',
+                cell: (row: Promotion) => {
+                    const key = row.images?.[0]?.key;
+                    const src = key ? resolveImageUrl(`static/${key}`) : ImageAssets.logo;
+                    return (
+                        <img src={src} alt={row.name} width={80} height="auto" />
+                    );
+                },
+            },
+            {
+                name: 'Nội dung',
+                selector: 'content',
+                grow: 3,
+                cell: (row: Promotion) => (
+                    <div
+                        style={{ maxWidth: 400, overflow: 'hidden' }}
+                        dangerouslySetInnerHTML={{ __html: formatSubstring(row.content || '') }}
+                    />
+                ),
+            },
+            {
+                name: 'Ngày kết thúc',
+                selector: 'endDate',
+                sortable: true,
+                right: true,
+                cell: (row: Promotion) => <span>{fDate(row.endDate, 'DD/MM/YYYY')}</span>,
+            },
+            {
+                name: 'Hiển thị',
+                selector: 'isActive',
+                right: true,
+                cell: (row: Promotion) => (
+                    <button
+                        type="button"
+                        className="btn btn-link p-0"
+                        onClick={() => onToggleActive(row)}
+                        aria-label={row.isActive ? 'Ẩn' : 'Hiện'}
+                    >
+                        <img
+                            src={row.isActive ? ImageAssets.icEye : ImageAssets.icNoEye}
+                            alt={row.isActive ? 'active' : 'inactive'}
+                            width={25}
+                        />
+                    </button>
+                ),
+            },
+            {
+                name: 'Chức năng',
+                selector: (row: Promotion) => row.id as any,
+                cell: (row: Promotion) => (
+                    <>
+                        <Button
+                            type="button"
+                            className="btn btn-warning white mr-10"
+                            onClick={() => onEdit(row)}
+                        >
+                            Sửa
+                        </Button>
+                        <Button
+                            type="button"
+                            className="btn btn-danger white"
+                            onClick={() => onRequestDelete(row)}
+                        >
+                            Xoá
+                        </Button>
+                    </>
+                ),
+            },
+        ],
+        []
     );
 
     return (
@@ -186,36 +216,26 @@ const NewsComponent: React.FC = () => {
             <div className="text-right">
                 <Button
                     type="button"
-                    variant="primary"
-                    className="mbt-10"
+                    className="btn btn-primary mbt-10"
                     onClick={() => {
                         setShowModal(true);
                         setTitleModal('Thêm tin khuyến mãi');
-                        setName('');
-                        setContent('');
-                        setEndDate(new Date().toISOString());
-                        setId('');
-                        setMedia([]);
-                        setFileArray([]);
+                        resetForm();
                     }}
                 >
                     Thêm khuyến mãi
                 </Button>
             </div>
-            <Table striped bordered hover responsive>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Tiêu đề</th>
-                        <th>Hình ảnh</th>
-                        <th>Nội dung</th>
-                        <th>Ngày kết thúc</th>
-                        <th>Hiện thị</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>{showPromotion}</tbody>
-            </Table>
+            <DataTable
+                title="Khuyến mãi"
+                columns={columns as any}
+                data={promotions as any}
+                defaultSortFieldId="title"
+                pagination
+                progressPending={isLoading}
+                responsive={true}
+            />
+
             <Modal
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
@@ -234,10 +254,12 @@ const NewsComponent: React.FC = () => {
                             <label>Tiêu đề</label>
                             <input
                                 className="form-control"
-                                value={name}
+                                value={form.name}
                                 name="name"
                                 placeholder="Nhập tiêu đề"
-                                onChange={onChange}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    setForm((prev) => ({ ...prev, name: e.target.value }))
+                                }
                             />
                         </div>
                         <label>Hình ảnh</label>
@@ -247,20 +269,59 @@ const NewsComponent: React.FC = () => {
                             lang="en"
                             custom
                             type="file"
-                            onChange={uploadMultipleFiles}
+                            multiple
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                const filesList = e.target.files;
+                                const files = filesList ? Array.from(filesList) : [];
+                                setForm((prev) => ({ ...prev, images: files }));
+                                const previews = files.map((file: any) => URL.createObjectURL(file));
+                                setImagePreviews(previews);
+                            }}
                         />
-                        {fileArray && fileArray.length > 0 ? (
+                        {imagePreviews && imagePreviews.length > 0 ? (
                             <div className="mbt-10 show_image">
                                 <div className="container testimonial-group">
                                     <div className="row text-center">
                                         <div className="col-xs-4">
-                                            {fileArray.map((url: string) => (
-                                                <img
-                                                    src={url}
-                                                    width="100"
-                                                    height="auto"
-                                                    alt={imageName}
-                                                />
+                                            {imagePreviews.map((url: string, idx: number) => (
+                                                <div
+                                                    key={`${url}-${idx}`}
+                                                    style={{
+                                                        position: 'relative',
+                                                        display: 'inline-block',
+                                                        marginRight: 8,
+                                                        marginBottom: 8,
+                                                    }}
+                                                >
+                                                    <img src={url} width="100" height="auto" alt="preview" />
+                                                    <button
+                                                        type="button"
+                                                        aria-label="Remove image"
+                                                        onClick={() => {
+                                                            try {
+                                                                URL.revokeObjectURL(url);
+                                                            } catch (e) { }
+                                                            setImagePreviews((prev) =>
+                                                                prev.filter((_, i) => i !== idx)
+                                                            );
+                                                            setForm((prev) => ({
+                                                                ...prev,
+                                                                images: prev.images.filter((_, i) => i !== idx),
+                                                            }));
+                                                        }}
+                                                        style={{
+                                                            position: 'absolute',
+                                                            top: -6,
+                                                            right: -6,
+                                                            border: 'none',
+                                                            background: 'transparent',
+                                                            padding: 0,
+                                                            cursor: 'pointer',
+                                                        }}
+                                                    >
+                                                        <img src={ImageAssets.ic_clear} alt="clear" width={18} height={18} />
+                                                    </button>
+                                                </div>
                                             ))}
                                         </div>
                                     </div>
@@ -273,14 +334,22 @@ const NewsComponent: React.FC = () => {
                         <label>Ngày kết thúc chương trình</label>
                         <DatePicker
                             id="example-datepicker"
-                            value={endDate}
-                            onChange={handleChangeDate}
+                            value={form.endDate}
+                            onChange={(value: string) =>
+                                setForm((prev) => ({ ...prev, endDate: value }))
+                            }
                         />
                         <br />
                         <label>Mô tả</label>
-                        <div>
-                            <CKEditor data={content} onChange={onEditorChange} />
-                        </div>
+                        <Form.Control
+                            as="textarea"
+                            rows={8}
+                            value={form.content}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+                                setForm((prev) => ({ ...prev, content: e.target.value }))
+                            }
+                            placeholder="Nhập nội dung mô tả (hỗ trợ HTML nếu cần)"
+                        />
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
@@ -296,8 +365,41 @@ const NewsComponent: React.FC = () => {
                     </Modal.Footer>
                 </Form>
             </Modal>
+
+            <Modal
+                show={confirmDelete.show}
+                onHide={() => setConfirmDelete({ show: false, id: null, label: '' })}
+                centered
+            >
+                <Modal.Header closeButton {...({} as any)}>
+                    <Modal.Title {...({} as any)}>Xác nhận xoá</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Bạn có chắc muốn xoá tin khuyến mãi "{confirmDelete.label}" không?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="secondary"
+                        type="button"
+                        onClick={() => setConfirmDelete({ show: false, id: null, label: '' })}
+                    >
+                        Huỷ
+                    </Button>
+                    <Button
+                        variant="danger"
+                        type="button"
+                        onClick={async () => {
+                            if (!confirmDelete.id) return;
+                            await onDelete(confirmDelete.id);
+                            setConfirmDelete({ show: false, id: null, label: '' });
+                        }}
+                    >
+                        Xoá
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 };
 
-export default NewsComponent;
+export default NewsView;

@@ -1,103 +1,93 @@
-import { CONFIG } from '@/config-global';
-import axios from 'axios';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import ImageAssets from '@/constants/ImagesAsset';
+import {
+    useCreateCategoryMutation,
+    useDeleteCategoryMutation,
+    useGetCategoriesQuery,
+    useUpdateCategoryMutation,
+} from '@/store/apis/category';
+import type { Category as CategoryModel } from '@/store/types/category';
+import { fDate } from '@/utils/format-time';
+import React, { useMemo, useState } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { toast, ToastContainer } from 'react-toastify';
+import * as z from 'zod';
 
-const CategoryComponents: React.FC = () => {
-    const [categorys, setCategorys] = useState<any[]>([]);
+const CategoryView: React.FC = () => {
+    const { data: categories = [], isLoading } = useGetCategoriesQuery();
+    const [createCategory] = useCreateCategoryMutation();
+    const [updateCategory] = useUpdateCategoryMutation();
+    const [deleteCategory] = useDeleteCategoryMutation();
+
     const [showModal, setShowModal] = useState<boolean>(false);
     const [titleModal, setTitleModal] = useState<string>('');
-    const [name, setName] = useState<string>('');
-    const [id, setId] = useState<string>('');
+    const [confirmDelete, setConfirmDelete] = useState<{ show: boolean; id: any; label: string }>({
+        show: false,
+        id: null,
+        label: '',
+    });
 
-    const getDataCategory = useCallback(() => {
-        axios
-            .get(`${CONFIG.domain}/categories`)
-            .then((res) => {
-                setCategorys(res.data || []);
-            })
-            .catch((_err) => {
-                toast.error('Có lỗi xảy ra');
+    type CategoryForm = { id: string | number | null; name: string };
+    const initialForm: CategoryForm = { id: null, name: '' };
+    const [form, setForm] = useState<CategoryForm>(initialForm);
+    const [errors, setErrors] = useState<Partial<Record<'name', string>>>({});
+
+    const schema = z.object({ name: z.string().min(1, 'Vui lòng nhập tên danh mục!') });
+
+    const onEdit = (category: CategoryModel) => {
+        setForm({ id: category.id, name: category.name });
+        setTitleModal('Cập nhật danh mục');
+        setShowModal(true);
+    };
+
+    const onRequestDelete = (category: CategoryModel) => {
+        const label = category.name || `#${category.id}`;
+        setConfirmDelete({ show: true, id: category.id, label });
+    };
+
+    const onDelete = async (categoryId: any) => {
+        try {
+            await deleteCategory({ id: categoryId }).unwrap();
+            toast.success('Xóa thành công');
+        } catch (error) {
+            toast.error('Có lỗi xảy ra');
+        }
+    };
+
+    const resetForm = () => {
+        setForm(initialForm);
+        setErrors({});
+    };
+
+    const onSave = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const { id, ...payload } = form;
+        const parsed = schema.safeParse(payload);
+        if (!parsed.success) {
+            const fieldErrors: any = {};
+            parsed.error.issues.forEach((issue) => {
+                const field = issue.path[0] as 'name';
+                if (field && !fieldErrors[field]) fieldErrors[field] = issue.message;
             });
-    }, []);
+            setErrors(fieldErrors);
+            return;
+        }
+        setErrors({});
 
-    useEffect(() => {
-        getDataCategory();
-    }, [getDataCategory]);
-
-    const onEdit = useCallback((categoryId: any) => {
-        axios
-            .get(`${CONFIG.domain}/categories/${categoryId}`)
-            .then((res) => {
-                setId(categoryId);
-                setShowModal(true);
-                setTitleModal('Cập nhật danh mục');
-                setName(res.data?.name || '');
-            })
-            .catch((_error) => toast.error('Có lỗi xảy ra'));
-    }, []);
-
-    const onDelete = useCallback(
-        (categoryId: any) => {
-            axios
-                .delete(`${CONFIG.domain}/categories/${categoryId}`)
-                .then((_res) => {
-                    toast.success('Xóa thành công');
-                    getDataCategory();
-                })
-                .catch((_error) => {
-                    toast.error('Có lỗi xảy ra');
-                });
-        },
-        [getDataCategory]
-    );
-
-    const onSave = useCallback(
-        (e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            if (name === '') {
-                toast.warning('Vui lòng điền thông tin!');
-                return;
-            }
-            const bodyFormData = new FormData();
-            bodyFormData.append('name', name);
-            if (id) {
-                axios
-                    .put(`${CONFIG.domain}/categories/${id}`, {
-                        name: name,
-                    })
-                    .then((_) => {
-                        setShowModal(false);
-                        setName('');
-                        setId('');
-                        toast.success('Cập nhật thành công!');
-                        getDataCategory();
-                    })
-                    .catch((_) => toast.error('Có lỗi xảy ra'));
+        try {
+            if (form.id) {
+                await updateCategory({ id: form.id, body: parsed.data as any }).unwrap();
+                toast.success('Cập nhật thành công!');
             } else {
-                try {
-                    axios
-                        .post(`${CONFIG.domain}/categories`, bodyFormData, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data',
-                            },
-                        })
-                        .then((_res) => {
-                            setShowModal(false);
-                            setName('');
-                            toast.success('Thêm thành công!');
-                            getDataCategory();
-                        })
-                        .catch((_error) => toast.error('Có lỗi xảy ra'));
-                } catch (error) {
-                    toast.error(`${error}`);
-                }
+                await createCategory({ body: parsed.data as any }).unwrap();
+                toast.success('Thêm thành công!');
             }
-        },
-        [getDataCategory, id, name]
-    );
+            setShowModal(false);
+            resetForm();
+        } catch (error) {
+            toast.error('Có lỗi xảy ra');
+        }
+    };
 
     const columns = useMemo(
         () => [
@@ -112,20 +102,38 @@ const CategoryComponents: React.FC = () => {
                 sortable: true,
             },
             {
-                name: 'Hành động',
+                name: 'Ngày tạo',
+                selector: 'createDate',
+                sortable: true,
+                right: true,
+                cell: (row: any) => {
+                    return <span>{fDate(row.createDate, 'DD/MM/YYYY')}</span>;
+                },
+            },
+            {
+                name: 'Ngày chỉnh sửa',
+                selector: 'writeDate',
+                sortable: true,
+                right: true,
+                cell: (row: any) => {
+                    return <span>{fDate(row.writeDate, 'DD/MM/YYYY')}</span>;
+                },
+            },
+            {
+                name: 'Chức năng',
                 selector: (data: any, _b: any) => (
                     <>
                         <Button
                             type="button"
                             className="btn btn-warning white mr-10"
-                            onClick={() => onEdit(data.id)}
+                            onClick={() => onEdit(data)}
                         >
                             Sửa
                         </Button>
                         <Button
                             type="button"
                             className="btn btn-danger white"
-                            onClick={() => onDelete(data.id)}
+                            onClick={() => onRequestDelete(data)}
                         >
                             Xoá
                         </Button>
@@ -138,7 +146,7 @@ const CategoryComponents: React.FC = () => {
 
     return (
         <>
-            <h1 className="mt-10"> Danh mục sản phẩm </h1>
+            <h1 className="mt-10">Danh mục</h1>
             <ToastContainer autoClose={3000} />
             <div className="text-right">
                 <Button
@@ -147,46 +155,67 @@ const CategoryComponents: React.FC = () => {
                     onClick={() => {
                         setShowModal(true);
                         setTitleModal('Thêm danh mục');
-                        setName('');
+                        setForm(initialForm);
+                        setErrors({});
                     }}
                 >
                     Thêm danh mục
                 </Button>
             </div>
             <DataTable
-                title="Category"
+                title="Danh mục"
                 columns={columns}
-                data={categorys}
+                data={categories}
                 defaultSortFieldId="title"
                 pagination
+                progressPending={isLoading}
                 responsive={true}
             />
-            {/* <Table striped bordered hover variant="dark">
-          <thead>
-            <tr>
-              <th> # </th> <th> Tên danh mục </th> <th> Hành động </th>
-            </tr>
-          </thead>
-          <tbody> {showCategory(categorys)} </tbody>
-        </Table> */}
             <Modal
                 show={showModal}
                 onHide={() => {
                     setShowModal(false);
                 }}
             >
-                <form onSubmit={onSave}>
+                <form onSubmit={onSave} noValidate>
                     <Modal.Header closeButton {...({} as any)}>
                         <Modal.Title {...({} as any)}> {titleModal} </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <label> Tên danh mục </label>
-                        <input
-                            className="form-control"
-                            name="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
+                        <label>
+                            {' '}
+                            Tên danh mục <sup className="sub_text text-danger">*</sup>
+                        </label>
+                        <div className="position-relative">
+                            <Form.Control
+                                className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                                name="name"
+                                value={form.name}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    setForm((prev) => ({ ...prev, name: e.target.value }));
+                                    setErrors((prev) => ({ ...prev, name: undefined }));
+                                }}
+                                required
+                                style={{ paddingRight: form.name ? '2.25rem' : undefined }}
+                            />
+                            {form.name ? (
+                                <button
+                                    type="button"
+                                    className="position-absolute border-0 bg-transparent p-0"
+                                    style={{ right: '0.5rem', top: '50%', transform: 'translateY(-50%)' }}
+                                    aria-label="Clear"
+                                    onClick={() => {
+                                        setForm((prev) => ({ ...prev, name: '' }));
+                                        setErrors((prev) => ({ ...prev, name: undefined }));
+                                    }}
+                                >
+                                    <img src={ImageAssets.ic_clear} alt="clear" width={16} height={16} />
+                                </button>
+                            ) : null}
+                        </div>
+                        <div className={`invalid-feedback ${errors.name ? 'd-block' : ''}`}>
+                            {errors.name}
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
@@ -194,7 +223,7 @@ const CategoryComponents: React.FC = () => {
                             type="button"
                             onClick={() => {
                                 setShowModal(false);
-                                setName('');
+                                resetForm();
                             }}
                         >
                             Đóng
@@ -205,8 +234,40 @@ const CategoryComponents: React.FC = () => {
                     </Modal.Footer>
                 </form>
             </Modal>
+            <Modal
+                show={confirmDelete.show}
+                onHide={() => setConfirmDelete({ show: false, id: null, label: '' })}
+                centered
+            >
+                <Modal.Header closeButton {...({} as any)}>
+                    <Modal.Title {...({} as any)}>Xác nhận xoá</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Bạn có chắc muốn xoá danh mục "{confirmDelete.label}" không?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="secondary"
+                        type="button"
+                        onClick={() => setConfirmDelete({ show: false, id: null, label: '' })}
+                    >
+                        Huỷ
+                    </Button>
+                    <Button
+                        variant="danger"
+                        type="button"
+                        onClick={async () => {
+                            if (!confirmDelete.id) return;
+                            await onDelete(confirmDelete.id);
+                            setConfirmDelete({ show: false, id: null, label: '' });
+                        }}
+                    >
+                        Xoá
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 };
 
-export default CategoryComponents;
+export default CategoryView;

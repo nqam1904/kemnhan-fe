@@ -1,3 +1,4 @@
+import ClearableInput from '@/components/clearable-input';
 import { CONFIG } from '@/config-global';
 import axios from 'axios';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -94,7 +95,7 @@ const SettingComponent: React.FC = () => {
                     </Modal.Header>
                     <Modal.Body>
                         <label> Link youtube </label>
-                        <input
+                        <ClearableInput
                             className="form-control"
                             type="text"
                             name="value"

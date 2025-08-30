@@ -38,7 +38,9 @@ export const endpoints = {
         authorizeMe: 'users',
     },
     dashboard: {
-        users: 'users',
+        account: 'users',
+        categories: 'categories',
+        customers: 'customers',
     },
     main: {
         products: 'products',

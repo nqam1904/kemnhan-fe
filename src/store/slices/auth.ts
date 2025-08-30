@@ -3,20 +3,20 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '..';
 
 const initialState: any = {
-  tokens: {
-    accessToken: '',
-  },
+    tokens: {
+        accessToken: '',
+    },
 };
 
 const authSlice = createSlice({
-  name: 'auth',
-  initialState,
-  reducers: {
-    setTokens: (state, { payload }: PayloadAction<any>) => {
-      state.tokens = payload;
+    name: 'auth',
+    initialState,
+    reducers: {
+        setTokens: (state, { payload }: PayloadAction<any>) => {
+            state.tokens = payload;
+        },
+        resetAuth: () => initialState,
     },
-    resetAuth: () => initialState,
-  },
 });
 
 export const { setTokens, resetAuth } = authSlice.actions;

@@ -1,105 +1,83 @@
-import { CONFIG } from '@/config-global';
-import axios from 'axios';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+    useGetSettingsQuery,
+    useLazyGetSettingByIdQuery,
+    useUpdateSettingMutation,
+} from '@/store/apis/settings';
+import type { Setting } from '@/store/types/setting';
+import { fDate } from '@/utils/format-time';
+import React, { useMemo, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { toast, ToastContainer } from 'react-toastify';
 
 function MediaComponent(): React.ReactNode {
-    const [media, setMedia] = useState<any[]>([]);
+    const { data: media = [], isLoading, refetch } = useGetSettingsQuery();
+    const [getById] = useLazyGetSettingByIdQuery();
+    const [updateSetting] = useUpdateSettingMutation();
+
     const [showModal, setShowModal] = useState(false);
     const [titleModal, setTitleModal] = useState('');
     const [value, setValue] = useState('');
-    const [id, setId] = useState<string | null>(null);
+    const [id, setId] = useState<string | number | null>(null);
 
-    const getDataMedia = useCallback(() => {
-        axios
-            .get(`${CONFIG.serverUrl}/settings`)
-            .then((res) => {
-                setMedia(res.data);
-            })
-            .catch((_err) => {
-                toast.error('Có lỗi xảy ra');
-            });
-    }, []);
+    const onEdit = async (editId: any) => {
+        try {
+            const res = await getById(editId).unwrap();
+            setId(editId);
+            setShowModal(true);
+            setTitleModal('Cập nhật danh mục');
+            setValue(res.value);
+        } catch (_error) {
+            toast.error('Có lỗi xảy ra');
+        }
+    };
 
-    useEffect(() => {
-        getDataMedia();
-    }, [getDataMedia]);
-
-    const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const onSave = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setValue(e.target.value);
-    }, []);
+        if (!value.trim() || !id) {
+            toast.warning('Vui lòng điền thông tin!');
+            return;
+        }
 
-    const onEdit = useCallback((editId: any) => {
-        axios
-            .get(`${CONFIG.serverUrl}/settings/${editId}`)
-            .then((res) => {
-                setId(editId);
-                setShowModal(true);
-                setTitleModal('Cập nhật danh mục');
-                setValue(res.data.value);
-            })
-            .catch((_error) => toast.error('Có lỗi xảy ra'));
-    }, []);
-
-    const onDelete = useCallback(
-        (deleteId: any) => {
-            axios
-                .delete(`${CONFIG.serverUrl}/categories/${deleteId}`)
-                .then((_) => {
-                    toast.success('Xóa thành công');
-                    getDataMedia();
-                })
-                .catch((error) => {
-                    toast.error(`${error}`);
-                });
-        },
-        [getDataMedia]
-    );
-
-    const onSave = useCallback(
-        (e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            if (value === '') {
-                toast.warning('Vui lòng điền thông tin!');
-                return;
-            }
-
-            if (id) {
-                axios
-                    .put(`${CONFIG.serverUrl}/settings/${id}`, {
-                        value: value,
-                    })
-                    .then((_res) => {
-                        setShowModal(false);
-                        setValue('');
-                        setId(null);
-                        toast.success('Cập nhật thành công!');
-                        getDataMedia();
-                    })
-                    .catch((_error) => toast.error('Có lỗi xảy ra'));
-            }
-        },
-        [id, value, getDataMedia]
-    );
+        try {
+            await updateSetting({ id, body: { value } }).unwrap();
+            setShowModal(false);
+            setValue('');
+            setId(null);
+            toast.success('Cập nhật thành công!');
+            refetch();
+        } catch (_error) {
+            toast.error('Có lỗi xảy ra');
+        }
+    };
 
     const columns = useMemo(
         () => [
             {
                 name: '#',
-                selector: (row: any) => row.id,
+                selector: (row: Setting) => row.id,
                 sortable: true,
             },
             {
                 name: 'Media',
-                selector: (row: any) => row.value,
+                selector: (row: Setting) => row.value,
                 sortable: true,
             },
             {
+                name: 'Ngày tạo',
+                selector: (row: Setting) => row.createDate || '',
+                right: true,
+                cell: (row: Setting) => <span>{fDate(row.createDate, 'DD/MM/YYYY')}</span>,
+            },
+            {
+                name: 'Ngày chỉnh sửa',
+                selector: (row: Setting) => row.writeDate || '',
+                right: true,
+                cell: (row: Setting) => <span>{fDate(row.writeDate, 'DD/MM/YYYY')}</span>,
+            },
+            {
                 name: 'Hành động',
-                selector: (data: any) => (
+                selector: (data: Setting) => (
                     <>
                         <Button
                             type="button"
@@ -123,9 +101,10 @@ function MediaComponent(): React.ReactNode {
             <DataTable
                 title="Youtube"
                 columns={columns as any}
-                data={media}
+                data={media as any}
                 defaultSortFieldId="title"
                 pagination
+                progressPending={isLoading}
                 responsive={true}
             />
             <Modal
@@ -144,7 +123,9 @@ function MediaComponent(): React.ReactNode {
                             className="form-control"
                             name="value"
                             value={value}
-                            onChange={onChange}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setValue(e.target.value)
+                            }
                         />
                     </Modal.Body>
                     <Modal.Footer>

@@ -1,24 +1,34 @@
 // ----------------------------------------------------------------------
 
-export function localStorageAvailable() {
-  try {
-    const key = '@kemnhan';
-    window.localStorage.setItem(key, key);
-    window.localStorage.removeItem(key);
-    return true;
-  } catch (error) {
-    return false;
-  }
+export function localStorageGetItem(key: string, defaultValue?: any) {
+    try {
+        if (typeof window === 'undefined' || !window.localStorage) {
+            return defaultValue ?? null;
+        }
+
+        const value = window.localStorage.getItem(key);
+        return value !== null ? value : (defaultValue ?? null);
+    } catch {
+        return defaultValue ?? null;
+    }
 }
 
-export function localStorageGetItem(key: string, defaultValue = '') {
-  const storageAvailable = localStorageAvailable();
+export function localStorageSetItem(key: string, value: string) {
+    try {
+        if (typeof window !== 'undefined' && window.localStorage) {
+            window.localStorage.setItem(key, value);
+        }
+    } catch {
+        // noop
+    }
+}
 
-  let value;
-
-  if (storageAvailable) {
-    value = localStorage.getItem(key) || defaultValue;
-  }
-
-  return value;
+export function localStorageRemoveItem(key: string) {
+    try {
+        if (typeof window !== 'undefined' && window.localStorage) {
+            window.localStorage.removeItem(key);
+        }
+    } catch {
+        // noop
+    }
 }

@@ -1,4 +1,4 @@
-import { CustomAlertProps } from "./types";
+import { CustomAlertProps } from './types';
 
 const InfoIcon = ({ color = '#1890ff' }: { color?: string }) => (
     <svg

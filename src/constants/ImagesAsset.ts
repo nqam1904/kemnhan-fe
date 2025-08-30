@@ -1,41 +1,75 @@
+import aboutImg from '@/assets/images/about.png';
+import arrowImg from '@/assets/images/arrow.png';
+import bg3Img from '@/assets/images/bg3.png';
+import deleteImg from '@/assets/images/Delete.png';
+import emptyImg from '@/assets/images/empty.png';
+import eyeImg from '@/assets/images/eye.png';
+import facebookImg from '@/assets/images/Facebook.png';
+import headerImg from '@/assets/images/header.png';
+import icCartImg from '@/assets/images/ic_cart.png';
+import icClear from '@/assets/images/ic_clear.png';
+import icCloseCancel from '@/assets/images/ic_close_cancel.png';
+import icEyeImg from '@/assets/images/ic_eye.png';
+import icLocationImg from '@/assets/images/ic_location.png';
+import icNoEyeImg from '@/assets/images/ic_no_eye.png';
+import imageImg from '@/assets/images/image.png';
+import image35Img from '@/assets/images/image_35.png';
+import increaseImg from '@/assets/images/increase.png';
+import informationImg from '@/assets/images/information.png';
+import instagramImg from '@/assets/images/instagram.png';
+import kemnhanonlineImg from '@/assets/images/Kemnhanonline.png';
+import loadingGif from '@/assets/images/loading.gif';
+import logoImg from '@/assets/images/logo.png';
+import logo1Img from '@/assets/images/logo1.png';
+import phoneCallImg from '@/assets/images/phone-call.png';
+import plusImg from '@/assets/images/plus.png';
+import shopeeImg from '@/assets/images/shopee.png';
+import successImg from '@/assets/images/success.png';
+import textImg from '@/assets/images/text.png';
+import tiktokImg from '@/assets/images/tiktok.png';
+import truImg from '@/assets/images/tru.png';
+import upwardsArrowImg from '@/assets/images/upwards-arrow.png';
+import youtubeImg from '@/assets/images/Youtube.png';
+import zaloImg from '@/assets/images/zalo.png';
+
 const ImageAssets = {
     // Core logos
-    logo: '/assets/images/logo.png',
-    logo1: '/assets/images/logo1.png',
-    kemnhanonline: '/assets/images/Kemnhanonline.png',
+    logo: logoImg,
+    logo1: logo1Img,
+    kemnhanonline: kemnhanonlineImg,
 
     // UI backgrounds/headers
-    header: '/assets/images/header.png',
-    bg3: '/assets/images/bg3.png',
+    header: headerImg,
+    bg3: bg3Img,
 
     // Icons and UI elements
-    icCart: '/assets/images/ic_cart.png',
-    icEye: '/assets/images/ic_eye.png',
-    icNoEye: '/assets/images/ic_no_eye.png',
-    icLocation: '/assets/images/ic_location.png',
-    delete: '/assets/images/Delete.png',
-    plus: '/assets/images/plus.png',
-    tru: '/assets/images/tru.png',
-    increase: '/assets/images/increase.png',
-    phoneCall: '/assets/images/phone-call.png',
-    information: '/assets/images/information.png',
-    empty: '/assets/images/empty.png',
-    loading: '/assets/images/loading.gif',
+    icCart: icCartImg,
+    icEye: icEyeImg,
+    icNoEye: icNoEyeImg,
+    icLocation: icLocationImg,
+    delete: deleteImg,
+    plus: plusImg,
+    tru: truImg,
+    increase: increaseImg,
+    phoneCall: phoneCallImg,
+    information: informationImg,
+    empty: emptyImg,
+    loading: loadingGif,
 
     // Socials
-    youtube: '/assets/images/Youtube.png',
-    facebook: '/assets/images/Facebook.png',
-    instagram: '/assets/images/instagram.png',
-    zalo: '/assets/images/zalo.png',
-    tiktok: '/assets/images/tiktok.png',
+    youtube: youtubeImg,
+    facebook: facebookImg,
+    instagram: instagramImg,
+    zalo: zaloImg,
+    tiktok: tiktokImg,
 
     // Commerce
-    shopee: '/assets/images/shopee.png',
-    success: '/assets/images/success.png',
+    shopee: shopeeImg,
+    success: successImg,
 
     // Content images referenced in config
-    about: '/assets/images/about.png',
-    image: '/assets/images/image.png',
+    about: aboutImg,
+    image: imageImg,
     image12: '/assets/images/image_12.png',
     image13: '/assets/images/image_13.png',
     image18: '/assets/images/image_18.png',
@@ -43,13 +77,15 @@ const ImageAssets = {
     image20: '/assets/images/image_20.png',
     image21: '/assets/images/image_21.png',
     image22: '/assets/images/image_22.png',
-    image35: '/assets/images/image_35.png',
+    image35: image35Img,
 
     // Additional assets (commonly used)
-    arrow: '/assets/images/arrow.png',
-    eye: '/assets/images/eye.png',
-    text: '/assets/images/text.png',
-    upwardsArrow: '/assets/images/upwards-arrow.png',
+    arrow: arrowImg,
+    eye: eyeImg,
+    text: textImg,
+    upwardsArrow: upwardsArrowImg,
+    ic_close_cancel: icCloseCancel,
+    ic_clear: icClear,
 };
 
 export default ImageAssets;
