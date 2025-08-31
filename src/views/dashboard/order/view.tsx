@@ -103,7 +103,7 @@ const OrderComponents: React.FC = () => {
     return (
         <>
             <h1 className="mt-10">Đơn hàng</h1>
-            <ToastContainer autoClose={2000} />
+            <ToastContainer autoClose={1000} />
             <div className="text-right">
                 <Button
                     variant="success"
@@ -127,6 +127,7 @@ const OrderComponents: React.FC = () => {
                 show={confirm.show}
                 onHide={() => setConfirm({ show: false, id: null, label: '', next: 0 })}
                 centered
+                backdrop="static"
             >
                 <Modal.Header closeButton {...({} as any)}>
                     <Modal.Title {...({} as any)}>Xác nhận cập nhật</Modal.Title>

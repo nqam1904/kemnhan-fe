@@ -96,7 +96,7 @@ function MediaComponent(): React.ReactNode {
     return (
         <>
             <h1 className="mt-10"> Link youtube</h1>
-            <ToastContainer autoClose={3000} />
+            <ToastContainer autoClose={1000} />
 
             <DataTable
                 title="Youtube"
@@ -112,6 +112,7 @@ function MediaComponent(): React.ReactNode {
                 onHide={() => {
                     setShowModal(false);
                 }}
+                backdrop="static"
             >
                 <form onSubmit={onSave}>
                     <Modal.Header closeButton {...({} as any)}>

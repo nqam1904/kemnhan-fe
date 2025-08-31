@@ -49,6 +49,9 @@ const Navbar: React.FC = () => {
                     <Nav.Link as={Link} to={paths.dashboard.media}>
                         YouTube
                     </Nav.Link>
+                    <Nav.Link as={Link} to={paths.dashboard.banner}>
+                        Banner
+                    </Nav.Link>
                     <Nav.Link as={Link} to={paths.dashboard.news}>
                         Tin khuyến mãi
                     </Nav.Link>

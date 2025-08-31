@@ -89,7 +89,7 @@ function ProductDetail(props: ProductDetailProps) {
                 <div className="loading">Loading</div>
             ) : (
                 <div className="container-fluid">
-                    <ToastContainer autoClose={2000} />
+                    <ToastContainer autoClose={1000} />
                     <div className="page_product_detail">
                         <div className="product_img">
                             <LazyLoadImage

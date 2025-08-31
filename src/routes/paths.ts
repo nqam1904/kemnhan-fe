@@ -26,6 +26,7 @@ export const paths = {
         order: `${ROOTS.DASHBOARD}/order`,
         product: `${ROOTS.DASHBOARD}/product`,
         media: `${ROOTS.DASHBOARD}/media`,
+        banner: `${ROOTS.DASHBOARD}/banner`,
         news: `${ROOTS.DASHBOARD}/news`,
         setting: `${ROOTS.DASHBOARD}/setting`,
     },

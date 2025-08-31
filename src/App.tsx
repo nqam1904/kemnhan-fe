@@ -18,7 +18,7 @@ const ProvidersTree = buildProvidersTree([[ReduxProvider], [JwtAuthProvider], [P
 export default function App() {
     return (
         <ProvidersTree>
-            <ToastContainer />
+            <ToastContainer autoClose={1000} />
             <Router />
         </ProvidersTree>
     );

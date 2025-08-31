@@ -8,7 +8,7 @@ function NotFoundPageComponent() {
     }, []);
     return (
         <div className="notfoundpage">
-            <ToastContainer autoClose={3000} />
+            <ToastContainer autoClose={1000} />
             <p className="title_notfound">404</p>
             <p className="oops">Oops! không tìm thấy trang này!</p>
             <Link className="notfound_btn" to="/trang-chu">

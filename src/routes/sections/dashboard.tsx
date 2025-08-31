@@ -12,6 +12,7 @@ const CustomerPage = lazy(() => import('pages/dashboard/customer-page'));
 const Index = lazy(() => import('pages/dashboard'));
 const MediaPage = lazy(() => import('pages/dashboard/media-page'));
 const NewsPage = lazy(() => import('pages/dashboard/news-page'));
+const BannerPage = lazy(() => import('pages/dashboard/banner-page'));
 const NotFoundPage = lazy(() => import('pages/dashboard/not-found-page'));
 const OrderPage = lazy(() => import('pages/dashboard/order-page'));
 const ProductPage = lazy(() => import('pages/dashboard/product-page'));
@@ -43,6 +44,7 @@ export const dashboardRoutes = [
                     { path: 'category', element: <CategoryPage /> },
                     { path: 'customer', element: <CustomerPage /> },
                     { path: 'media', element: <MediaPage /> },
+                    { path: 'banner', element: <BannerPage /> },
                     { path: 'news', element: <NewsPage /> },
                     { path: 'order', element: <OrderPage /> },
                     { path: 'product', element: <ProductPage /> },

@@ -74,7 +74,7 @@ const SettingComponent: React.FC = () => {
     return (
         <>
             <h1 className="mt-10"> Cài đặt thông báo</h1>
-            <ToastContainer autoClose={3000} />
+            <ToastContainer autoClose={1000} />
             <DataTable
                 title="Thông báo"
                 columns={columns as any}
@@ -88,6 +88,7 @@ const SettingComponent: React.FC = () => {
                 onHide={() => {
                     setShowModal(false);
                 }}
+                backdrop="static"
             >
                 <form onSubmit={onSave}>
                     <Modal.Header closeButton {...({} as any)}>

@@ -1,343 +1,343 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Spinner } from 'react-activity';
-import { Button, Form, Modal, Table } from 'react-bootstrap';
+import ImageAssets from '@/constants/ImagesAsset';
+import { fNumber } from '@/utils/format-number';
+import { formatSubstring } from '@/utils/format-string';
+import resolveImageUrl from '@/utils/image-url';
+import React, { useMemo, useState } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
+import DataTable from 'react-data-table-component';
 import { toast, ToastContainer } from 'react-toastify';
+import * as z from 'zod';
 
+import { useGetCategoriesQuery } from '@/store/apis/category';
 import {
     useCreateProductMutation,
     useDeleteProductMutation,
     useGetProductsQuery,
     useUpdateProductMutation,
 } from '@/store/apis/products';
-import axiosInstance, { endpoints } from '@/utils/axios';
-import ItemProduct from './item-product';
+import axiosInstance from '@/utils/axios';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import './product.css';
 
 const ProductsComponents: React.FC = () => {
     const { data: products = [], isLoading, refetch } = useGetProductsQuery();
+    const { data: categories = [] } = useGetCategoriesQuery();
     const [createProduct] = useCreateProductMutation();
     const [updateProduct] = useUpdateProductMutation();
     const [deleteProduct] = useDeleteProductMutation();
+
+    type ProductForm = {
+        id: string | number | null;
+        name: string;
+        unit: string;
+        description: string;
+        displayPrice: number | string;
+        sellPrice: number | string;
+        stockQuantity: number | string;
+        isFeature: boolean;
+        isActive: boolean;
+        shopeeUrl: string;
+        categoryId: string | number | '';
+        images: File[];
+    };
+
+    const initialForm: ProductForm = {
+        id: null,
+        name: '',
+        unit: '',
+        description: '',
+        displayPrice: 0,
+        sellPrice: 0,
+        stockQuantity: 0,
+        isFeature: true,
+        isActive: true,
+        shopeeUrl: '',
+        categoryId: '',
+        images: [],
+    };
+
+    const [form, setForm] = useState<ProductForm>(initialForm);
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [titleModal, setTitleModal] = useState<string>('');
-    const [id, setId] = useState<string>('');
-    const [name, setName] = useState<string>('');
-    const [unit, setUnit] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
-    const [displayPrice, setDisplayPrice] = useState<number>(0);
-    const [sellPrice, setSellPrice] = useState<number | string>(0);
-    const [soldQuantity, setSoldQuantity] = useState<number>(0);
-    const [stockQuantity, setStockQuantity] = useState<number | string>(0);
-    const [isFeature, setIsFeature] = useState<boolean>(true);
-    const [isActive, setIsActive] = useState<boolean>(true);
-    const [selectCategory, setSelectCategory] = useState<string>('');
-    const [category, setCategory] = useState<any[] | null>(null);
-    const [shopeeUrl, setShopeeUrl] = useState<string>('');
-    const [imagesId, setImagesId] = useState<any[]>([]);
-    const [media, setMedia] = useState<FileList | File[]>([]);
-    const [filePreviews, setFilePreviews] = useState<string[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [titleModal, setTitleModal] = useState<string>('Thêm sản phẩm');
+    const [errors, setErrors] = useState<
+        Partial<Record<'name' | 'unit' | 'categoryId' | 'sellPrice' | 'stockQuantity', string>>
+    >({});
+    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    const [confirmDelete, setConfirmDelete] = useState<{ show: boolean; id: any; label: string }>({
+        show: false,
+        id: null,
+        label: '',
+    });
 
-    const getDataCategory = useCallback(() => {
-        axiosInstance
-            .get(endpoints.dashboard.categories)
-            .then((res) => {
-                setCategory(res.data || []);
-            })
-            .catch((_err) => { });
-    }, []);
+    const schema = z.object({
+        name: z.string().min(1, 'Vui lòng nhập tên sản phẩm!'),
+        unit: z.string().min(1, 'Vui lòng nhập đơn vị!'),
+        categoryId: z
+            .union([z.string(), z.number()])
+            .refine((v) => String(v).length > 0, 'Vui lòng chọn danh mục!'),
+        sellPrice: z
+            .union([z.string(), z.number()])
+            .refine((v) => String(v).length > 0, 'Vui lòng nhập giá tiền!'),
+        stockQuantity: z
+            .union([z.string(), z.number()])
+            .refine((v) => String(v).length > 0, 'Vui lòng nhập số lượng!'),
+    });
 
-    const getDateProduct = useCallback(() => {
-        refetch();
-    }, [refetch]);
+    const resetForm = () => {
+        setForm(initialForm);
+        setImagePreviews([]);
+        setErrors({});
+    };
 
-    useEffect(() => {
-        getDateProduct();
-        getDataCategory();
-    }, [getDataCategory, getDateProduct]);
+    const onEdit = (record: any) => {
+        const categoryIdFromIds = Array.isArray(record?.categoriesId)
+            ? record.categoriesId[0]
+            : undefined;
+        const categoryIdFromObjects = Array.isArray(record?.categories)
+            ? record.categories?.[0]?.id
+            : undefined;
+        const categoryId = categoryIdFromIds ?? categoryIdFromObjects ?? '';
 
-    const uploadMultipleFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            const previews = Array.from(e.target.files).map((file: any) =>
-                URL.createObjectURL(file)
-            );
-            setFilePreviews(previews);
-            setMedia(e.target.files);
+        setForm({
+            id: record.id,
+            name: record.name || '',
+            unit: record.unit || '',
+            description: record.description || '',
+            displayPrice: record.displayPrice || 0,
+            sellPrice: fNumber(record.sellPrice || 0),
+            stockQuantity: String(record.stockQuantity || 0),
+            isFeature: Boolean(record.isFeature),
+            isActive: Boolean(record.isActive),
+            shopeeUrl: record.shopeeUrl || '',
+            categoryId,
+            images: [],
+        });
+
+        const previews: string[] = Array.isArray(record?.images)
+            ? record.images
+                .map((img: any) => (img?.key ? String(img.key) : null))
+                .filter(Boolean)
+                .map((key: any) => resolveImageUrl(`${key}`))
+            : [];
+        setImagePreviews(previews);
+
+        setTitleModal('Cập nhật sản phẩm');
+        setShowModal(true);
+    };
+
+    const onRequestDelete = (record: any) => {
+        const label = record.name || `#${record.id}`;
+        setConfirmDelete({ show: true, id: record.id, label });
+    };
+
+    const onDelete = async (id: any) => {
+        try {
+            await deleteProduct({ id }).unwrap();
+            toast.success('Xóa thành công');
+            refetch();
+        } catch (_e) {
+            toast.error('Có lỗi xảy ra');
         }
-    }, []);
+    };
 
-    const onEdit = useCallback((productId: any) => {
-        axiosInstance
-            .get(`${endpoints.main.products}/${productId}`)
-            .then((res) => {
-                setId(productId);
-                setShowModal(true);
-                setTitleModal('Cập nhật sản phẩm');
-                setName(res.data.name || '');
-                setUnit(res.data.unit || '');
-                setDescription(res.data.description || '');
-                setDisplayPrice(parseInt(res.data.displayPrice, 10) || 0);
-                setSellPrice(parseInt(res.data.sellPrice, 10) || 0);
-                setSoldQuantity(parseInt(res.data.soldQuantity, 10) || 0);
-                setStockQuantity(parseInt(res.data.stockQuantity, 10) || 0);
-                setIsFeature(Boolean(res.data.isFeature));
-                setIsActive(Boolean(res.data.isActive));
-                setShopeeUrl(res.data.shopeeUrl || '');
-                setSelectCategory(res.data.categories || '');
-                setImagesId(res.data.images?.[0]?.key ? [res.data.images[0].key] : []);
-            })
-            .catch((_error) => { });
-    }, []);
+    const onToggleFeature = async (record: any) => {
+        try {
+            await updateProduct({ id: record.id, body: { isFeature: !record.isFeature } }).unwrap();
+            toast.success('Cập nhật thành công');
+            refetch();
+        } catch (_e) { }
+    };
 
-    const onDelete = useCallback(
-        async (productId: any) => {
-            try {
-                await deleteProduct({ id: productId }).unwrap();
-                toast.success('Xóa thành công');
-                getDateProduct();
-            } catch (error) {
-                toast.error(`${error}`);
-            }
-        },
-        [deleteProduct, getDateProduct]
-    );
+    const onToggleActive = async (record: any) => {
+        try {
+            await updateProduct({ id: record.id, body: { isActive: !record.isActive } }).unwrap();
+            toast.success('Cập nhật thành công');
+            refetch();
+        } catch (_e) { }
+    };
 
-    const onFeature = useCallback(
-        (productId: any, feature: any) => {
-            axiosInstance
-                .put(`${endpoints.main.products}/${productId}`, {
-                    isFeature: !feature,
-                })
-                .then((_) => {
-                    toast.success('Cập nhật thành công');
-                    getDateProduct();
-                })
-                .catch((_error) => { });
-        },
-        [getDateProduct]
-    );
+    const sanitizeInteger = (value: any) => {
+        const cleaned = String(value ?? '').replace(/[^\d]/g, '');
+        return cleaned ? parseInt(cleaned, 10) : 0;
+    };
 
-    const onActive = useCallback(
-        (productId: any, active: any) => {
-            axiosInstance
-                .put(`${endpoints.main.products}/${productId}`, {
-                    isActive: !active,
-                })
-                .then((_) => {
-                    toast.success('Cập nhật thành công');
-                    getDateProduct();
-                })
-                .catch((_error) => { });
-        },
-        [getDateProduct]
-    );
-
-    const onSaveImg = useCallback(() => {
-        const bodyFormData = new FormData();
-        // Append all selected files
-        if (media && (media as FileList).length !== undefined) {
-            Array.from(media as FileList).forEach((file) => bodyFormData.append('medias', file));
+    const onSave = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const parsed = schema.safeParse({
+            name: form.name,
+            unit: form.unit,
+            categoryId: form.categoryId,
+            sellPrice: form.sellPrice,
+            stockQuantity: form.stockQuantity,
+        });
+        if (!parsed.success) {
+            const fieldErrors: any = {};
+            parsed.error.issues.forEach((issue) => {
+                const field = issue.path[0] as
+                    | 'name'
+                    | 'unit'
+                    | 'categoryId'
+                    | 'sellPrice'
+                    | 'stockQuantity';
+                if (field && !fieldErrors[field]) fieldErrors[field] = issue.message;
+            });
+            setErrors(fieldErrors);
+            return;
         }
-        axiosInstance
-            .post(`media`, bodyFormData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-            .then((res) => {
-                createProduct({
+        setErrors({});
+
+        try {
+            if (form.id) {
+                await updateProduct({
+                    id: form.id,
                     body: {
-                        name,
-                        unit,
-                        description,
-                        displayPrice: parseInt(String(displayPrice), 10),
-                        sellPrice: parseInt(String(sellPrice), 10),
-                        soldQuantity: parseInt(String(soldQuantity), 10),
-                        stockQuantity: parseInt(String(stockQuantity), 10),
-                        isFeature,
-                        isActive,
-                        shopeeUrl,
-                        categoriesId: [parseInt(String(selectCategory), 10)],
-                        imagesId: res.data.mediasId,
+                        name: form.name,
+                        unit: form.unit,
+                        description: form.description,
+                        displayPrice: parseInt(String((form.displayPrice as any) || 0).replace(/[^\d]/g, ''), 10),
+                        sellPrice: parseInt(String((form.sellPrice as any) || 0).replace(/[^\d]/g, ''), 10),
+                        stockQuantity: parseInt(String((form.stockQuantity as any) || 0).replace(/[^\d]/g, ''), 10),
+                        isFeature: form.isFeature,
+                        isActive: form.isActive,
+                        shopeeUrl: form.shopeeUrl,
+                        categoriesId: [parseInt(String(form.categoryId), 10)],
                     },
-                })
-                    .then((_) => {
-                        setShowModal(false);
-                        setId('');
-                        setName('');
-                        setUnit('');
-                        setDescription('');
-                        setDisplayPrice(0);
-                        setSellPrice(0);
-                        setStockQuantity(0);
-                        setImagesId([]);
-                        setFilePreviews([]);
-                        toast.success('Thêm sản phẩm thành công!');
-                        getDateProduct();
-                    })
-                    .catch((_error) => { });
-            })
-            .catch((_) => { });
-    }, [
-        description,
-        displayPrice,
-        getDateProduct,
-        isActive,
-        isFeature,
-        media,
-        name,
-        selectCategory,
-        sellPrice,
-        shopeeUrl,
-        soldQuantity,
-        stockQuantity,
-        unit,
-        createProduct,
-    ]);
-
-    const onPutImg = useCallback(
-        (productId: any) => {
-            updateProduct({
-                id: productId,
-                body: {
-                    name,
-                    unit,
-                    description,
-                    displayPrice: parseInt(String(displayPrice), 10),
-                    sellPrice: parseInt(String(sellPrice), 10),
-                    stockQuantity: parseInt(String(stockQuantity), 10),
-                    isFeature,
-                    isActive,
-                    shopeeUrl,
-                    categoriesId: [parseInt(String(selectCategory), 10)],
-                },
-            })
-                .then((_) => {
-                    setShowModal(false);
-                    setId('');
-                    setName('');
-                    setUnit('');
-                    setDescription('');
-                    setDisplayPrice(0);
-                    setSellPrice(0);
-                    setStockQuantity(0);
-                    setImagesId([]);
-                    getDateProduct();
-                })
-                .catch((_error) => { });
-        },
-        [
-            description,
-            displayPrice,
-            getDateProduct,
-            isActive,
-            isFeature,
-            name,
-            selectCategory,
-            sellPrice,
-            shopeeUrl,
-            stockQuantity,
-            unit,
-            updateProduct,
-        ]
-    );
-
-    const onSave = useCallback(
-        (e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            if (id) {
-                onPutImg(id);
-                toast.success('Cập nhật sản phẩm thành công!');
+                }).unwrap();
+                toast.success('Cập nhật thành công!');
             } else {
-                if (
-                    name === '' ||
-                    unit === '' ||
-                    selectCategory === '' ||
-                    String(sellPrice) === '' ||
-                    String(stockQuantity) === ''
-                ) {
-                    toast.warn('Vui lòng nhập những thông tin bắt buộc!');
-                    return;
+                const formData = new FormData();
+                if (form.images && form.images.length > 0) {
+                    form.images.forEach((file) => formData.append('medias', file));
                 }
-                setLoading(true);
-                onSaveImg();
-                setLoading(false);
+                const mediaRes = await axiosInstance.post(`media`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
+                const imagesId = mediaRes?.data?.mediasId || [];
+                await createProduct({
+                    body: {
+                        name: form.name,
+                        unit: form.unit,
+                        description: form.description,
+                        displayPrice: parseInt(String((form.displayPrice as any) || 0).replace(/[^\d]/g, ''), 10),
+                        sellPrice: parseInt(String((form.sellPrice as any) || 0).replace(/[^\d]/g, ''), 10),
+                        stockQuantity: parseInt(String((form.stockQuantity as any) || 0).replace(/[^\d]/g, ''), 10),
+                        isFeature: form.isFeature,
+                        isActive: form.isActive,
+                        shopeeUrl: form.shopeeUrl,
+                        categoriesId: [parseInt(String(form.categoryId), 10)],
+                        imagesId,
+                    },
+                }).unwrap();
+                toast.success('Thêm thành công!');
             }
-        },
-        [id, name, onPutImg, onSaveImg, selectCategory, sellPrice, stockQuantity, unit]
-    );
 
-    const handleChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-            const { name, value } = e.target;
-            switch (name) {
-                case 'name':
-                    setName(value);
-                    break;
-                case 'unit':
-                    setUnit(value);
-                    break;
-                case 'description':
-                    setDescription(value);
-                    break;
-                case 'sellPrice':
-                    setSellPrice(value);
-                    break;
-                case 'displayPrice':
-                    setDisplayPrice(parseInt(value, 10) || 0);
-                    break;
-                case 'stockQuantity':
-                    setStockQuantity(value);
-                    break;
-                case 'shopeeUrl':
-                    setShopeeUrl(value);
-                    break;
-                case 'selectCategory':
-                    setSelectCategory(value);
-                    break;
-                default:
-                    break;
-            }
-        },
+            setShowModal(false);
+            resetForm();
+            refetch();
+        } catch (_e) {
+            toast.error('Có lỗi xảy ra');
+        }
+    };
+
+    const columns = useMemo(
+        () => [
+            { name: '#', selector: 'id', sortable: true },
+            { name: 'Tên sản phẩm', selector: 'name', sortable: true },
+            {
+                name: 'Hình ảnh',
+                selector: (row: any) => row.images?.[0]?.key || '',
+                cell: (row: any) => {
+                    const key = row.images?.[0]?.key;
+                    const src = key ? resolveImageUrl(`${key}`) : ImageAssets.logo;
+
+                    return (
+                        <div style={{ padding: 8 }}>
+                            <LazyLoadImage
+                                src={src}
+                                alt={row.name}
+                                width={80}
+                                height={80}
+                                effect="blur"
+                                placeholderSrc={ImageAssets.logo}
+                                style={{ objectFit: 'cover', borderRadius: 4 }}
+                            />
+                        </div>
+                    );
+                },
+            },
+            {
+                name: 'Giá tiền',
+                selector: 'sellPrice',
+                cell: (row: any) => <span>{fNumber(row.sellPrice)} VNĐ</span>,
+            },
+            { name: 'Đã bán', selector: 'soldQuantity' },
+            { name: 'Đơn vị', selector: 'unit' },
+            { name: 'Số lượng', selector: 'stockQuantity' },
+            {
+                name: 'Mô tả',
+                selector: 'description',
+                cell: (row: any) => (
+                    <div style={{ maxWidth: 400, overflow: 'hidden' }}>
+                        {formatSubstring(row.description || '')}
+                    </div>
+                ),
+            },
+            {
+                name: 'Nổi bật',
+                selector: 'isFeature',
+                cell: (row: any) => (
+                    <Button variant="link" className="p-0" onClick={() => onToggleFeature(row)}>
+                        <img
+                            src={row.isFeature ? ImageAssets.icEye : ImageAssets.icNoEye}
+                            alt="feature"
+                            width={25}
+                        />
+                    </Button>
+                ),
+            },
+            {
+                name: 'Hiển thị',
+                selector: 'isActive',
+                cell: (row: any) => (
+                    <Button variant="link" className="p-0" onClick={() => onToggleActive(row)}>
+                        <img
+                            src={row.isActive ? ImageAssets.icEye : ImageAssets.icNoEye}
+                            alt="active"
+                            width={25}
+                        />
+                    </Button>
+                ),
+            },
+            {
+                name: 'Chức năng',
+                selector: (row: any) => row.id as any,
+                cell: (row: any) => (
+                    <>
+                        <Button
+                            type="button"
+                            className="btn btn-warning white mr-10"
+                            onClick={() => onEdit(row)}
+                        >
+                            Sửa
+                        </Button>
+                        <Button
+                            type="button"
+                            className="btn btn-danger white"
+                            onClick={() => onRequestDelete(row)}
+                        >
+                            Xoá
+                        </Button>
+                    </>
+                ),
+            },
+        ],
         []
     );
-
-    const renderedProducts = useMemo(() => {
-        if (!products || products.length === 0) return null;
-        return products.map((item: any, index: any) => (
-            <ItemProduct
-                key={index}
-                index={index}
-                id={item.id}
-                name={item.name}
-                slug={item.slug}
-                unit={item.unit}
-                description={item.description}
-                displayPrice={item.displayPrice}
-                soldQuantity={item.soldQuantity}
-                sellPrice={item.sellPrice}
-                stockQuantity={item.stockQuantity}
-                categoriesId={item.categoriesId}
-                isFeature={item.isFeature}
-                isActive={item.isActive}
-                images={item.images?.[0]?.key}
-                onEdit={onEdit}
-                onDelete={onDelete}
-                onUpdateStatus={(idProp: any, status: any) =>
-                    console.log('Update status', idProp, status)
-                }
-                onFeature={() => onFeature(item.id, item.isFeature)}
-                onActive={() => onActive(item.id, item.isActive)}
-            />
-        ));
-    }, [onActive, onDelete, onEdit, onFeature, products]);
-
-    const result = loading || isLoading ? <Spinner size={32} speed={1} animating={true} /> : renderedProducts;
 
     return (
         <>
             <h1 className="mt-10">Danh sách sản phẩm</h1>
-            <ToastContainer autoClose={3000} />
+            <ToastContainer autoClose={1000} />
             <div className="text-right">
                 <Button
                     type="button"
@@ -345,17 +345,7 @@ const ProductsComponents: React.FC = () => {
                     onClick={() => {
                         setShowModal(true);
                         setTitleModal('Thêm sản phẩm');
-                        setId('');
-                        setName('');
-                        setUnit('');
-                        setDescription('');
-                        setDisplayPrice(0);
-                        setSellPrice(0);
-                        setStockQuantity(0);
-                        setImagesId([]);
-                        setShopeeUrl('');
-                        setSelectCategory('');
-                        setFilePreviews([]);
+                        resetForm();
                     }}
                 >
                     Thêm sản phẩm
@@ -372,34 +362,30 @@ const ProductsComponents: React.FC = () => {
                 </Button>
             </div>
 
-            <Table striped bordered hover responsive>
-                <thead>
-                    <tr>
-                        <th> # </th>
-                        <th>Tên sản phẩm</th>
-                        <th>Hình ảnh</th>
-                        <th>Giá tiền</th>
-                        <th>Đã bán được</th>
-                        <th>Đơn vị</th>
-                        <th>Số lượng</th>
-                        <th>Mô tả</th>
-                        <th>Nổi bật</th>
-                        <th>Hiển thị</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>{result}</tbody>
-            </Table>
+            <DataTable
+                title="Sản phẩm"
+                columns={columns as any}
+                data={products as any}
+                defaultSortFieldId="title"
+                pagination
+                progressPending={isLoading}
+                responsive={true}
+                dense
+            />
+
             <Modal
                 size="lg"
+
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
                 show={showModal}
                 onHide={() => {
                     setShowModal(false);
                 }}
+                animation={false}
+                backdrop="static"
             >
-                <Form onSubmit={onSave}>
+                <Form onSubmit={onSave} noValidate>
                     <Modal.Header closeButton {...({} as any)}>
                         <Modal.Title {...({} as any)}>{titleModal.toString()}</Modal.Title>
                     </Modal.Header>
@@ -409,36 +395,51 @@ const ProductsComponents: React.FC = () => {
                                 <label>
                                     Danh Mục <sup className="sub_text">*</sup>
                                 </label>
-                                <select
-                                    className="form-control"
-                                    size={1 as any}
-                                    onChange={handleChange}
-                                    value={selectCategory}
-                                    name="selectCategory"
+                                <Form.Control
+                                    as="select"
+                                    className={`form-control ${errors.categoryId ? 'is-invalid' : ''}`}
+                                    value={String(form.categoryId)}
+                                    onChange={(
+                                        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+                                    ) => {
+                                        setForm((prev) => ({
+                                            ...prev,
+                                            categoryId: e.target.value,
+                                        }));
+                                        setErrors((prev) => ({ ...prev, categoryId: undefined }));
+                                    }}
                                 >
-                                    <option>---Thêm danh mục---</option>
-                                    {category &&
-                                        category.map((item: any, index: any) => {
-                                            return (
-                                                <option value={item.id} key={index}>
-                                                    {item.name}
-                                                </option>
-                                            );
-                                        })}
-                                </select>
+                                    <option value="">---Thêm danh mục---</option>
+                                    {categories &&
+                                        (categories as any[]).map((item: any, index: any) => (
+                                            <option value={item.id} key={index}>
+                                                {item.name}
+                                            </option>
+                                        ))}
+                                </Form.Control>
+                                <div
+                                    className={`invalid-feedback ${errors.categoryId ? 'd-block' : ''}`}
+                                >
+                                    {errors.categoryId}
+                                </div>
                             </div>
                             <div className=" form-group col-6">
                                 <label>
-                                    {' '}
                                     Tên sản phẩm <sup className="sub_text">*</sup>
                                 </label>
-                                <input
-                                    className="form-control"
+                                <Form.Control
+                                    className={`form-control ${errors.name ? 'is-invalid' : ''}`}
                                     name="name"
-                                    value={name}
+                                    value={form.name}
                                     placeholder="Nhập tên sản phẩm"
-                                    onChange={handleChange}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        setForm((prev) => ({ ...prev, name: e.target.value }));
+                                        setErrors((prev) => ({ ...prev, name: undefined }));
+                                    }}
                                 />
+                                <div className={`invalid-feedback ${errors.name ? 'd-block' : ''}`}>
+                                    {errors.name}
+                                </div>
                             </div>
                         </div>
 
@@ -448,47 +449,125 @@ const ProductsComponents: React.FC = () => {
                             label="Hình ảnh đầu tiên sẽ là hình mặc định"
                             lang="en"
                             custom
-                            multiple
                             type="file"
-                            onChange={uploadMultipleFiles}
+                            multiple
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                const filesList = e.target.files;
+                                const files = filesList ? Array.from(filesList) : [];
+                                setForm((prev) => ({ ...prev, images: files }));
+                                const previews = files.map((file: any) =>
+                                    URL.createObjectURL(file)
+                                );
+                                setImagePreviews(previews);
+                            }}
                         />
-                        <div className="mbt-10 show_image">
-                            <div className="container testimonial-group">
-                                <div className="row text-center">
-                                    <div className="col-xs-4">
-                                        {(filePreviews || []).map((url: any) => (
-                                            <img src={url} width="100" height="auto" alt={name} />
-                                        ))}
+                        {imagePreviews && imagePreviews.length > 0 ? (
+                            <div className="mbt-10 show_image">
+                                <div className="container testimonial-group">
+                                    <div className="row text-center">
+                                        <div className="col-xs-4">
+                                            {imagePreviews.map((url: string, idx: number) => (
+                                                <div
+                                                    key={`${url}-${idx}`}
+                                                    style={{
+                                                        position: 'relative',
+                                                        display: 'inline-block',
+                                                        marginRight: 8,
+                                                        marginBottom: 8,
+                                                    }}
+                                                >
+                                                    <img
+                                                        src={url}
+                                                        width="100"
+                                                        height="auto"
+                                                        alt="preview"
+                                                    />
+                                                    <Button
+                                                        variant="link"
+                                                        className="p-0"
+                                                        aria-label="Remove image"
+                                                        onClick={() => {
+                                                            try {
+                                                                URL.revokeObjectURL(url);
+                                                            } catch (_e) { }
+                                                            setImagePreviews((prev) =>
+                                                                prev.filter((_, i) => i !== idx)
+                                                            );
+                                                            setForm((prev) => ({
+                                                                ...prev,
+                                                                images: prev.images.filter(
+                                                                    (_, i) => i !== idx
+                                                                ),
+                                                            }));
+                                                        }}
+                                                        style={{
+                                                            position: 'absolute',
+                                                            top: -6,
+                                                            right: -6,
+                                                            border: 'none',
+                                                            background: 'transparent',
+                                                            padding: 0,
+                                                            cursor: 'pointer',
+                                                        }}
+                                                    >
+                                                        <img
+                                                            src={ImageAssets.ic_clear}
+                                                            alt="clear"
+                                                            width={18}
+                                                            height={18}
+                                                        />
+                                                    </Button>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        ) : (
+                            <div style={{ marginBottom: 10 }}></div>
+                        )}
+
                         <div className="row">
                             <div className=" form-group col-6">
                                 <label>
-                                    {' '}
                                     Tiền <sup className="sub_text">*</sup>
                                 </label>
-                                <input
-                                    className="form-control"
-                                    type="number"
+                                <Form.Control
+                                    className={`form-control ${errors.sellPrice ? 'is-invalid' : ''}`}
+                                    type="text"
                                     name="sellPrice"
                                     placeholder="Nhập giá tiền sản phẩm"
-                                    value={sellPrice}
-                                    onChange={handleChange}
+                                    value={String(form.sellPrice)}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        const digits = e.target.value.replace(/[^\d]/g, '');
+                                        const formatted = fNumber(digits);
+                                        setForm((prev) => ({ ...prev, sellPrice: formatted }));
+                                        setErrors((prev) => ({ ...prev, sellPrice: undefined }));
+                                    }}
                                 />
+                                <div
+                                    className={`invalid-feedback ${errors.sellPrice ? 'd-block' : ''}`}
+                                >
+                                    {errors.sellPrice}
+                                </div>
                             </div>
                             <div className="form-group col-6">
                                 <label>
                                     Đơn vị <sup className="sub_text">*</sup>
                                 </label>
-                                <input
-                                    className="form-control"
+                                <Form.Control
+                                    className={`form-control ${errors.unit ? 'is-invalid' : ''}`}
                                     name="unit"
                                     placeholder="Ví du: Hộp, Cái,..."
-                                    value={unit}
-                                    onChange={handleChange}
+                                    value={form.unit}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        setForm((prev) => ({ ...prev, unit: e.target.value }));
+                                        setErrors((prev) => ({ ...prev, unit: undefined }));
+                                    }}
                                 />
+                                <div className={`invalid-feedback ${errors.unit ? 'd-block' : ''}`}>
+                                    {errors.unit}
+                                </div>
                             </div>
                         </div>
 
@@ -497,33 +576,51 @@ const ProductsComponents: React.FC = () => {
                                 <label>
                                     Số lượng <sup className="sub_text">*</sup>
                                 </label>
-                                <input
-                                    className="form-control"
-                                    type="number"
+                                <Form.Control
+                                    className={`form-control ${errors.stockQuantity ? 'is-invalid' : ''}`}
+                                    type="text"
                                     name="stockQuantity"
                                     placeholder="Nhập số lượng sản phẩm"
-                                    value={stockQuantity}
-                                    onChange={handleChange}
+                                    value={String(form.stockQuantity)}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        const digits = e.target.value.replace(/[^\d]/g, '');
+                                        const capped = Math.min(parseInt(digits || '0', 10), 1000);
+                                        setForm((prev) => ({ ...prev, stockQuantity: String(capped) }));
+                                        setErrors((prev) => ({ ...prev, stockQuantity: undefined }));
+                                    }}
                                 />
+                                <div
+                                    className={`invalid-feedback ${errors.stockQuantity ? 'd-block' : ''}`}
+                                >
+                                    {errors.stockQuantity}
+                                </div>
                             </div>
                             <div className=" form-group col-6">
                                 <label> Link Shoppe (Nếu có)</label>
-                                <input
+                                <Form.Control
                                     className="form-control"
                                     name="shopeeUrl"
                                     placeholder="Nhập link shoppee nếu có"
-                                    value={shopeeUrl}
-                                    onChange={handleChange}
+                                    value={form.shopeeUrl}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        setForm((prev) => ({ ...prev, shopeeUrl: e.target.value }));
+                                    }}
                                 />
                             </div>
                         </div>
                         <label> Mô tả </label>
-                        <textarea
+                        <Form.Control
+                            as="textarea"
+                            rows={6}
                             className="form-control"
                             placeholder="Nhập mô tả sản phẩm"
                             name="description"
-                            value={description}
-                            onChange={handleChange}
+                            value={form.description}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+                            ) => {
+                                setForm((prev) => ({ ...prev, description: e.target.value }));
+                            }}
                         />
                     </Modal.Body>
                     <Modal.Footer>
@@ -539,6 +636,41 @@ const ProductsComponents: React.FC = () => {
                         <Button type="submit">Lưu</Button>
                     </Modal.Footer>
                 </Form>
+            </Modal>
+
+            <Modal
+                show={confirmDelete.show}
+                onHide={() => setConfirmDelete({ show: false, id: null, label: '' })}
+                centered
+                animation={false}
+                backdrop="static"
+            >
+                <Modal.Header closeButton {...({} as any)}>
+                    <Modal.Title {...({} as any)}>Xác nhận xoá</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Bạn có chắc muốn xoá sản phẩm "{confirmDelete.label}" không?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="secondary"
+                        type="button"
+                        onClick={() => setConfirmDelete({ show: false, id: null, label: '' })}
+                    >
+                        Huỷ
+                    </Button>
+                    <Button
+                        variant="danger"
+                        type="button"
+                        onClick={async () => {
+                            if (!confirmDelete.id) return;
+                            await onDelete(confirmDelete.id);
+                            setConfirmDelete({ show: false, id: null, label: '' });
+                        }}
+                    >
+                        Xoá
+                    </Button>
+                </Modal.Footer>
             </Modal>
         </>
     );

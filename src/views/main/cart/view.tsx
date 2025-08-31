@@ -269,7 +269,7 @@ function CartComponent(props: CartComponentProps) {
     );
     return (
         <div className={layout}>
-            <ToastContainer autoClose={2000} />
+            <ToastContainer autoClose={1000} />
             <div className="page_cart">
                 <div className="card_cart">
                     <div className="cart_header">

@@ -13,7 +13,7 @@ import React, { useMemo, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { toast, ToastContainer } from 'react-toastify';
-import DatePicker from 'reactstrap-date-picker';
+import { z } from 'zod';
 
 const NewsView: React.FC = () => {
     const { data: promotions = [], isLoading, refetch } = useGetPromotionsQuery();
@@ -46,10 +46,14 @@ const NewsView: React.FC = () => {
         { show: false, id: null, label: '' }
     );
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    const [errors, setErrors] = useState<Partial<Record<'name', string>>>({});
+
+    const schema = z.object({ name: z.string().min(1, 'Vui lòng điền tiêu đề!') });
 
     const resetForm = () => {
         setForm(initialForm);
         setImagePreviews([]);
+        setErrors({});
     };
 
     const onEdit = (record: Promotion) => {
@@ -92,10 +96,17 @@ const NewsView: React.FC = () => {
 
     const onSave = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!form.name.trim()) {
-            toast.warning('Vui lòng điền thông tin!');
+        const parsed = schema.safeParse({ name: form.name });
+        if (!parsed.success) {
+            const fieldErrors: any = {};
+            parsed.error.issues.forEach((issue) => {
+                const field = issue.path[0] as 'name';
+                if (field && !fieldErrors[field]) fieldErrors[field] = issue.message;
+            });
+            setErrors(fieldErrors);
             return;
         }
+        setErrors({});
 
         try {
             if (form.id) {
@@ -169,9 +180,9 @@ const NewsView: React.FC = () => {
                 selector: 'isActive',
                 right: true,
                 cell: (row: Promotion) => (
-                    <button
-                        type="button"
-                        className="btn btn-link p-0"
+                    <Button
+                        variant="link"
+                        className="p-0"
                         onClick={() => onToggleActive(row)}
                         aria-label={row.isActive ? 'Ẩn' : 'Hiện'}
                     >
@@ -180,7 +191,7 @@ const NewsView: React.FC = () => {
                             alt={row.isActive ? 'active' : 'inactive'}
                             width={25}
                         />
-                    </button>
+                    </Button>
                 ),
             },
             {
@@ -212,7 +223,7 @@ const NewsView: React.FC = () => {
     return (
         <>
             <h1 className="mt-10">Tin tức khuyến mãi</h1>
-            <ToastContainer autoClose={3000} />
+            <ToastContainer autoClose={1000} />
             <div className="text-right">
                 <Button
                     type="button"
@@ -234,6 +245,7 @@ const NewsView: React.FC = () => {
                 pagination
                 progressPending={isLoading}
                 responsive={true}
+                dense
             />
 
             <Modal
@@ -244,23 +256,29 @@ const NewsView: React.FC = () => {
                 onHide={() => {
                     setShowModal(false);
                 }}
+                animation={false}
+                backdrop="static"
             >
-                <Form onSubmit={onSave}>
+                <Form onSubmit={onSave} noValidate>
                     <Modal.Header closeButton {...({} as any)}>
                         <Modal.Title {...({} as any)}> {titleModal}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div className="form-group">
                             <label>Tiêu đề</label>
-                            <input
-                                className="form-control"
+                            <Form.Control
+                                className={`form-control ${errors.name ? 'is-invalid' : ''}`}
                                 value={form.name}
                                 name="name"
                                 placeholder="Nhập tiêu đề"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                    setForm((prev) => ({ ...prev, name: e.target.value }))
-                                }
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    setForm((prev) => ({ ...prev, name: e.target.value }));
+                                    setErrors((prev) => ({ ...prev, name: undefined }));
+                                }}
                             />
+                            <div className={`invalid-feedback ${errors.name ? 'd-block' : ''}`}>
+                                {errors.name}
+                            </div>
                         </div>
                         <label>Hình ảnh</label>
                         <Form.File
@@ -294,8 +312,9 @@ const NewsView: React.FC = () => {
                                                     }}
                                                 >
                                                     <img src={url} width="100" height="auto" alt="preview" />
-                                                    <button
-                                                        type="button"
+                                                    <Button
+                                                        variant="link"
+                                                        className="p-0"
                                                         aria-label="Remove image"
                                                         onClick={() => {
                                                             try {
@@ -320,7 +339,7 @@ const NewsView: React.FC = () => {
                                                         }}
                                                     >
                                                         <img src={ImageAssets.ic_clear} alt="clear" width={18} height={18} />
-                                                    </button>
+                                                    </Button>
                                                 </div>
                                             ))}
                                         </div>
@@ -332,11 +351,14 @@ const NewsView: React.FC = () => {
                         )}
 
                         <label>Ngày kết thúc chương trình</label>
-                        <DatePicker
-                            id="example-datepicker"
-                            value={form.endDate}
-                            onChange={(value: string) =>
-                                setForm((prev) => ({ ...prev, endDate: value }))
+                        <Form.Control
+                            type="date"
+                            value={form.endDate ? new Date(form.endDate).toISOString().slice(0, 10) : ''}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setForm((prev) => ({
+                                    ...prev,
+                                    endDate: e.target.value ? new Date(e.target.value).toISOString() : '',
+                                }))
                             }
                         />
                         <br />
@@ -370,6 +392,8 @@ const NewsView: React.FC = () => {
                 show={confirmDelete.show}
                 onHide={() => setConfirmDelete({ show: false, id: null, label: '' })}
                 centered
+                animation={false}
+                backdrop="static"
             >
                 <Modal.Header closeButton {...({} as any)}>
                     <Modal.Title {...({} as any)}>Xác nhận xoá</Modal.Title>

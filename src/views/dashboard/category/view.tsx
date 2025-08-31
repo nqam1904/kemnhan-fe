@@ -11,7 +11,7 @@ import React, { useMemo, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { toast, ToastContainer } from 'react-toastify';
-import * as z from 'zod';
+import { z } from 'zod';
 
 const CategoryView: React.FC = () => {
     const { data: categories = [], isLoading } = useGetCategoriesQuery();
@@ -147,7 +147,7 @@ const CategoryView: React.FC = () => {
     return (
         <>
             <h1 className="mt-10">Danh mục</h1>
-            <ToastContainer autoClose={3000} />
+            <ToastContainer autoClose={1000} />
             <div className="text-right">
                 <Button
                     type="button"
@@ -170,12 +170,14 @@ const CategoryView: React.FC = () => {
                 pagination
                 progressPending={isLoading}
                 responsive={true}
+                dense
             />
             <Modal
                 show={showModal}
                 onHide={() => {
                     setShowModal(false);
                 }}
+                backdrop="static"
             >
                 <form onSubmit={onSave} noValidate>
                     <Modal.Header closeButton {...({} as any)}>
@@ -199,8 +201,8 @@ const CategoryView: React.FC = () => {
                                 style={{ paddingRight: form.name ? '2.25rem' : undefined }}
                             />
                             {form.name ? (
-                                <button
-                                    type="button"
+                                <Button
+                                    variant="link"
                                     className="position-absolute border-0 bg-transparent p-0"
                                     style={{ right: '0.5rem', top: '50%', transform: 'translateY(-50%)' }}
                                     aria-label="Clear"
@@ -210,7 +212,7 @@ const CategoryView: React.FC = () => {
                                     }}
                                 >
                                     <img src={ImageAssets.ic_clear} alt="clear" width={16} height={16} />
-                                </button>
+                                </Button>
                             ) : null}
                         </div>
                         <div className={`invalid-feedback ${errors.name ? 'd-block' : ''}`}>
@@ -238,6 +240,7 @@ const CategoryView: React.FC = () => {
                 show={confirmDelete.show}
                 onHide={() => setConfirmDelete({ show: false, id: null, label: '' })}
                 centered
+                backdrop="static"
             >
                 <Modal.Header closeButton {...({} as any)}>
                     <Modal.Title {...({} as any)}>Xác nhận xoá</Modal.Title>

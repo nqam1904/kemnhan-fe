@@ -251,7 +251,7 @@ const AccountView: React.FC = () => {
     return (
         <>
             <h1 className="mt-10">Tài khoản</h1>
-            <ToastContainer autoClose={3000} />
+            <ToastContainer autoClose={1000} />
 
             <div className="text-right">
                 <Button
@@ -283,6 +283,7 @@ const AccountView: React.FC = () => {
                     setShowModal(false);
                     setErrors({});
                 }}
+                backdrop="static"
             >
                 <form noValidate onSubmit={onSave}>
                     <Modal.Header closeButton {...({} as any)}>
@@ -450,6 +451,7 @@ const AccountView: React.FC = () => {
                 show={confirmDelete.show}
                 onHide={() => setConfirmDelete({ show: false, id: null, label: '' })}
                 centered
+                backdrop="static"
             >
                 <Modal.Header closeButton {...({} as any)}>
                     <Modal.Title {...({} as any)}>Xác nhận xoá</Modal.Title>
