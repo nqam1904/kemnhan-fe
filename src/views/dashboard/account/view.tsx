@@ -297,8 +297,8 @@ const AccountView: React.FC = () => {
                         <div className="mb-3">
                             <small className="text-danger">* là giá trị bắt buộc</small>
                         </div>
-                        <div className="row">
-                            <div className="form-group col-6">
+                        <div className="row g-4">
+                            <div className="form-group col-6 mb-3">
                                 <label>
                                     Họ <sup className="sub_text text-danger">*</sup>
                                 </label>
@@ -312,7 +312,7 @@ const AccountView: React.FC = () => {
                                 />
                                 <div className="invalid-feedback">{errors.firstName}</div>
                             </div>
-                            <div className=" form-group col-6">
+                            <div className=" form-group col-6 mb-3">
                                 <label>
                                     Tên <sup className="sub_text text-danger">*</sup>
                                 </label>
@@ -327,8 +327,8 @@ const AccountView: React.FC = () => {
                                 <div className="invalid-feedback">{errors.lastName}</div>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className=" form-group col-6">
+                        <div className="row g-4">
+                            <div className=" form-group col-6 mb-3">
                                 <label>
                                     Mật khẩu <sup className="sub_text text-danger">*</sup>
                                 </label>
@@ -369,7 +369,7 @@ const AccountView: React.FC = () => {
                                     {errors.password}
                                 </div>
                             </div>
-                            <div className=" form-group col-6">
+                            <div className=" form-group col-6 mb-3">
                                 <label>
                                     Số điện thoại <sup className="sub_text text-danger">*</sup>
                                 </label>
@@ -392,8 +392,8 @@ const AccountView: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="row">
-                            <div className=" form-group col-6">
+                        <div className="row g-4">
+                            <div className=" form-group col-6 mb-3">
                                 <label>
                                     Email <sup className="sub_text text-danger">*</sup>
                                 </label>
@@ -408,7 +408,7 @@ const AccountView: React.FC = () => {
                                 />
                                 <div className="invalid-feedback">{errors.email}</div>
                             </div>
-                            <div className=" form-group col-6">
+                            <div className=" form-group col-6 mb-3">
                                 <label>
                                     Chức vụ <sup className="sub_text text-danger">*</sup>
                                 </label>

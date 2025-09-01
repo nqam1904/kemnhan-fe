@@ -41,6 +41,7 @@ export const endpoints = {
         account: 'users',
         categories: 'categories',
         customers: 'customers',
+        orders: 'orders',
     },
     main: {
         products: 'products',

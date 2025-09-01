@@ -14,7 +14,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { z } from 'zod';
 
 const CategoryView: React.FC = () => {
-    const { data: categories = [], isLoading } = useGetCategoriesQuery();
+    const { data: categories = [], isLoading, refetch } = useGetCategoriesQuery();
     const [createCategory] = useCreateCategoryMutation();
     const [updateCategory] = useUpdateCategoryMutation();
     const [deleteCategory] = useDeleteCategoryMutation();
@@ -49,6 +49,7 @@ const CategoryView: React.FC = () => {
         try {
             await deleteCategory({ id: categoryId }).unwrap();
             toast.success('Xóa thành công');
+            await refetch();
         } catch (error) {
             toast.error('Có lỗi xảy ra');
         }
@@ -82,6 +83,7 @@ const CategoryView: React.FC = () => {
                 await createCategory({ body: parsed.data as any }).unwrap();
                 toast.success('Thêm thành công!');
             }
+            await refetch();
             setShowModal(false);
             resetForm();
         } catch (error) {

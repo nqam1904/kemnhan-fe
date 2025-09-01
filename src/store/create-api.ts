@@ -42,6 +42,27 @@ const onBaseQueryError = (queryError: FetchBaseQueryError, api: BaseQueryApi) =>
     }
 
     switch (queryError.status) {
+        case 'FETCH_ERROR':
+            record = {
+                ...record,
+                message: 'Network Error!',
+                description: errors.PROVISIONAL_HEADERS_ARE_SHOWN,
+            };
+            break;
+        case 'PARSING_ERROR':
+            record = {
+                ...record,
+                message: 'Parsing Error!',
+                description: errors.PARSING_ERROR,
+            };
+            break;
+        case 'CUSTOM_ERROR':
+            record = {
+                ...record,
+                message: 'Unexpected Error!',
+                description: errors.CUSTOM_ERROR,
+            };
+            break;
         case 405:
             record = {
                 ...record,
@@ -150,6 +171,9 @@ const dynamicBaseQuery: BaseQueryFn<any | FetchArgs, unknown, FetchBaseQueryErro
             onBaseQueryError(result.error, api);
         }
 
+        // Ensure we never crash the app by throwing here.
+        // Let RTK Query propagate the error via result.error so callers can handle it (e.g. unwrap().catch()).
+        // Also, normalize a readable message for consumers.
         let message = 'An error occurred while fetching the data.';
         if (isErrorWithMessage(result.error?.data)) {
             message =
@@ -157,8 +181,11 @@ const dynamicBaseQuery: BaseQueryFn<any | FetchArgs, unknown, FetchBaseQueryErro
                 result?.error?.data?.message?.[0] ||
                 'An error occurred while fetching the data.';
         }
-
-        throw new Error(message);
+        // Attach normalized message when possible
+        try {
+            (result.error as any).normalizedMessage = message;
+        } catch (_e) {}
+        return result;
     }
 
     return result;

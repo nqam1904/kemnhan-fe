@@ -13,7 +13,11 @@ export const store = configureStore({
     reducer: rootReducer,
     devTools: CONFIG.nodeEnv === 'development',
     // * Thêm cấu hình middleware để dùng được các chức năng của RTK Query như caching, invalidation, polling, ...
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(RTKQueryApi.middleware),
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            // Suppress noisy non-serializable warnings from RTK Query error meta during development
+            serializableCheck: false,
+        }).concat(RTKQueryApi.middleware),
 });
 
 setupListeners(store.dispatch);

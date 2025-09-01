@@ -30,7 +30,7 @@
 /* Ensure consistent image height for all product cards */
 .product-card__img {
     width: 100%;
-    height: 280px;
+    height: 220px;
     /* unified height */
     object-fit: cover;
     display: block;
@@ -151,17 +151,18 @@ h5 {
     font-style: normal;
     font-weight: normal;
     font-size: 40px;
-    color: #ff7a45;
+    color: var(--brand-color);
 }
 
 .list_product {
-    margin-top: 100px;
+    /* move vertical spacing to parent .carousel to keep buttons centered */
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: calc((100% - 3 * 16px) / 4);
     gap: 16px;
     overflow-x: auto;
-    padding: 0 0 16px;
+    padding: 100px 0 16px;
+    /* keep top space inside track area so arrows stay aligned */
     scroll-snap-type: x mandatory;
 }
 
@@ -199,7 +200,9 @@ h5 {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 2;
+    z-index: 5;
+    /* above track/cards so it's always clickable */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .carousel__btn:disabled {

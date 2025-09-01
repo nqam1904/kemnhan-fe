@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 import { useRouter } from 'routes/hooks';
 
@@ -44,8 +45,10 @@ export const JwtSignInView: React.FC = () => {
                 }
             }
         } catch (e) {
+            toast.error('Sai username hoặc password. Vui lòng kiểm tra và thử lại.');
+            // Show the error message only under the email field, not password
             setErrorUsername('Sai username hoặc password. Vui lòng kiểm tra và thử lại.');
-            setErrorPassword('Sai username hoặc password. Vui lòng kiểm tra và thử lại.');
+            setErrorPassword('');
             console.log('ERROR', e);
         }
     };

@@ -1,4 +1,4 @@
-import { endpoints } from 'utils/axios';
+import { endpoints } from '@/utils/axios';
 
 import { RTKQueryApi } from '../create-api';
 import type {

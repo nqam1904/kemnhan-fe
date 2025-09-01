@@ -1,5 +1,5 @@
 import { CONFIG } from '@/config-global';
-import CategoryComponents from '@/views/dashboard/category/view';
+import CategoryView from '@/views/dashboard/category/view';
 import { Helmet } from 'react-helmet-async';
 
 const metadata = { title: `Danh mục - ${CONFIG.appName}` };
@@ -10,7 +10,7 @@ export default function Page() {
             <Helmet>
                 <title> {metadata.title}</title>
             </Helmet>
-            <CategoryComponents />
+            <CategoryView />
         </>
     );
 }

@@ -6,13 +6,22 @@
 
 .footer__container {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: 1fr 1fr;
     gap: 48px;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: space-between;
     padding: 0 24px 24px;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+/* Ensure left column hugs left and right column hugs right */
+.footer__col:first-child {
+    justify-self: start;
+}
+
+.footer__col:last-child {
+    justify-self: end;
 }
 
 .footer__brand {
@@ -42,7 +51,7 @@
 .footer__info {
     font-family: 'Roboto', sans-serif;
     color: #874d00;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 22px;
 }
 
@@ -65,8 +74,10 @@
 
 .footer__socials {
     display: grid;
-    gap: 10px;
-    width: fit-content;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 10px;
+    width: 100%;
 }
 
 .footer__social--big span {
@@ -132,17 +143,17 @@
         padding: 0 20px 28px;
     }
 
-    /* Place logo above the title in the brand block */
+    /* Keep logo on the left next to the title on mobile */
     .footer__brand {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
         gap: 12px;
     }
 
     .footer__brand img {
-        margin-right: 0;
-        margin-bottom: 8px;
+        margin-right: 20px;
+        margin-bottom: 0;
     }
 
     .footer__info {
@@ -153,8 +164,10 @@
 
     /* Socials section - larger, left-aligned */
     .footer__socials {
-        gap: 14px;
-        width: auto;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 16px;
+        row-gap: 12px;
+        width: 100%;
     }
 
     .footer__social--big {

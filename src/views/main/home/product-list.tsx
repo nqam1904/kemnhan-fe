@@ -40,11 +40,40 @@ function ProductList() {
         updateCanScroll();
         el.addEventListener('scroll', updateCanScroll);
         window.addEventListener('resize', updateCanScroll);
+        const ro = new ResizeObserver(() => updateCanScroll());
+        ro.observe(el);
         return () => {
             el.removeEventListener('scroll', updateCanScroll);
             window.removeEventListener('resize', updateCanScroll);
+            try { ro.disconnect(); } catch (_e) { }
         };
     }, [trackRef]);
+
+    useEffect(() => {
+        // Re-evaluate when product list changes (width/scrollWidth may change)
+        updateCanScroll();
+    }, [products]);
+
+    // Auto-scroll carousel every 2 seconds and loop
+    useEffect(() => {
+        const el = trackRef.current;
+        if (!el) return;
+
+        const intervalId = window.setInterval(() => {
+            // If there is nothing to scroll, do nothing
+            const maxScrollLeft = el.scrollWidth - el.clientWidth;
+            if (maxScrollLeft <= 0) return;
+
+            const nextLeft = el.scrollLeft + el.clientWidth;
+            if (nextLeft >= maxScrollLeft - 1) {
+                el.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                el.scrollBy({ left: el.clientWidth, behavior: 'smooth' });
+            }
+        }, 2000);
+
+        return () => window.clearInterval(intervalId);
+    }, [products]);
 
     const showProduct = useMemo(() => {
         var result = null;
