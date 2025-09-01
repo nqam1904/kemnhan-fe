@@ -15,9 +15,13 @@ function NewsView() {
                 <div className="news-page__main">
                     <h2 className="news-page__title">Tin tức</h2>
                     <div className="news-grid">
-                        {isLoading && <img src={ImageAssets.loading} alt="loading" width={120} />}
+                        {isLoading && (
+                            <div className="news-loading">
+                                <img src={ImageAssets.loading} alt="loading" width={120} />
+                            </div>
+                        )}
                         {!isLoading && promotions.length === 0 && (
-                            <div className="news-empty">Chưa có tin khuyến mãi.</div>
+                            <div className="news-empty">Chưa có tin tức.</div>
                         )}
                         {!isLoading &&
                             promotions.map((item: Promotion) => {

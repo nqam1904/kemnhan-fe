@@ -3,11 +3,9 @@
     "version": "0.2.0",
     "private": true,
     "scripts": {
-        "start": "NODE_ENV=production craco start",
+        "start": "craco start",
         "start:dev": "NODE_ENV=development craco start",
-        "build": "NODE_ENV=production GENERATE_SOURCEMAP=false craco build",
-        "test": "NODE_ENV=test craco test",
-        "eject": "craco eject",
+        "build": "GENERATE_SOURCEMAP=false craco build",
         "all": "rm -rf node_modules && yarn cache clean && yarn",
         "lint": "NODE_ENV=development BABEL_ENV=development eslint \"src/**/*.{js,jsx,ts,tsx}\"",
         "lint:fix": "NODE_ENV=development BABEL_ENV=development eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
