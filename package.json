@@ -3,7 +3,8 @@
     "version": "0.2.0",
     "private": true,
     "scripts": {
-        "start": "NODE_ENV=development craco start",
+        "start": "NODE_ENV=production craco start",
+        "start:dev": "NODE_ENV=development craco start",
         "build": "NODE_ENV=production GENERATE_SOURCEMAP=false craco build",
         "test": "NODE_ENV=test craco test",
         "eject": "craco eject",
