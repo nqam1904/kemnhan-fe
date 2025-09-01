@@ -1,5 +1,5 @@
 import ImageAssets from '@/constants/ImagesAsset';
-import './about.css';
+// import './about.css';
 
 function AboutComponents() {
     return (

@@ -7,7 +7,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import { BrowserRouter } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { buildProvidersTree } from 'utils/providerTree';
-import App from './app';
+import App from './App';
 import './app.css';
 import './index.css';
 
