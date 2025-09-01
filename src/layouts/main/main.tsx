@@ -1,3 +1,4 @@
+import { FloatingContacts, ScrollToTop } from '@/components';
 import { ReactNode } from 'react';
 import Footer from './footer/Footer';
 import Navbar from './nav/desktop/Navbar';
@@ -12,6 +13,8 @@ export function MainLayout({ children }: MainLayoutProps) {
             <Navbar />
             {children}
             <Footer />
+            <ScrollToTop />
+            <FloatingContacts />
         </div>
     );
 }

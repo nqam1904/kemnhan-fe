@@ -9,8 +9,8 @@ const BannerCarouselView: React.FC = () => {
     const [previews, setPreviews] = useState<string[]>([]);
     const [isUploading, setIsUploading] = useState(false);
 
-    const onSelectFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const list = e.target.files;
+    const onSelectFiles = (e) => {
+        const list = (e.target as HTMLInputElement).files;
         const next = list ? Array.from(list) : [];
         setFiles(next);
         const urls = next.map((file) => URL.createObjectURL(file));
@@ -85,13 +85,10 @@ const BannerCarouselView: React.FC = () => {
             <ToastContainer autoClose={1000} />
 
             <div className="mb-3">
-                <Form.File
-                    id="banner-upload"
-                    label="Chọn ảnh banner (có thể chọn nhiều ảnh)"
-                    custom
-                    multiple
-                    onChange={onSelectFiles}
-                />
+                <Form.Group controlId="banner-upload">
+                    <Form.Label>Chọn ảnh banner (có thể chọn nhiều ảnh)</Form.Label>
+                    <Form.Control type="file" multiple onChange={onSelectFiles} />
+                </Form.Group>
             </div>
 
 

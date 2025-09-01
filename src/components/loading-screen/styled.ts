@@ -18,7 +18,6 @@ const SplashWrapper = styled.div`
 `;
 
 const ImageLoading = styled.div`
-    background-image: url('/images/gif/ic_momo_loading.gif');
     background-size: cover;
     background-position: center;
     width: 120px;

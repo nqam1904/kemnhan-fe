@@ -1,3 +1,16 @@
+.news-form .form-group {
+    margin-bottom: 16px;
+}
+
+.news-form label {
+    display: inline-block;
+    margin-bottom: 6px;
+}
+
+.news-form textarea.form-control {
+    min-height: 160px;
+}
+
 .status_active:hover {
     cursor: pointer;
 }

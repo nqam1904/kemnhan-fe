@@ -6,6 +6,7 @@ import { useRouter } from 'routes/hooks';
 import { useAuthContext } from 'auth/hooks';
 
 import { CustomAlert } from '@/components';
+import ImageAssets from '@/constants/ImagesAsset';
 import { isValidEmailAddress } from '@/utils/format-string';
 import { setLocalStorage } from 'auth/context/jwt';
 import { useSignInMutation } from 'store/apis/auth';
@@ -19,6 +20,7 @@ export const JwtSignInView: React.FC = () => {
     const [errorPassword, setErrorPassword] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     const { checkUserSession } = useAuthContext();
     const router = useRouter();
     const [authen] = useSignInMutation();
@@ -106,22 +108,39 @@ export const JwtSignInView: React.FC = () => {
 
                             <Form.Group controlId="loginPassword" className="mt-3">
                                 <Form.Label>Mật khẩu</Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    placeholder="Nhập mật khẩu"
-                                    value={password}
-                                    onChange={(e) => {
-                                        setPassword(e.target.value);
-                                        if (errorPassword) setErrorPassword('');
-                                    }}
-                                    isInvalid={Boolean(errorPassword)}
-                                />
+                                <div className="position-relative">
+                                    <Form.Control
+                                        type={showPassword ? 'text' : 'password'}
+                                        placeholder="Nhập mật khẩu"
+                                        value={password}
+                                        onChange={(e) => {
+                                            setPassword(e.target.value);
+                                            if (errorPassword) setErrorPassword('');
+                                        }}
+                                        isInvalid={Boolean(errorPassword)}
+                                        style={{ paddingRight: '2.25rem' }}
+                                    />
+                                    <Button
+                                        variant="link"
+                                        className="position-absolute border-0 bg-transparent p-0"
+                                        style={{ right: '0.5rem', top: '50%', transform: 'translateY(-50%)' }}
+                                        onClick={() => setShowPassword((v) => !v)}
+                                        aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+                                    >
+                                        <img
+                                            src={showPassword ? ImageAssets.icNoEye : ImageAssets.icEye}
+                                            alt={showPassword ? 'Hide' : 'Show'}
+                                            width={20}
+                                            height={20}
+                                        />
+                                    </Button>
+                                </div>
                                 <Form.Control.Feedback type="invalid">
                                     {errorPassword}
                                 </Form.Control.Feedback>
                             </Form.Group>
 
-                            <Button variant="primary" type="submit" block className="mt-4">
+                            <Button variant="primary" type="submit" className="mt-4 w-100">
                                 Đăng nhập
                             </Button>
                         </Form>

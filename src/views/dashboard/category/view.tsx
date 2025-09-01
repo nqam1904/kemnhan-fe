@@ -144,24 +144,53 @@ const CategoryView: React.FC = () => {
         [onDelete, onEdit]
     );
 
+    const tableStyles = useMemo(
+        () => ({
+            rows: {
+                style: {
+                    minHeight: '42px',
+                },
+            },
+            headCells: {
+                style: {
+                    paddingTop: '6px',
+                    paddingBottom: '6px',
+                    paddingLeft: '12px',
+                    paddingRight: '12px',
+                },
+            },
+            cells: {
+                style: {
+                    paddingTop: '6px',
+                    paddingBottom: '6px',
+                    paddingLeft: '12px',
+                    paddingRight: '12px',
+                },
+            },
+        }),
+        []
+    );
+
     return (
         <>
-            <h1 className="mt-10">Danh mục</h1>
-            <ToastContainer autoClose={1000} />
-            <div className="text-right">
-                <Button
-                    type="button"
-                    className="btn btn-primary mbt-10"
-                    onClick={() => {
-                        setShowModal(true);
-                        setTitleModal('Thêm danh mục');
-                        setForm(initialForm);
-                        setErrors({});
-                    }}
-                >
-                    Thêm danh mục
-                </Button>
+            <div className="d-flex align-items-center justify-content-between mt-10 mbt-10">
+                <h1 className="m-0">Danh mục</h1>
+                <div>
+                    <Button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => {
+                            setShowModal(true);
+                            setTitleModal('Thêm danh mục');
+                            setForm(initialForm);
+                            setErrors({});
+                        }}
+                    >
+                        Thêm danh mục
+                    </Button>
+                </div>
             </div>
+            <ToastContainer autoClose={1000} />
             <DataTable
                 title="Danh mục"
                 columns={columns}
@@ -171,6 +200,7 @@ const CategoryView: React.FC = () => {
                 progressPending={isLoading}
                 responsive={true}
                 dense
+                customStyles={tableStyles}
             />
             <Modal
                 show={showModal}
@@ -193,7 +223,7 @@ const CategoryView: React.FC = () => {
                                 className={`form-control ${errors.name ? 'is-invalid' : ''}`}
                                 name="name"
                                 value={form.name}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                onChange={(e) => {
                                     setForm((prev) => ({ ...prev, name: e.target.value }));
                                     setErrors((prev) => ({ ...prev, name: undefined }));
                                 }}

@@ -1,43 +1,54 @@
 import ImageAssets from 'constants/ImagesAsset';
-import React from 'react';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { useRouter } from 'routes/hooks';
+import React, { useEffect } from 'react';
+import Card from 'react-bootstrap/Card';
 import resolveImageUrl from 'utils/image-url';
 
 interface ItemProductShowProps {
     id: string | number;
     name: string;
     description: string;
-    images: string;
+    images?: string;
     isFeature: boolean;
     isActive: boolean;
-    propsURL?: string;
+    price?: number;
 }
 
 const ItemProductShow: React.FC<ItemProductShowProps> = (props: any) => {
-    const router = useRouter();
+    const [imageSrc, setImageSrc] = React.useState<string>(
+        props.images ? resolveImageUrl(props.images) : ImageAssets.logo
+    );
+
+    useEffect(() => {
+        setImageSrc(props.images ? resolveImageUrl(props.images) : ImageAssets.logo);
+    }, []);
+
     return (
-        <div className="card_item" onClick={() => router.push(`/chi-tiet-san-pham?id=${props.id}`)}>
-            <LazyLoadImage
-                className="image"
-                effect="blur"
-                src={resolveImageUrl(`static/${props.images}`)}
+        <Card
+            className="product-card"
+            onClick={() => {
+                window.open(`/chi-tiet-san-pham?id=${props.id}`, '_blank');
+            }}
+            style={{ cursor: 'pointer' }}
+        >
+            <Card.Img
+                variant="top"
+                src={imageSrc}
                 alt={props.name}
-                placeholderSrc={ImageAssets.logo}
+                onError={() => setImageSrc(ImageAssets.logo)}
+                className="product-card__img"
             />
-            <h5 id="title1" aria-hidden="true">
-                {props.name}
-            </h5>
-            <div className="overlay">
-                <div className="description">{props.description}</div>
-                {props.isFeature === true ? <div className="button_detail">Nổi bật</div> : ''}
-                {/* {props.isActive === true ? (
-          ""
-        ) : (
-            <div className="button_detail">Hết hàng</div>
-          )} */}
-            </div>
-        </div>
+            <Card.Body>
+                <Card.Title>{props.name}</Card.Title>
+                <Card.Text>
+                    {props.description}
+                </Card.Text>
+                {props.price !== undefined && (
+                    <div style={{ color: '#fa541c', fontWeight: 700 }}>
+                        Giá: {props.price?.toLocaleString('vi-VN')} đ
+                    </div>
+                )}
+            </Card.Body>
+        </Card>
     );
 };
 

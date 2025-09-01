@@ -1,3 +1,4 @@
+import compactDataTableStyles from '@/components/data-table/styles';
 import {
     useGetSettingsQuery,
     useLazyGetSettingByIdQuery,
@@ -106,6 +107,8 @@ function MediaComponent(): React.ReactNode {
                 pagination
                 progressPending={isLoading}
                 responsive={true}
+                dense
+                customStyles={compactDataTableStyles}
             />
             <Modal
                 show={showModal}

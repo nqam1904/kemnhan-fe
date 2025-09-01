@@ -1,3 +1,4 @@
+import compactDataTableStyles from '@/components/data-table/styles';
 import ImageAssets from '@/constants/ImagesAsset';
 import {
     useCreatePromotionMutation,
@@ -9,11 +10,12 @@ import type { Promotion } from '@/store/types/promotion';
 import { formatSubstring } from '@/utils/format-string';
 import { fDate } from '@/utils/format-time';
 import resolveImageUrl from '@/utils/image-url';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { toast, ToastContainer } from 'react-toastify';
 import { z } from 'zod';
+import './news.css';
 
 const NewsView: React.FC = () => {
     const { data: promotions = [], isLoading, refetch } = useGetPromotionsQuery();
@@ -46,6 +48,7 @@ const NewsView: React.FC = () => {
         { show: false, id: null, label: '' }
     );
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    const apiPreviewCountRef = useRef<number>(0);
     const [errors, setErrors] = useState<Partial<Record<'name', string>>>({});
 
     const schema = z.object({ name: z.string().min(1, 'Vui lòng điền tiêu đề!') });
@@ -54,6 +57,7 @@ const NewsView: React.FC = () => {
         setForm(initialForm);
         setImagePreviews([]);
         setErrors({});
+        apiPreviewCountRef.current = 0;
     };
 
     const onEdit = (record: Promotion) => {
@@ -65,6 +69,14 @@ const NewsView: React.FC = () => {
             isActive: Boolean(record.isActive),
             images: [],
         });
+        const previews: string[] = Array.isArray(record?.images)
+            ? record.images
+                .map((img: any) => (img?.key ? String(img.key) : null))
+                .filter(Boolean)
+                .map((key: any) => resolveImageUrl(`${key}`))
+            : [];
+        setImagePreviews(previews);
+        apiPreviewCountRef.current = previews.length;
         setTitleModal('Cập nhật tin khuyến mãi');
         setShowModal(true);
     };
@@ -151,7 +163,7 @@ const NewsView: React.FC = () => {
                 selector: (row: Promotion) => row.images?.[0]?.key || '',
                 cell: (row: Promotion) => {
                     const key = row.images?.[0]?.key;
-                    const src = key ? resolveImageUrl(`static/${key}`) : ImageAssets.logo;
+                    const src = key ? resolveImageUrl(`${key}`) : ImageAssets.logo;
                     return (
                         <img src={src} alt={row.name} width={80} height="auto" />
                     );
@@ -222,21 +234,23 @@ const NewsView: React.FC = () => {
 
     return (
         <>
-            <h1 className="mt-10">Tin tức khuyến mãi</h1>
-            <ToastContainer autoClose={1000} />
-            <div className="text-right">
-                <Button
-                    type="button"
-                    className="btn btn-primary mbt-10"
-                    onClick={() => {
-                        setShowModal(true);
-                        setTitleModal('Thêm tin khuyến mãi');
-                        resetForm();
-                    }}
-                >
-                    Thêm khuyến mãi
-                </Button>
+            <div className="d-flex align-items-center justify-content-between mt-10 mbt-10">
+                <h1 className="m-0">Tin Khuyến mãi</h1>
+                <div>
+                    <Button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => {
+                            setShowModal(true);
+                            setTitleModal('Thêm tin khuyến mãi');
+                            resetForm();
+                        }}
+                    >
+                        Thêm khuyến mãi
+                    </Button>
+                </div>
             </div>
+            <ToastContainer autoClose={1000} />
             <DataTable
                 title="Khuyến mãi"
                 columns={columns as any}
@@ -246,6 +260,7 @@ const NewsView: React.FC = () => {
                 progressPending={isLoading}
                 responsive={true}
                 dense
+                customStyles={compactDataTableStyles}
             />
 
             <Modal
@@ -263,7 +278,7 @@ const NewsView: React.FC = () => {
                     <Modal.Header closeButton {...({} as any)}>
                         <Modal.Title {...({} as any)}> {titleModal}</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
+                    <Modal.Body className="news-form">
                         <div className="form-group">
                             <label>Tiêu đề</label>
                             <Form.Control
@@ -271,7 +286,7 @@ const NewsView: React.FC = () => {
                                 value={form.name}
                                 name="name"
                                 placeholder="Nhập tiêu đề"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                onChange={(e) => {
                                     setForm((prev) => ({ ...prev, name: e.target.value }));
                                     setErrors((prev) => ({ ...prev, name: undefined }));
                                 }}
@@ -280,22 +295,21 @@ const NewsView: React.FC = () => {
                                 {errors.name}
                             </div>
                         </div>
-                        <label>Hình ảnh</label>
-                        <Form.File
-                            id="custom-file-translate-scss"
-                            label="Hình ảnh đầu tiên sẽ là hình mặc định"
-                            lang="en"
-                            custom
-                            type="file"
-                            multiple
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                const filesList = e.target.files;
-                                const files = filesList ? Array.from(filesList) : [];
-                                setForm((prev) => ({ ...prev, images: files }));
-                                const previews = files.map((file: any) => URL.createObjectURL(file));
-                                setImagePreviews(previews);
-                            }}
-                        />
+                        <Form.Group controlId="promotion-images" className="form-group">
+                            <Form.Label>Hình ảnh (hình đầu tiên sẽ là mặc định)</Form.Label>
+                            <Form.Control
+                                type="file"
+                                multiple
+                                onChange={(e) => {
+                                    const filesList = (e.target as HTMLInputElement).files;
+                                    const files = filesList ? Array.from(filesList) : [];
+                                    if (!files.length) return;
+                                    setForm((prev) => ({ ...prev, images: [...prev.images, ...files] }));
+                                    const previews = files.map((file: any) => URL.createObjectURL(file));
+                                    setImagePreviews((prev) => [...prev, ...previews]);
+                                }}
+                            />
+                        </Form.Group>
                         {imagePreviews && imagePreviews.length > 0 ? (
                             <div className="mbt-10 show_image">
                                 <div className="container testimonial-group">
@@ -320,13 +334,19 @@ const NewsView: React.FC = () => {
                                                             try {
                                                                 URL.revokeObjectURL(url);
                                                             } catch (e) { }
-                                                            setImagePreviews((prev) =>
-                                                                prev.filter((_, i) => i !== idx)
-                                                            );
-                                                            setForm((prev) => ({
-                                                                ...prev,
-                                                                images: prev.images.filter((_, i) => i !== idx),
-                                                            }));
+                                                            setImagePreviews((prev) => prev.filter((_, i) => i !== idx));
+                                                            setForm((prev) => {
+                                                                const apiCount = apiPreviewCountRef.current;
+                                                                if (idx < apiCount) {
+                                                                    apiPreviewCountRef.current = Math.max(0, apiCount - 1);
+                                                                    return prev;
+                                                                }
+                                                                const fileIndex = idx - apiCount;
+                                                                return {
+                                                                    ...prev,
+                                                                    images: prev.images.filter((_, i) => i !== fileIndex),
+                                                                };
+                                                            });
                                                         }}
                                                         style={{
                                                             position: 'absolute',
@@ -350,28 +370,31 @@ const NewsView: React.FC = () => {
                             <div style={{ marginBottom: 10 }}></div>
                         )}
 
-                        <label>Ngày kết thúc chương trình</label>
-                        <Form.Control
-                            type="date"
-                            value={form.endDate ? new Date(form.endDate).toISOString().slice(0, 10) : ''}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setForm((prev) => ({
-                                    ...prev,
-                                    endDate: e.target.value ? new Date(e.target.value).toISOString() : '',
-                                }))
-                            }
-                        />
-                        <br />
-                        <label>Mô tả</label>
-                        <Form.Control
-                            as="textarea"
-                            rows={8}
-                            value={form.content}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-                                setForm((prev) => ({ ...prev, content: e.target.value }))
-                            }
-                            placeholder="Nhập nội dung mô tả (hỗ trợ HTML nếu cần)"
-                        />
+                        <div className="form-group">
+                            <label>Ngày kết thúc chương trình</label>
+                            <Form.Control
+                                type="date"
+                                value={form.endDate ? new Date(form.endDate).toISOString().slice(0, 10) : ''}
+                                onChange={(e) =>
+                                    setForm((prev) => ({
+                                        ...prev,
+                                        endDate: e.target.value ? new Date(e.target.value).toISOString() : '',
+                                    }))
+                                }
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Mô tả</label>
+                            <Form.Control
+                                as="textarea"
+                                rows={8}
+                                value={form.content}
+                                onChange={(e) =>
+                                    setForm((prev) => ({ ...prev, content: e.target.value }))
+                                }
+                                placeholder="Nhập nội dung mô tả (hỗ trợ HTML nếu cần)"
+                            />
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button

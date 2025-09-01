@@ -1,4 +1,5 @@
 import ClearableInput from '@/components/clearable-input';
+import compactDataTableStyles from '@/components/data-table/styles';
 import {
     useCreateUserMutation,
     useDeleteUserMutation,
@@ -241,7 +242,7 @@ const AccountView: React.FC = () => {
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (e) => {
         const { name, value } = e.target as { name: string; value: string };
         const nextValue = name === 'phone' ? value.replace(/\D/g, '').slice(0, 11) : value;
         setForm((prev) => ({ ...prev, [name]: nextValue }));
@@ -250,22 +251,23 @@ const AccountView: React.FC = () => {
 
     return (
         <>
-            <h1 className="mt-10">Tài khoản</h1>
-            <ToastContainer autoClose={1000} />
-
-            <div className="text-right">
-                <Button
-                    type="button"
-                    className="btn btn-primary mbt-10"
-                    onClick={() => {
-                        resetForm();
-                        setTitleModal('Thêm tài khoản');
-                        setShowModal(true);
-                    }}
-                >
-                    Thêm tài khoản
-                </Button>
+            <div className="d-flex align-items-center justify-content-between mt-10 mbt-10">
+                <h1 className="m-0">Tài khoản</h1>
+                <div>
+                    <Button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => {
+                            resetForm();
+                            setTitleModal('Thêm tài khoản');
+                            setShowModal(true);
+                        }}
+                    >
+                        Thêm tài khoản
+                    </Button>
+                </div>
             </div>
+            <ToastContainer autoClose={1000} />
             <DataTable
                 title="Tài khoản"
                 columns={columns}
@@ -274,6 +276,8 @@ const AccountView: React.FC = () => {
                 pagination
                 progressPending={isLoading}
                 responsive={true}
+                dense
+                customStyles={compactDataTableStyles}
             />
 
             <Modal

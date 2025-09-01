@@ -1,4 +1,5 @@
 import ClearableInput from '@/components/clearable-input';
+import compactDataTableStyles from '@/components/data-table/styles';
 import { CONFIG } from '@/config-global';
 import axios from 'axios';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -82,6 +83,8 @@ const SettingComponent: React.FC = () => {
                 defaultSortFieldId="title"
                 pagination
                 responsive={true}
+                dense
+                customStyles={compactDataTableStyles}
             />
             <Modal
                 show={showModal}

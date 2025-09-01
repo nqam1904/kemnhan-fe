@@ -1,8 +1,9 @@
+import compactDataTableStyles from '@/components/data-table/styles';
 import ImageAssets from '@/constants/ImagesAsset';
 import { fNumber } from '@/utils/format-number';
 import { formatSubstring } from '@/utils/format-string';
 import resolveImageUrl from '@/utils/image-url';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { toast, ToastContainer } from 'react-toastify';
@@ -19,7 +20,7 @@ import axiosInstance from '@/utils/axios';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import './product.css';
 
-const ProductsComponents: React.FC = () => {
+const ProductView: React.FC = () => {
     const { data: products = [], isLoading, refetch } = useGetProductsQuery();
     const { data: categories = [] } = useGetCategoriesQuery();
     const [createProduct] = useCreateProductMutation();
@@ -60,9 +61,15 @@ const ProductsComponents: React.FC = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [titleModal, setTitleModal] = useState<string>('Thêm sản phẩm');
     const [errors, setErrors] = useState<
-        Partial<Record<'name' | 'unit' | 'categoryId' | 'sellPrice' | 'stockQuantity', string>>
+        Partial<
+            Record<
+                'name' | 'unit' | 'categoryId' | 'sellPrice' | 'stockQuantity' | 'description',
+                string
+            >
+        >
     >({});
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    const apiPreviewCountRef = useRef<number>(0);
     const [confirmDelete, setConfirmDelete] = useState<{ show: boolean; id: any; label: string }>({
         show: false,
         id: null,
@@ -81,12 +88,14 @@ const ProductsComponents: React.FC = () => {
         stockQuantity: z
             .union([z.string(), z.number()])
             .refine((v) => String(v).length > 0, 'Vui lòng nhập số lượng!'),
+        description: z.string().min(1, 'Vui lòng nhập mô tả!'),
     });
 
     const resetForm = () => {
         setForm(initialForm);
         setImagePreviews([]);
         setErrors({});
+        apiPreviewCountRef.current = 0;
     };
 
     const onEdit = (record: any) => {
@@ -120,6 +129,7 @@ const ProductsComponents: React.FC = () => {
                 .map((key: any) => resolveImageUrl(`${key}`))
             : [];
         setImagePreviews(previews);
+        apiPreviewCountRef.current = previews.length;
 
         setTitleModal('Cập nhật sản phẩm');
         setShowModal(true);
@@ -169,6 +179,7 @@ const ProductsComponents: React.FC = () => {
             categoryId: form.categoryId,
             sellPrice: form.sellPrice,
             stockQuantity: form.stockQuantity,
+            description: form.description,
         });
         if (!parsed.success) {
             const fieldErrors: any = {};
@@ -178,7 +189,8 @@ const ProductsComponents: React.FC = () => {
                     | 'unit'
                     | 'categoryId'
                     | 'sellPrice'
-                    | 'stockQuantity';
+                    | 'stockQuantity'
+                    | 'description';
                 if (field && !fieldErrors[field]) fieldErrors[field] = issue.message;
             });
             setErrors(fieldErrors);
@@ -336,31 +348,33 @@ const ProductsComponents: React.FC = () => {
 
     return (
         <>
-            <h1 className="mt-10">Danh sách sản phẩm</h1>
-            <ToastContainer autoClose={1000} />
-            <div className="text-right">
-                <Button
-                    type="button"
-                    className="btn btn-primary mbt-10"
-                    onClick={() => {
-                        setShowModal(true);
-                        setTitleModal('Thêm sản phẩm');
-                        resetForm();
-                    }}
-                >
-                    Thêm sản phẩm
-                </Button>
-                <Button
-                    variant="success"
-                    className="mbt-10 ml-10"
-                    type="button"
-                    onClick={() => {
-                        window.open('https://kemnhanonline.vn/api/products/export', '_blank');
-                    }}
-                >
-                    Xuất Excel
-                </Button>
+            <div className="d-flex align-items-center justify-content-between mt-10 mbt-10">
+                <h1 className="m-0">Danh sách sản phẩm</h1>
+                <div>
+                    <Button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => {
+                            setShowModal(true);
+                            setTitleModal('Thêm sản phẩm');
+                            resetForm();
+                        }}
+                    >
+                        Thêm sản phẩm
+                    </Button>
+                    <Button
+                        variant="success"
+                        className="ml-10"
+                        type="button"
+                        onClick={() => {
+                            window.open('https://kemnhanonline.vn/api/products/export', '_blank');
+                        }}
+                    >
+                        Xuất Excel
+                    </Button>
+                </div>
             </div>
+            <ToastContainer autoClose={1000} />
 
             <DataTable
                 title="Sản phẩm"
@@ -371,11 +385,11 @@ const ProductsComponents: React.FC = () => {
                 progressPending={isLoading}
                 responsive={true}
                 dense
+                customStyles={compactDataTableStyles}
             />
 
             <Modal
                 size="lg"
-
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
                 show={showModal}
@@ -389,7 +403,7 @@ const ProductsComponents: React.FC = () => {
                     <Modal.Header closeButton {...({} as any)}>
                         <Modal.Title {...({} as any)}>{titleModal.toString()}</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
+                    <Modal.Body className="product-form">
                         <div className="row">
                             <div className=" form-group col-6">
                                 <label>
@@ -399,9 +413,7 @@ const ProductsComponents: React.FC = () => {
                                     as="select"
                                     className={`form-control ${errors.categoryId ? 'is-invalid' : ''}`}
                                     value={String(form.categoryId)}
-                                    onChange={(
-                                        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-                                    ) => {
+                                    onChange={(e) => {
                                         setForm((prev) => ({
                                             ...prev,
                                             categoryId: e.target.value,
@@ -409,7 +421,7 @@ const ProductsComponents: React.FC = () => {
                                         setErrors((prev) => ({ ...prev, categoryId: undefined }));
                                     }}
                                 >
-                                    <option value="">---Thêm danh mục---</option>
+                                    <option value="">Thêm danh mục</option>
                                     {categories &&
                                         (categories as any[]).map((item: any, index: any) => (
                                             <option value={item.id} key={index}>
@@ -432,7 +444,7 @@ const ProductsComponents: React.FC = () => {
                                     name="name"
                                     value={form.name}
                                     placeholder="Nhập tên sản phẩm"
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    onChange={(e) => {
                                         setForm((prev) => ({ ...prev, name: e.target.value }));
                                         setErrors((prev) => ({ ...prev, name: undefined }));
                                     }}
@@ -443,24 +455,21 @@ const ProductsComponents: React.FC = () => {
                             </div>
                         </div>
 
-                        <label>Hình ảnh</label>
-                        <Form.File
-                            id="custom-file-translate-scss"
-                            label="Hình ảnh đầu tiên sẽ là hình mặc định"
-                            lang="en"
-                            custom
-                            type="file"
-                            multiple
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                const filesList = e.target.files;
-                                const files = filesList ? Array.from(filesList) : [];
-                                setForm((prev) => ({ ...prev, images: files }));
-                                const previews = files.map((file: any) =>
-                                    URL.createObjectURL(file)
-                                );
-                                setImagePreviews(previews);
-                            }}
-                        />
+                        <Form.Group controlId="product-images">
+                            <Form.Label>Hình ảnh (hình đầu tiên sẽ là mặc định)</Form.Label>
+                            <Form.Control
+                                type="file"
+                                multiple
+                                onChange={(e) => {
+                                    const filesList = (e.target as HTMLInputElement).files;
+                                    const files = filesList ? Array.from(filesList) : [];
+                                    if (!files.length) return;
+                                    setForm((prev) => ({ ...prev, images: [...prev.images, ...files] }));
+                                    const previews = files.map((file: any) => URL.createObjectURL(file));
+                                    setImagePreviews((prev) => [...prev, ...previews]);
+                                }}
+                            />
+                        </Form.Group>
                         {imagePreviews && imagePreviews.length > 0 ? (
                             <div className="mbt-10 show_image">
                                 <div className="container testimonial-group">
@@ -490,15 +499,20 @@ const ProductsComponents: React.FC = () => {
                                                             try {
                                                                 URL.revokeObjectURL(url);
                                                             } catch (_e) { }
-                                                            setImagePreviews((prev) =>
-                                                                prev.filter((_, i) => i !== idx)
-                                                            );
-                                                            setForm((prev) => ({
-                                                                ...prev,
-                                                                images: prev.images.filter(
-                                                                    (_, i) => i !== idx
-                                                                ),
-                                                            }));
+                                                            setImagePreviews((prev) => prev.filter((_, i) => i !== idx));
+                                                            setForm((prev) => {
+                                                                const apiCount = apiPreviewCountRef.current;
+                                                                if (idx < apiCount) {
+                                                                    // Removing an API-loaded image; keep files intact and reduce api count
+                                                                    apiPreviewCountRef.current = Math.max(0, apiCount - 1);
+                                                                    return prev;
+                                                                }
+                                                                const fileIndex = idx - apiCount;
+                                                                return {
+                                                                    ...prev,
+                                                                    images: prev.images.filter((_, i) => i !== fileIndex),
+                                                                };
+                                                            });
                                                         }}
                                                         style={{
                                                             position: 'absolute',
@@ -538,7 +552,7 @@ const ProductsComponents: React.FC = () => {
                                     name="sellPrice"
                                     placeholder="Nhập giá tiền sản phẩm"
                                     value={String(form.sellPrice)}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    onChange={(e) => {
                                         const digits = e.target.value.replace(/[^\d]/g, '');
                                         const formatted = fNumber(digits);
                                         setForm((prev) => ({ ...prev, sellPrice: formatted }));
@@ -560,7 +574,7 @@ const ProductsComponents: React.FC = () => {
                                     name="unit"
                                     placeholder="Ví du: Hộp, Cái,..."
                                     value={form.unit}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    onChange={(e) => {
                                         setForm((prev) => ({ ...prev, unit: e.target.value }));
                                         setErrors((prev) => ({ ...prev, unit: undefined }));
                                     }}
@@ -582,7 +596,7 @@ const ProductsComponents: React.FC = () => {
                                     name="stockQuantity"
                                     placeholder="Nhập số lượng sản phẩm"
                                     value={String(form.stockQuantity)}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    onChange={(e) => {
                                         const digits = e.target.value.replace(/[^\d]/g, '');
                                         const capped = Math.min(parseInt(digits || '0', 10), 1000);
                                         setForm((prev) => ({ ...prev, stockQuantity: String(capped) }));
@@ -602,7 +616,7 @@ const ProductsComponents: React.FC = () => {
                                     name="shopeeUrl"
                                     placeholder="Nhập link shoppee nếu có"
                                     value={form.shopeeUrl}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    onChange={(e) => {
                                         setForm((prev) => ({ ...prev, shopeeUrl: e.target.value }));
                                     }}
                                 />
@@ -612,16 +626,18 @@ const ProductsComponents: React.FC = () => {
                         <Form.Control
                             as="textarea"
                             rows={6}
-                            className="form-control"
+                            className={`form-control ${errors.description ? 'is-invalid' : ''}`}
                             placeholder="Nhập mô tả sản phẩm"
                             name="description"
                             value={form.description}
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-                            ) => {
+                            onChange={(e) => {
                                 setForm((prev) => ({ ...prev, description: e.target.value }));
+                                setErrors((prev) => ({ ...prev, description: undefined }));
                             }}
                         />
+                        <div className={`invalid-feedback ${errors.description ? 'd-block' : ''}`}>
+                            {errors.description}
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
@@ -676,4 +692,4 @@ const ProductsComponents: React.FC = () => {
     );
 };
 
-export default ProductsComponents;
+export default ProductView;

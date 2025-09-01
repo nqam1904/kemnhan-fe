@@ -1,3 +1,4 @@
+import { CONFIG } from '@/config-global';
 import ImageAssets from 'constants/ImagesAsset';
 import './Footer.css';
 
@@ -44,33 +45,49 @@ const data: SocialItem[] = [
 function Footer() {
     return (
         <div className="footer" id="footer">
-            <div className="list-item">
-                <img src={ImageAssets.logo} width={93} height={100} alt="logo" />
-                {data.map((item: any, index: any) => {
-                    return (
-                        <a href={item.link} key={index} className="item-footer">
-                            <img
-                                src={item.image}
-                                key={index}
-                                width={25}
-                                height={25}
-                                alt={item.text}
-                            />
-                            <p className="text-item">{item.text}</p>
-                        </a>
-                    );
-                })}
+            <div className="footer__container">
+                <div className="footer__col">
+                    <div className="footer__brand">
+                        <img src={ImageAssets.logo} width={93} height={100} alt="logo" />
+                        <div className="footer__brand__text">
+                            <div className="footer__title">KEM NHÃN</div>
+                            <div className="footer__line" />
+                            <div className="footer__info">
+                                <div>
+                                    Kem Nhãn Online
+                                </div>
+                                <div>
+                                    Địa chỉ: Quận 3, Thành Phố Hồ Chí Minh
+                                </div>
+                                <div>
+                                    Điện thoại: (02203) 838 838 – 844 444
+                                </div>
+                                <div>
+                                    Website: <a className="footer__link" href={CONFIG.domain} target="_blank" rel="noreferrer">kemnhanonline.vn</a>
+                                </div>
+                                <div>
+                                    Fanpage: <a className="footer__link" href="https://facebook.com/kemnhantannha" target="_blank" rel="noreferrer">Kemnhanonline</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <>
-                    <a href="tel:0977667866" className="item-footer">
-                        <img src={ImageAssets.phoneCall} width={25} height={25} alt="phone" />
-                        <p className="text-item">0977667866</p>
-                    </a>
-                    <a href="tel:0973277739" className="item-footer">
-                        <img src={ImageAssets.phoneCall} width={25} height={25} alt="phone" />
-                        <p className="text-item">0973277739</p>
-                    </a>
-                </>
+                <div className="footer__col">
+                    <div className="footer__title">MẠNG XÃ HỘI</div>
+                    <div className="footer__line" />
+                    <div className="footer__socials">
+                        {data.map((item) => (
+                            <a href={item.link} key={item.id} className="footer__social footer__social--big" target="_blank" rel="noreferrer">
+                                <img src={item.image} width={25} height={25} alt={item.text} />
+                                <span>{item.text}</span>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <div className="footer__bottom">
+                <div>© Bản quyền thuộc về Kem Nhãn Online</div>
             </div>
         </div>
     );

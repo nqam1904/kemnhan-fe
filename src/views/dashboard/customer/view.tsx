@@ -1,3 +1,4 @@
+import compactDataTableStyles from '@/components/data-table/styles';
 import { useGetCustomersQuery, useLazyGetCustomerByIdQuery } from '@/store/apis/customers';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
@@ -65,18 +66,19 @@ const CustomerComponent: React.FC = () => {
 
     return (
         <>
-            <h1 className="mt-10">Khách hàng</h1>
-            <div className="text-right">
-                <Button
-                    variant="success"
-                    className="mbt-10 ml-10"
-                    type="button"
-                    onClick={() => {
-                        window.open('https://kemnhanonline.vn/api/customers/export', '_blank');
-                    }}
-                >
-                    Xuất Excel
-                </Button>
+            <div className="d-flex align-items-center justify-content-between mt-10 mbt-10">
+                <h1 className="m-0">Khách hàng</h1>
+                <div>
+                    <Button
+                        variant="success"
+                        type="button"
+                        onClick={() => {
+                            window.open('https://kemnhanonline.vn/api/customers/export', '_blank');
+                        }}
+                    >
+                        Xuất Excel
+                    </Button>
+                </div>
             </div>
             <DataTable
                 title="Khách hàng"
@@ -86,6 +88,8 @@ const CustomerComponent: React.FC = () => {
                 pagination
                 responsive={true}
                 progressPending={isLoading}
+                dense
+                customStyles={compactDataTableStyles}
             />
 
             <Modal

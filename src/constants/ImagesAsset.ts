@@ -1,5 +1,6 @@
 import aboutImg from '@/assets/images/about.png';
 import arrowImg from '@/assets/images/arrow.png';
+import bannerAboutImg from '@/assets/images/banner_about.png';
 import bg3Img from '@/assets/images/bg3.png';
 import deleteImg from '@/assets/images/Delete.png';
 import emptyImg from '@/assets/images/empty.png';
@@ -21,6 +22,7 @@ import kemnhanonlineImg from '@/assets/images/Kemnhanonline.png';
 import loadingGif from '@/assets/images/loading.gif';
 import logoImg from '@/assets/images/logo.png';
 import logo1Img from '@/assets/images/logo1.png';
+import menu from '@/assets/images/menu.jpg';
 import phoneCallImg from '@/assets/images/phone-call.png';
 import plusImg from '@/assets/images/plus.png';
 import shopeeImg from '@/assets/images/shopee.png';
@@ -74,7 +76,7 @@ const ImageAssets = {
     image13: '/assets/images/image_13.png',
     image18: '/assets/images/image_18.png',
     image19: '/assets/images/image_19.png',
-    image20: '/assets/images/image_20.png',
+    banner_about: bannerAboutImg,
     image21: '/assets/images/image_21.png',
     image22: '/assets/images/image_22.png',
     image35: image35Img,
@@ -86,6 +88,7 @@ const ImageAssets = {
     upwardsArrow: upwardsArrowImg,
     ic_close_cancel: icCloseCancel,
     ic_clear: icClear,
+    menu: menu,
 };
 
 export default ImageAssets;

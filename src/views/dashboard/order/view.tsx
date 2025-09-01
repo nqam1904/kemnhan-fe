@@ -1,3 +1,4 @@
+import compactDataTableStyles from '@/components/data-table/styles';
 import ImageAssets from '@/constants/ImagesAsset';
 import { useGetOrdersQuery, useUpdateOrderStatusMutation } from '@/store/apis/orders';
 import type { Order } from '@/store/types/order';
@@ -102,18 +103,19 @@ const OrderComponents: React.FC = () => {
 
     return (
         <>
-            <h1 className="mt-10">Đơn hàng</h1>
-            <ToastContainer autoClose={1000} />
-            <div className="text-right">
-                <Button
-                    variant="success"
-                    className="mbt-10 ml-10"
-                    type="button"
-                    onClick={exportExcel}
-                >
-                    Xuất Excel
-                </Button>
+            <div className="d-flex align-items-center justify-content-between mt-10 mbt-10">
+                <h1 className="m-0">Đơn hàng</h1>
+                <div>
+                    <Button
+                        variant="success"
+                        type="button"
+                        onClick={exportExcel}
+                    >
+                        Xuất Excel
+                    </Button>
+                </div>
             </div>
+            <ToastContainer autoClose={1000} />
             <DataTable
                 title="Hoá đơn"
                 columns={columns as any}
@@ -122,6 +124,8 @@ const OrderComponents: React.FC = () => {
                 pagination
                 progressPending={isLoading}
                 responsive={true}
+                dense
+                customStyles={compactDataTableStyles}
             />
             <Modal
                 show={confirm.show}

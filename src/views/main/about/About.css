@@ -11,21 +11,25 @@
     margin-bottom: 100px;
     /* height: 206px; */
 }
+
 .about_video {
     min-width: 40%;
 }
+
 .sub_text1 {
     font-style: normal;
     font-weight: normal;
     font-size: 64px;
     color: #fa541c;
 }
+
 .sub_text2 {
     font-style: normal;
     font-weight: normal;
     font-size: 24px;
     line-height: 30px;
 }
+
 .btn_image {
     width: 303px;
     height: 70px;
@@ -38,10 +42,16 @@
     cursor: pointer;
     /* padding-top: 2px; */
 }
+
 .btn_image span {
     font-style: normal;
     font-weight: normal;
     font-size: 24px;
     line-height: 24px;
     text-align: center;
+}
+
+/* About hero background override */
+.about-hero-bg {
+    background: #feffe6 !important;
 }

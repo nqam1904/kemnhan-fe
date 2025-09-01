@@ -1,4 +1,4 @@
-import ImageAssets from 'constants/ImagesAsset';
+import arrowImg from '@/assets/images/arrow.png';
 import { useCallback, useEffect, useState } from 'react';
 
 export default function ScrollToTop() {
@@ -13,10 +13,7 @@ export default function ScrollToTop() {
     }, []);
 
     const scrollToTop = useCallback(() => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
     useEffect(() => {
@@ -28,9 +25,11 @@ export default function ScrollToTop() {
         <div className="scroll-to-top">
             {isVisible && (
                 <div onClick={scrollToTop} className="scrollToTop" id="btnArrow">
-                    <img src={ImageAssets.increase} width={40} alt="Go to top" />
+                    <img src={arrowImg} width={20} height={20} alt="Go to top" />
                 </div>
             )}
         </div>
     );
 }
+
+
