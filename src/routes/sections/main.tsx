@@ -38,7 +38,7 @@ export const mainRoutes = [
                         <Outlet />
                     </MainLayout>
                 ),
-                path: 'trang-chu',
+                path: '',
                 children: [
                     { index: true, element: <HomePage /> },
                     { path: 'gioi-thieu', element: <AboutPage /> },

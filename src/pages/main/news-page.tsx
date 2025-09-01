@@ -1,8 +1,8 @@
 import { CONFIG } from '@/config-global';
-import NewsComponents from '@/views/main/news/view';
+import NewsView from '@/views/main/news/view';
 import { Helmet } from 'react-helmet-async';
 
-const metadata = { title: `News - ${CONFIG.appName}` };
+const metadata = { title: `Tin tức - ${CONFIG.appName}` };
 
 export default function Page() {
     return (
@@ -10,7 +10,7 @@ export default function Page() {
             <Helmet>
                 <title> {metadata.title}</title>
             </Helmet>
-            <NewsComponents />
+            <NewsView />
         </>
     );
 }

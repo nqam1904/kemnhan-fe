@@ -2,7 +2,7 @@
 
 const ROOTS = {
     DASHBOARD: '/dashboard',
-    MAIN: '/',
+    MAIN: '',
 };
 
 // ----------------------------------------------------------------------
@@ -36,7 +36,7 @@ export const paths = {
         home: `${ROOTS.MAIN}/trang-chu`,
         about: `${ROOTS.MAIN}/gioi-thieu`,
         product: `${ROOTS.MAIN}/san-pham`,
-        productDetail: `${ROOTS.MAIN}/chi-tiet-san-pham`,
+        productDetail: (id: string) => `${ROOTS.MAIN}/chi-tiet-san-pham?id=${id}`,
         news: `${ROOTS.MAIN}/tin-tuc`,
         cart: `${ROOTS.MAIN}/gio-hang`,
         checkout: `${ROOTS.MAIN}/thanh-toan`,

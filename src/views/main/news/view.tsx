@@ -5,7 +5,7 @@ import type { Promotion } from '@/store/types/promotion';
 import resolveImageUrl from '@/utils/image-url';
 import './news.css';
 
-function NewsComponents() {
+function NewsView() {
     const { data: promotions = [], isLoading } = useGetPromotionsQuery();
     const { data: products = [] } = useGetProductsQuery();
 
@@ -83,4 +83,4 @@ function NewsComponents() {
     );
 }
 
-export default NewsComponents;
+export default NewsView;

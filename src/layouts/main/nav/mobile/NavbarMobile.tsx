@@ -1,17 +1,28 @@
+import { paths } from '@/routes/paths';
 import ImageAssets from 'constants/ImagesAsset';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 
+const MENU_INPUT_ID = 'nav-mobile-input';
+
 function NavbarMobile() {
+    const navItems = [
+        { type: 'link' as const, to: '/', label: 'Trang chủ' },
+        { type: 'hash' as const, to: '#product', label: 'Sản phẩm' },
+        { type: 'hash' as const, to: '#about', label: 'Giới thiệu' },
+        { type: 'hash' as const, to: '#footer', label: 'Liên hệ' },
+        { type: 'link' as const, to: paths.main.news, label: 'Khuyến mãi' },
+    ];
+
     return (
         <>
-            <label htmlFor="nav-mobile-input" className="menu__btn">
+            <label htmlFor={MENU_INPUT_ID} className="menu__btn" aria-controls="mobile-menu" aria-label="Mở menu">
                 <img src={ImageAssets.logo} alt="logo" className="logo_mobile" />
             </label>
-            <input type="checkbox" id="nav-mobile-input" className="visually-hidden" hidden />
-            <label htmlFor="nav-mobile-input" className="menu__overplay"></label>
-            <nav className="menu__item__mobile">
-                <label htmlFor="nav-mobile-input" className="menu__mobile__close">
+            <input type="checkbox" id={MENU_INPUT_ID} className="visually-hidden" hidden />
+            <label htmlFor={MENU_INPUT_ID} className="menu__overplay" aria-hidden="true"></label>
+            <nav className="menu__item__mobile" id="mobile-menu" aria-label="Menu điều hướng">
+                <label htmlFor={MENU_INPUT_ID} className="menu__mobile__close" aria-label="Đóng menu">
                     <svg
                         aria-hidden="true"
                         focusable="false"
@@ -28,19 +39,20 @@ function NavbarMobile() {
                         ></path>
                     </svg>
                 </label>
-                <Link to="/" className="titile__link_mobile">
-                    <p className="titile__item">Trang chủ</p>
-                </Link>
-                <HashLink smooth to="#product" className="titile__link_mobile">
-                    <p className="titile__item">Sản phẩm</p>
-                </HashLink>
-                <HashLink smooth to="#about" className="titile__link_mobile">
-                    <p className="titile__item">Giới thiệu</p>
-                </HashLink>
-                <HashLink smooth to="#footer" className="titile__link_mobile">
-                    <p className="titile__item">Liên hệ</p>
-                </HashLink>
-                <Link to="/gio-hang" className="titile__link_mobile">
+
+                {navItems.map((item) =>
+                    item.type === 'hash' ? (
+                        <HashLink key={item.label} smooth to={item.to} className="titile__link_mobile">
+                            <p className="titile__item">{item.label}</p>
+                        </HashLink>
+                    ) : (
+                        <Link key={item.label} to={item.to} className="titile__link_mobile">
+                            <p className="titile__item">{item.label}</p>
+                        </Link>
+                    )
+                )}
+
+                <Link to={paths.main.cart} className="titile__link_mobile">
                     <div className="button-cart titile__item">
                         <img src={ImageAssets.icCart} alt="cart" className="ic_cart" />
                         <p className="title_cart">Giỏ hàng</p>
