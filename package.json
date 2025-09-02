@@ -16,7 +16,7 @@
     "dev:host": "vite --host"
   },
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
