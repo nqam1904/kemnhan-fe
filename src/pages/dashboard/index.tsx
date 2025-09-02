@@ -1,5 +1,5 @@
-import { CONFIG } from '@/config-global';
 import { paths } from '@/routes/paths';
+import { CONFIG } from '@/config-global';
 import { Helmet } from 'react-helmet-async';
 import { Navigate } from 'react-router-dom';
 

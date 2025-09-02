@@ -1,7 +1,6 @@
 import type { AxiosRequestConfig } from 'axios';
 
 import axios from 'axios';
-
 import { CONFIG } from '@/config-global';
 
 // ----------------------------------------------------------------------
@@ -42,6 +41,7 @@ export const endpoints = {
         categories: 'categories',
         customers: 'customers',
         orders: 'orders',
+        carousels: 'carousels',
     },
     main: {
         products: 'products',

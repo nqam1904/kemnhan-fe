@@ -1,5 +1,5 @@
 import arrowImg from '@/assets/images/arrow.png';
-import { useCallback, useEffect, useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export default function ScrollToTop() {
     const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -24,9 +24,15 @@ export default function ScrollToTop() {
     return (
         <div className="scroll-to-top">
             {isVisible && (
-                <div onClick={scrollToTop} className="scrollToTop" id="btnArrow">
+                <button
+                    type="button"
+                    onClick={scrollToTop}
+                    className="scrollToTop"
+                    id="btnArrow"
+                    aria-label="Scroll to top"
+                >
                     <img src={arrowImg} width={20} height={20} alt="Go to top" />
-                </div>
+                </button>
             )}
         </div>
     );

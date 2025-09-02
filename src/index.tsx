@@ -1,15 +1,17 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { StrictMode, Suspense } from 'react';
-import 'react-activity/dist/react-activity.css';
-import { createRoot } from 'react-dom/client';
-import { HelmetProvider } from 'react-helmet-async';
-import 'react-lazy-load-image-component/src/effects/blur.css';
-import { BrowserRouter } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.css';
-import { buildProvidersTree } from 'utils/providerTree';
-import App from './App';
 import './app.css';
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
+import 'react-activity/dist/react-activity.css';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+
+import { Suspense, StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+import { buildProvidersTree } from '@/utils/providerTree';
+
+import App from './App';
 
 const ProvidersTree = buildProvidersTree([
     [StrictMode],
@@ -19,7 +21,7 @@ const ProvidersTree = buildProvidersTree([
 ]);
 
 const container = document.getElementById('root');
-const root = createRoot(container);
+const root = createRoot(container as HTMLElement);
 
 root.render(
     <ProvidersTree>

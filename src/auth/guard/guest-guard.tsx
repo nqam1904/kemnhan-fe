@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-
-import { SplashScreen } from '@/components';
 import { CONFIG } from '@/config-global';
+import { useState, useEffect } from 'react';
+import { SplashScreen } from '@/components';
 import { useRouter, useSearchParams } from '@/routes/hooks';
+
 import { useAuthContext } from '../hooks';
 
 // ----------------------------------------------------------------------

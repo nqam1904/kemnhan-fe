@@ -1,6 +1,6 @@
 import { CONFIG } from '@/config-global';
-import HomeView from '@/views/dashboard/home/view';
 import { Helmet } from 'react-helmet-async';
+import HomeView from '@/views/dashboard/home/view';
 
 const metadata = { title: `Trang chủ - ${CONFIG.appName}` };
 

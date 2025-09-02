@@ -1,10 +1,11 @@
 import { endpoints } from '@/utils/axios';
 
 import { RTKQueryApi } from '../create-api';
+
 import type {
     Account,
-    AccountCreateRequest,
     AccountListResponse,
+    AccountCreateRequest,
     AccountUpdateRequest,
 } from '../types/account';
 

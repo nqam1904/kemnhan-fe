@@ -1,5 +1,7 @@
 import { endpoints } from '@/utils/axios';
+
 import { RTKQueryApi } from '../create-api';
+
 import type { Setting, SettingListResponse, SettingUpdateRequest } from '../types/setting';
 
 export const settingsApi = RTKQueryApi.injectEndpoints({

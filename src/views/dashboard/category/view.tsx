@@ -1,17 +1,18 @@
-import ImageAssets from '@/constants/ImagesAsset';
-import {
-    useCreateCategoryMutation,
-    useDeleteCategoryMutation,
-    useGetCategoriesQuery,
-    useUpdateCategoryMutation,
-} from '@/store/apis/category';
 import type { Category as CategoryModel } from '@/store/types/category';
+
+import { z } from 'zod';
 import { fDate } from '@/utils/format-time';
 import React, { useMemo, useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import ImageAssets from '@/constants/ImagesAsset';
 import DataTable from 'react-data-table-component';
+import { Form, Modal, Button } from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
-import { z } from 'zod';
+import {
+    useGetCategoriesQuery,
+    useCreateCategoryMutation,
+    useDeleteCategoryMutation,
+    useUpdateCategoryMutation,
+} from '@/store/apis/category';
 
 const CategoryView: React.FC = () => {
     const { data: categories = [], isLoading, refetch } = useGetCategoriesQuery();
@@ -76,8 +77,8 @@ const CategoryView: React.FC = () => {
         setErrors({});
 
         try {
-            if (form.id) {
-                await updateCategory({ id: form.id, body: parsed.data as any }).unwrap();
+            if (id) {
+                await updateCategory({ id, body: parsed.data as any }).unwrap();
                 toast.success('Cập nhật thành công!');
             } else {
                 await createCategory({ body: parsed.data as any }).unwrap();
@@ -108,18 +109,14 @@ const CategoryView: React.FC = () => {
                 selector: 'createDate',
                 sortable: true,
                 right: true,
-                cell: (row: any) => {
-                    return <span>{fDate(row.createDate, 'DD/MM/YYYY')}</span>;
-                },
+                cell: (row: any) => <span>{fDate(row.createDate, 'DD/MM/YYYY')}</span>,
             },
             {
                 name: 'Ngày chỉnh sửa',
                 selector: 'writeDate',
                 sortable: true,
                 right: true,
-                cell: (row: any) => {
-                    return <span>{fDate(row.writeDate, 'DD/MM/YYYY')}</span>;
-                },
+                cell: (row: any) => <span>{fDate(row.writeDate, 'DD/MM/YYYY')}</span>,
             },
             {
                 name: 'Chức năng',
@@ -176,7 +173,7 @@ const CategoryView: React.FC = () => {
     return (
         <>
             <div className="d-flex align-items-center justify-content-between mt-10 mbt-10">
-                <h1 className="m-0">Danh mục</h1>
+                <h1 className="m-0">Danh sách danh mục</h1>
                 <div>
                     <Button
                         type="button"
@@ -194,13 +191,13 @@ const CategoryView: React.FC = () => {
             </div>
             <ToastContainer autoClose={1000} />
             <DataTable
-                title="Danh mục"
+                title=""
                 columns={columns}
                 data={categories}
                 defaultSortFieldId="title"
                 pagination
                 progressPending={isLoading}
-                responsive={true}
+                responsive
                 dense
                 customStyles={tableStyles}
             />
@@ -217,7 +214,6 @@ const CategoryView: React.FC = () => {
                     </Modal.Header>
                     <Modal.Body>
                         <label>
-                            {' '}
                             Tên danh mục <sup className="sub_text text-danger">*</sup>
                         </label>
                         <div className="position-relative">
@@ -278,7 +274,7 @@ const CategoryView: React.FC = () => {
                     <Modal.Title {...({} as any)}>Xác nhận xoá</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Bạn có chắc muốn xoá danh mục "{confirmDelete.label}" không?
+                    Bạn có chắc muốn xoá danh mục &quot;{confirmDelete.label}&quot; không?
                 </Modal.Body>
                 <Modal.Footer>
                     <Button

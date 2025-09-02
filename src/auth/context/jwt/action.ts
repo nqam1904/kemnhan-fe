@@ -1,4 +1,4 @@
-import { setLocalStorage, setSession } from './utils';
+import { setSession, setLocalStorage } from './utils';
 
 // ----------------------------------------------------------------------
 

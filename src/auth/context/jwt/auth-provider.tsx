@@ -1,14 +1,12 @@
 import { isEmpty } from 'lodash';
-import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
+import { setTokens } from '@/store/slices/auth';
+import { useSetState } from '@/hooks/use-set-state';
+import { useMemo, useEffect, useCallback } from 'react';
 
-import { useSetState } from 'hooks/use-set-state';
-
-import { setTokens } from 'store/slices/auth';
-
-import { AuthContext } from '../auth-context';
-import { STORAGE_ACCESS_TOKEN, STORAGE_USER } from './constant';
 import { setSession } from './utils';
+import { AuthContext } from '../auth-context';
+import { STORAGE_USER, STORAGE_ACCESS_TOKEN } from './constant';
 
 import type { AuthState } from '../../types';
 
@@ -70,9 +68,9 @@ export function AuthProvider({ children }: Props) {
         () => ({
             user: state.user
                 ? {
-                      ...state.user,
-                      role: state.user?.role ?? 'admin',
-                  }
+                    ...state.user,
+                    role: state.user?.role ?? 'admin',
+                }
                 : null,
             checkUserSession,
             setState,

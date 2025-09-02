@@ -1,7 +1,9 @@
+import './NotFoundPage.css';
+
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
-import './NotFoundPage.css';
+
 function NotFoundPageComponent() {
     useEffect(() => {
         toast.info('Không tìm thấy trang này!');

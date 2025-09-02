@@ -1,8 +1,8 @@
 import { endpoints } from '@/utils/axios';
 
+import { setTokens } from '../slices/auth';
 import { RTKQueryApi } from '../create-api';
 
-import { setTokens } from '../slices/auth';
 import type { SignInRequest, SignInResponse } from '../types/auth';
 
 export const authApi = RTKQueryApi.injectEndpoints({

@@ -1,6 +1,6 @@
 import { CONFIG } from '@/config-global';
-import SettingComponent from '@/views/dashboard/setting/view';
 import { Helmet } from 'react-helmet-async';
+import SettingComponent from '@/views/dashboard/setting/view';
 
 const metadata = { title: `Cài đặt - ${CONFIG.appName}` };
 

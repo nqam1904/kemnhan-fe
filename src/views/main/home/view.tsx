@@ -1,12 +1,14 @@
+import './home.css';
+
+import { useMemo, useState } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import resolveImageUrl from '@/utils/image-url';
+import Carousel from 'react-bootstrap/Carousel';
 import ImageAssets from '@/constants/ImagesAsset';
 import { settingsApi } from '@/store/apis/settings';
-import resolveImageUrl from '@/utils/image-url';
-import { useMemo, useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Carousel from 'react-bootstrap/Carousel';
-import Modal from 'react-bootstrap/Modal';
-import AboutComponents from '../about/view';
-import './home.css';
+
+import AboutView from '../about/view';
 import ProductList from './product-list';
 
 function HomeView() {
@@ -20,7 +22,9 @@ function HomeView() {
         try {
             const parsed = JSON.parse(media.value);
             if (Array.isArray(parsed)) return parsed.map((k: any) => resolveImageUrl(`${k}`));
-        } catch (_e) { }
+        } catch (_e) {
+            console.log(_e);
+        }
         const parts = String(media.value).split(',').map((s) => s.trim()).filter(Boolean);
         return parts.length ? parts.map((k) => resolveImageUrl(`${k}`)) : [];
     }, [settings]);
@@ -48,7 +52,7 @@ function HomeView() {
                 </div>
             )}
             <ProductList />
-            <AboutComponents />
+            <AboutView />
             <Modal
                 show={modal}
                 size="lg"

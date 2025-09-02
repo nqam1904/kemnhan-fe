@@ -1,10 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import { RTKQueryApi } from './create-api';
 import auth from './slices/auth';
 import cart from './slices/cart';
-import notify from './slices/notify';
 import user from './slices/user';
+import notify from './slices/notify';
+import { RTKQueryApi } from './create-api';
 
 // * Create the root reducer separately so we can extract the RootState type
 const rootReducer = combineReducers({

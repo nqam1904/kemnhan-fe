@@ -1,6 +1,6 @@
 import { CONFIG } from '@/config-global';
-import NewsView from '@/views/main/news/view';
 import { Helmet } from 'react-helmet-async';
+import NewsView from '@/views/main/news/view';
 
 const metadata = { title: `Tin tức - ${CONFIG.appName}` };
 

@@ -1,13 +1,13 @@
-import { CONFIG } from '@/config-global';
-import axios from 'axios';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { toast, ToastContainer } from 'react-toastify';
-import resolveImageUrl from 'utils/image-url';
-
-import ImageAssets from 'constants/ImagesAsset';
-import { fNumber } from 'utils/format-number';
 import './product-detail.css';
+
+import axios from 'axios';
+import { CONFIG } from '@/config-global';
+import { fNumber } from '@/utils/format-number';
+import resolveImageUrl from '@/utils/image-url';
+import ImageAssets from '@/constants/ImagesAsset';
+import { toast, ToastContainer } from 'react-toastify';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 
 interface ProductDetailProps {
     actAddToCart: (item: any) => void;
@@ -71,15 +71,15 @@ function ProductDetail(props: ProductDetailProps) {
     const addCart = () => {
         const data = {
             product: {
-                id: parseInt(id),
-                name: name,
+                id,
+                name,
                 image: selectedImage,
                 price: sellPrice,
-                description: description,
+                description,
             },
             quantity: 1,
         };
-        props.actAddToCart(data);
+        props?.actAddToCart(data);
         toast.success('Thêm vào giỏ thành công!');
     };
 

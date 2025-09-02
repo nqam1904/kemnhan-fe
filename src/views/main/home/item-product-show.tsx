@@ -1,7 +1,7 @@
-import ImageAssets from 'constants/ImagesAsset';
-import React, { useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
-import resolveImageUrl from 'utils/image-url';
+import React, { useEffect } from 'react';
+import resolveImageUrl from '@/utils/image-url';
+import ImageAssets from '@/constants/ImagesAsset';
 
 interface ItemProductShowProps {
     id: string | number;
@@ -14,37 +14,38 @@ interface ItemProductShowProps {
 }
 
 const ItemProductShow: React.FC<ItemProductShowProps> = (props: any) => {
+    const { id, name, description, images, price } = props;
     const [imageSrc, setImageSrc] = React.useState<string>(
-        props.images ? resolveImageUrl(props.images) : ImageAssets.logo
+        images ? resolveImageUrl(images) : ImageAssets.logo
     );
 
     useEffect(() => {
-        setImageSrc(props.images ? resolveImageUrl(props.images) : ImageAssets.logo);
+        setImageSrc(images ? resolveImageUrl(images) : ImageAssets.logo);
     }, []);
 
     return (
         <Card
             className="product-card"
             onClick={() => {
-                window.open(`/chi-tiet-san-pham?id=${props.id}`, '_blank');
+                window.open(`/chi-tiet-san-pham?id=${id}`, '_blank');
             }}
             style={{ cursor: 'pointer' }}
         >
             <Card.Img
                 variant="top"
                 src={imageSrc}
-                alt={props.name}
+                alt={name}
                 onError={() => setImageSrc(ImageAssets.logo)}
                 className="product-card__img"
             />
             <Card.Body>
-                <Card.Title>{props.name}</Card.Title>
+                <Card.Title>{name}</Card.Title>
                 <Card.Text>
-                    {props.description}
+                    {description}
                 </Card.Text>
-                {props.price !== undefined && (
+                {price !== undefined && (
                     <div style={{ color: '#fa541c', fontWeight: 700 }}>
-                        Giá: {props.price?.toLocaleString('vi-VN')} đ
+                        Giá: {price?.toLocaleString('vi-VN')} đ
                     </div>
                 )}
             </Card.Body>

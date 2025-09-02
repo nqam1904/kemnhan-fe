@@ -1,11 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
-
-import { usePathname, useRouter, useSearchParams } from 'routes/hooks';
-import { paths } from 'routes/paths';
-
+import { paths } from '@/routes/paths';
 import { CONFIG } from '@/config-global';
-
 import { SplashScreen } from '@/components';
+import { useState, useEffect, useCallback } from 'react';
+import { useRouter, usePathname, useSearchParams } from '@/routes/hooks';
 
 import { useAuthContext } from '../hooks';
 

@@ -130,16 +130,15 @@ export function fShortenNumber(inputValue: InputNumberValue, options?: Options) 
         { value: 1e3, suffix: 'k' },
     ];
 
-    for (const unit of units) {
-        if (abs >= unit.value) {
-            const val = number / unit.value;
-            const formatted = formatNumberNoLocale(val, {
-                minimumFractionDigits: 0,
-                maximumFractionDigits,
-                useGrouping: false,
-            });
-            return `${formatted}${unit.suffix}`;
-        }
+    const found = units.find(unit => abs >= unit.value);
+    if (found) {
+        const val = number / found.value;
+        const formatted = formatNumberNoLocale(val, {
+            minimumFractionDigits: 0,
+            maximumFractionDigits,
+            useGrouping: false,
+        });
+        return `${formatted}${found.suffix}`;
     }
 
     return formatNumberNoLocale(number, {

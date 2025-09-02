@@ -1,26 +1,26 @@
-import compactDataTableStyles from '@/components/data-table/styles';
-import ImageAssets from '@/constants/ImagesAsset';
-import { fNumber } from '@/utils/format-number';
-import { formatSubstring } from '@/utils/format-string';
-import resolveImageUrl from '@/utils/image-url';
-import React, { useMemo, useRef, useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
-import DataTable from 'react-data-table-component';
-import { toast, ToastContainer } from 'react-toastify';
-import * as z from 'zod';
-
-import { useGetCategoriesQuery } from '@/store/apis/category';
-import {
-    useCreateProductMutation,
-    useDeleteProductMutation,
-    useGetProductsQuery,
-    useUpdateProductMutation,
-} from '@/store/apis/products';
-import axiosInstance from '@/utils/axios';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import './product.css';
 
-const ProductView: React.FC = () => {
+import * as z from 'zod';
+import axiosInstance from '@/utils/axios';
+import { fNumber } from '@/utils/format-number';
+import resolveImageUrl from '@/utils/image-url';
+import ImageAssets from '@/constants/ImagesAsset';
+import DataTable from 'react-data-table-component';
+import { Form, Modal, Button } from 'react-bootstrap';
+import { toast, ToastContainer } from 'react-toastify';
+import { formatSubstring } from '@/utils/format-string';
+import React, { useRef, useMemo, useState } from 'react';
+import { useGetCategoriesQuery } from '@/store/apis/category';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import compactDataTableStyles from '@/components/data-table/styles';
+import {
+    useGetProductsQuery,
+    useCreateProductMutation,
+    useDeleteProductMutation,
+    useUpdateProductMutation,
+} from '@/store/apis/products';
+
+const ProductsView: React.FC = () => {
     const { data: products = [], isLoading, refetch } = useGetProductsQuery();
     const { data: categories = [] } = useGetCategoriesQuery();
     const [createProduct] = useCreateProductMutation();
@@ -155,7 +155,9 @@ const ProductView: React.FC = () => {
             await updateProduct({ id: record.id, body: { isFeature: !record.isFeature } }).unwrap();
             toast.success('Cập nhật thành công');
             refetch();
-        } catch (_e) { }
+        } catch (_e) {
+            console.log(_e);
+        }
     };
 
     const onToggleActive = async (record: any) => {
@@ -163,12 +165,9 @@ const ProductView: React.FC = () => {
             await updateProduct({ id: record.id, body: { isActive: !record.isActive } }).unwrap();
             toast.success('Cập nhật thành công');
             refetch();
-        } catch (_e) { }
-    };
-
-    const sanitizeInteger = (value: any) => {
-        const cleaned = String(value ?? '').replace(/[^\d]/g, '');
-        return cleaned ? parseInt(cleaned, 10) : 0;
+        } catch (_e) {
+            console.log(_e);
+        }
     };
 
     const onSave = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -377,13 +376,13 @@ const ProductView: React.FC = () => {
             <ToastContainer autoClose={1000} />
 
             <DataTable
-                title="Sản phẩm"
+                title=""
                 columns={columns as any}
                 data={products as any}
                 defaultSortFieldId="title"
                 pagination
                 progressPending={isLoading}
-                responsive={true}
+                responsive
                 dense
                 customStyles={compactDataTableStyles}
             />
@@ -498,7 +497,9 @@ const ProductView: React.FC = () => {
                                                         onClick={() => {
                                                             try {
                                                                 URL.revokeObjectURL(url);
-                                                            } catch (_e) { }
+                                                            } catch (_e) {
+                                                                console.log(_e);
+                                                             }
                                                             setImagePreviews((prev) => prev.filter((_, i) => i !== idx));
                                                             setForm((prev) => {
                                                                 const apiCount = apiPreviewCountRef.current;
@@ -538,7 +539,7 @@ const ProductView: React.FC = () => {
                                 </div>
                             </div>
                         ) : (
-                            <div style={{ marginBottom: 10 }}></div>
+                            <div style={{ marginBottom: 10 }} />
                         )}
 
                         <div className="row">
@@ -665,7 +666,7 @@ const ProductView: React.FC = () => {
                     <Modal.Title {...({} as any)}>Xác nhận xoá</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Bạn có chắc muốn xoá sản phẩm "{confirmDelete.label}" không?
+                    Bạn có chắc muốn xoá sản phẩm &quot;{confirmDelete.label}&quot; không?
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -692,4 +693,4 @@ const ProductView: React.FC = () => {
     );
 };
 
-export default ProductView;
+export default ProductsView;

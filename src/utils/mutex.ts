@@ -1,5 +1,6 @@
 export class Mutex {
     private current: Promise<void> = Promise.resolve();
+
     private locked = false;
 
     isLocked(): boolean {

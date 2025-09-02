@@ -1,6 +1,6 @@
-import ImageAssets from 'constants/ImagesAsset';
+import ImageAssets from '@/constants/ImagesAsset';
+import { formatSubstring } from '@/utils/format-string';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { formatSubstring } from 'utils/format-string';
 
 interface CartItemProps {
     item: {
@@ -17,12 +17,12 @@ interface CartItemProps {
 }
 
 function CartItem(props: CartItemProps) {
-    const { item } = props;
+    const { item, onDeleteItem, subItem, plusItem } = props;
 
     return (
         <div className="cart_item">
             <div className="content_item">
-                <div className="item_delete_1" onClick={() => props.onDeleteItem()}>
+                <div className="item_delete_1" onClick={() => onDeleteItem()}>
                     <img src={ImageAssets.delete} alt="delete" />
                 </div>
                 <LazyLoadImage effect="blur" src={item.product.image} alt={item.product.name} />
@@ -34,9 +34,9 @@ function CartItem(props: CartItemProps) {
                 </div>
             </div>
             <div className="option_item">
-                <img src={ImageAssets.tru} alt="minus" onClick={() => props.subItem()} />
+                <img src={ImageAssets.tru} alt="minus" onClick={() => subItem()} />
                 <div className="quantity">{item.quantity}</div>
-                <img src={ImageAssets.plus} alt="plus" onClick={() => props.plusItem()} />
+                <img src={ImageAssets.plus} alt="plus" onClick={() => plusItem()} />
             </div>
         </div>
     );

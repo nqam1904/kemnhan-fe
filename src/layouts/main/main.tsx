@@ -1,7 +1,10 @@
-import { FloatingContacts, ScrollToTop } from '@/components';
-import { usePathname } from '@/routes/hooks';
+import type { ReactNode} from 'react';
+
+import { useMemo } from 'react';
 import { paths } from '@/routes/paths';
-import { ReactNode, useMemo } from 'react';
+import { usePathname } from '@/routes/hooks';
+import { ScrollToTop, FloatingContacts } from '@/components';
+
 import Footer from './footer/Footer';
 import Navbar from './nav/desktop/Navbar';
 

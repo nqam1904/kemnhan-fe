@@ -1,6 +1,8 @@
-import { useGetProductsQuery } from '@/store/apis/products';
-import { useEffect, useMemo, useRef, useState } from 'react';
 import './home.css';
+
+import { useGetProductsQuery } from '@/store/apis/products';
+import { useRef, useMemo, useState, useEffect } from 'react';
+
 import ItemProductShow from './item-product-show';
 
 interface Product {
@@ -36,7 +38,9 @@ function ProductList() {
 
     useEffect(() => {
         const el = trackRef.current;
-        if (!el) return;
+        if (!el) {
+            return () => { };
+        }
         updateCanScroll();
         el.addEventListener('scroll', updateCanScroll);
         window.addEventListener('resize', updateCanScroll);
@@ -45,7 +49,7 @@ function ProductList() {
         return () => {
             el.removeEventListener('scroll', updateCanScroll);
             window.removeEventListener('resize', updateCanScroll);
-            try { ro.disconnect(); } catch (_e) { }
+            ro.disconnect();
         };
     }, [trackRef]);
 
@@ -57,7 +61,9 @@ function ProductList() {
     // Auto-scroll carousel every 2 seconds and loop
     useEffect(() => {
         const el = trackRef.current;
-        if (!el) return;
+        if (!el) {
+            return () => { };
+        }
 
         const intervalId = window.setInterval(() => {
             // If there is nothing to scroll, do nothing
@@ -72,11 +78,11 @@ function ProductList() {
             }
         }, 2000);
 
-        return () => window.clearInterval(intervalId);
+        return () => { window.clearInterval(intervalId); };
     }, [products]);
 
     const showProduct = useMemo(() => {
-        var result = null;
+        let result = null;
         if (products.length > 0) {
             const featureProduct = products.filter((x) => x.isFeature);
             const productShow = featureProduct;
@@ -108,6 +114,7 @@ function ProductList() {
                 </div>
                 <div className="carousel">
                     <button
+                        type="button"
                         className="carousel__btn carousel__btn--prev"
                         onClick={() => {
                             const el = trackRef.current;
@@ -122,6 +129,7 @@ function ProductList() {
                         {showProduct}
                     </div>
                     <button
+                        type="button"
                         className="carousel__btn carousel__btn--next"
                         onClick={() => {
                             const el = trackRef.current;

@@ -1,11 +1,11 @@
-import ClearableInput from '@/components/clearable-input';
-import compactDataTableStyles from '@/components/data-table/styles';
-import { CONFIG } from '@/config-global';
 import axios from 'axios';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { CONFIG } from '@/config-global';
+import { Modal, Button } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { toast, ToastContainer } from 'react-toastify';
+import ClearableInput from '@/components/clearable-input';
+import compactDataTableStyles from '@/components/data-table/styles';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 
 const SettingComponent: React.FC = () => {
     const [settings, setSettings] = useState<any[]>([]);
@@ -77,12 +77,12 @@ const SettingComponent: React.FC = () => {
             <h1 className="mt-10"> Cài đặt thông báo</h1>
             <ToastContainer autoClose={1000} />
             <DataTable
-                title="Thông báo"
+                title=""
                 columns={columns as any}
                 data={settings}
                 defaultSortFieldId="title"
                 pagination
-                responsive={true}
+                responsive
                 dense
                 customStyles={compactDataTableStyles}
             />

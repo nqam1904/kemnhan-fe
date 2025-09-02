@@ -1,9 +1,6 @@
 import React from 'react';
+import { JwtSignInView } from '@/auth/view';
 
-import { JwtSignInView } from 'auth/view';
-
-const JwtSignInPage: React.FC = () => {
-    return <JwtSignInView />;
-};
+const JwtSignInPage: React.FC = () => <JwtSignInView />;
 
 export default JwtSignInPage;

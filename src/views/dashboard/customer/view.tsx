@@ -1,11 +1,11 @@
+import { toast } from 'react-toastify';
+import { Modal, Button } from 'react-bootstrap';
+import DataTable from 'react-data-table-component';
+import React, { useMemo, useState, useCallback } from 'react';
 import compactDataTableStyles from '@/components/data-table/styles';
 import { useGetCustomersQuery, useLazyGetCustomerByIdQuery } from '@/store/apis/customers';
-import React, { useCallback, useMemo, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
-import DataTable from 'react-data-table-component';
-import { toast } from 'react-toastify';
 
-const CustomerComponent: React.FC = () => {
+const CustomerView: React.FC = () => {
     const { data: customers = [], isLoading } = useGetCustomersQuery();
     const [getCustomerById] = useLazyGetCustomerByIdQuery();
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -16,14 +16,10 @@ const CustomerComponent: React.FC = () => {
     const [address, setAddress] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [createDate, setCreateDate] = useState<string>('');
-    const [id, setId] = useState<string>('');
-
-    // Data is loaded via RTK Query hook
 
     const onEdit = useCallback(async (customerId: any) => {
         try {
             const res = await getCustomerById(customerId).unwrap();
-            setId(customerId);
             setShowModal(true);
             setTitleModal('Thông tin khách hàng');
             setFirstName(res.firstName || '');
@@ -49,15 +45,13 @@ const CustomerComponent: React.FC = () => {
             {
                 name: 'Hành động',
                 selector: (data: any) => (
-                    <>
-                        <Button
+                    <Button
                             type="button"
                             className="btn btn-primary white mr-10"
                             onClick={() => onEdit(data.id)}
                         >
                             Xem chi tiết
                         </Button>
-                    </>
                 ),
             },
         ],
@@ -67,7 +61,7 @@ const CustomerComponent: React.FC = () => {
     return (
         <>
             <div className="d-flex align-items-center justify-content-between mt-10 mbt-10">
-                <h1 className="m-0">Khách hàng</h1>
+                <h1 className="m-0">Danh sách khách hàng</h1>
                 <div>
                     <Button
                         variant="success"
@@ -86,7 +80,7 @@ const CustomerComponent: React.FC = () => {
                 data={customers}
                 defaultSortFieldId="title"
                 pagination
-                responsive={true}
+                responsive
                 progressPending={isLoading}
                 dense
                 customStyles={compactDataTableStyles}
@@ -107,14 +101,12 @@ const CustomerComponent: React.FC = () => {
                         <div className="row">
                             <div className="form-group col-6">
                                 <label>
-                                    {' '}
                                     Họ <sup className="sub_text">*</sup>
                                 </label>
                                 <input className="form-control" value={firstName} disabled />
                             </div>
                             <div className=" form-group col-6">
                                 <label>
-                                    {' '}
                                     Tên <sup className="sub_text">*</sup>
                                 </label>
                                 <input className="form-control" value={lastName} disabled />
@@ -123,15 +115,13 @@ const CustomerComponent: React.FC = () => {
                         <div className="row">
                             <div className=" form-group col-6">
                                 <label>
-                                    {' '}
                                     Số điện thoại <sup className="sub_text">*</sup>
                                 </label>
                                 <input className="form-control" value={phone.toString()} disabled />
                             </div>
                             <div className=" form-group col-6">
                                 <label>
-                                    {' '}
-                                    Email <sup className="sub_text">*</sup>{' '}
+                                    Email <sup className="sub_text">*</sup>
                                 </label>
                                 <input className="form-control" value={email} disabled />
                             </div>
@@ -164,4 +154,4 @@ const CustomerComponent: React.FC = () => {
     );
 };
 
-export default CustomerComponent;
+export default CustomerView;

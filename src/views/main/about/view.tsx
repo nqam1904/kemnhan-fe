@@ -1,7 +1,8 @@
-import ImageAssets from '@/constants/ImagesAsset';
-// import './about.css';
+import './about.css';
 
-function AboutComponents() {
+import ImageAssets from '@/constants/ImagesAsset';
+
+function AboutView() {
     return (
         <section className="py-5 about-hero-bg" id="about-hero">
             <div className="container text-center">
@@ -25,4 +26,4 @@ function AboutComponents() {
     );
 }
 
-export default AboutComponents;
+export default AboutView;

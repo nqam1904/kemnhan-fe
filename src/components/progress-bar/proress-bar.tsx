@@ -1,9 +1,8 @@
 import './styles.css';
 
 import NProgress from 'nprogress';
-import { useEffect, useState } from 'react';
-
-import { usePathname } from 'routes/hooks';
+import { useState, useEffect } from 'react';
+import { usePathname } from '@/routes/hooks';
 
 // ----------------------------------------------------------------------
 

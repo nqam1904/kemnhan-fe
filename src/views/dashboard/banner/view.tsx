@@ -1,15 +1,17 @@
-import ImageAssets from '@/constants/ImagesAsset';
-import axiosInstance from '@/utils/axios';
 import React, { useMemo, useState } from 'react';
-import { Button, Carousel, Form } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import ImageAssets from '@/constants/ImagesAsset';
+import { toast, ToastContainer } from 'react-toastify';
+import { Form, Button, Carousel } from 'react-bootstrap';
+import { useGetCarouselsQuery, useCreateCarouselMutation } from '@/store/apis/carousel';
 
 const BannerCarouselView: React.FC = () => {
     const [files, setFiles] = useState<File[]>([]);
     const [previews, setPreviews] = useState<string[]>([]);
     const [isUploading, setIsUploading] = useState(false);
+    const { data: carousels = [] } = useGetCarouselsQuery();
+    const [createCarousel] = useCreateCarouselMutation();
 
-    const onSelectFiles = (e) => {
+    const onSelectFiles = (e: any) => {
         const list = (e.target as HTMLInputElement).files;
         const next = list ? Array.from(list) : [];
         setFiles(next);
@@ -21,14 +23,18 @@ const BannerCarouselView: React.FC = () => {
         const url = previews[idx];
         try {
             URL.revokeObjectURL(url);
-        } catch (_e) { }
+        } catch (_e) { 
+            console.log(_e);
+        }
         setPreviews((prev) => prev.filter((_, i) => i !== idx));
         setFiles((prev) => prev.filter((_, i) => i !== idx));
     };
 
     const onClearAll = () => {
         previews.forEach((url) => {
-            try { URL.revokeObjectURL(url); } catch (_e) { }
+            try { URL.revokeObjectURL(url); } catch (_e) { 
+                console.log(_e);
+            }
         });
         setFiles([]);
         setPreviews([]);
@@ -42,11 +48,9 @@ const BannerCarouselView: React.FC = () => {
         try {
             setIsUploading(true);
             const formData = new FormData();
-            files.forEach((f) => formData.append('medias', f));
-            await axiosInstance.post('media', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
-            toast.success('Tải ảnh thành công!');
+            files.forEach((f) => formData.append('images', f));
+            await createCarousel({ body: formData }).unwrap();
+            toast.success('Lưu carousel thành công!');
         } catch (_e) {
             toast.error('Có lỗi xảy ra');
         } finally {
@@ -55,11 +59,14 @@ const BannerCarouselView: React.FC = () => {
     };
 
     const carousel = useMemo(() => {
-        if (!previews.length) return null;
+        const sources = previews.length
+            ? previews
+            : (carousels?.[0]?.images || []).map((img: any) => img?.url || img?.key).filter(Boolean);
+        if (!sources.length) return null;
         return (
             <div style={{ maxWidth: 1920, margin: '0 auto' }}>
-                <Carousel interval={2000} indicators={true} pause={false} slide={false}>
-                    {previews.map((src, idx) => (
+                <Carousel interval={2000} indicators pause={false} slide={false}>
+                    {sources.map((src: any, idx: any) => (
                         <Carousel.Item key={`${src}-${idx}`}>
                             <img
                                 src={src}
@@ -77,7 +84,7 @@ const BannerCarouselView: React.FC = () => {
                 </Carousel>
             </div>
         );
-    }, [previews]);
+    }, [previews, carousels]);
 
     return (
         <>

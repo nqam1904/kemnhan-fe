@@ -1,21 +1,23 @@
-import compactDataTableStyles from '@/components/data-table/styles';
-import ImageAssets from '@/constants/ImagesAsset';
-import {
-    useCreatePromotionMutation,
-    useDeletePromotionMutation,
-    useGetPromotionsQuery,
-    useUpdatePromotionMutation,
-} from '@/store/apis/promotions';
+import './news.css';
+
 import type { Promotion } from '@/store/types/promotion';
-import { formatSubstring } from '@/utils/format-string';
+
+import { z } from 'zod';
 import { fDate } from '@/utils/format-time';
 import resolveImageUrl from '@/utils/image-url';
-import React, { useMemo, useRef, useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import ImageAssets from '@/constants/ImagesAsset';
 import DataTable from 'react-data-table-component';
+import { Form, Modal, Button } from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
-import { z } from 'zod';
-import './news.css';
+import { formatSubstring } from '@/utils/format-string';
+import React, { useRef, useMemo, useState } from 'react';
+import compactDataTableStyles from '@/components/data-table/styles';
+import {
+    useGetPromotionsQuery,
+    useCreatePromotionMutation,
+    useDeletePromotionMutation,
+    useUpdatePromotionMutation,
+} from '@/store/apis/promotions';
 
 const NewsView: React.FC = () => {
     const { data: promotions = [], isLoading, refetch } = useGetPromotionsQuery();
@@ -128,7 +130,7 @@ const NewsView: React.FC = () => {
                         name: form.name,
                         content: form.content,
                         slug: form.name,
-                        endDate: form.endDate,
+                        endDate: form.endDate || new Date().toISOString(),
                     },
                 }).unwrap();
                 toast.success('Cập nhật thành công!');
@@ -252,13 +254,13 @@ const NewsView: React.FC = () => {
             </div>
             <ToastContainer autoClose={1000} />
             <DataTable
-                title="Khuyến mãi"
+                title=""
                 columns={columns as any}
                 data={promotions as any}
                 defaultSortFieldId="title"
                 pagination
                 progressPending={isLoading}
-                responsive={true}
+                responsive
                 dense
                 customStyles={compactDataTableStyles}
             />
@@ -333,7 +335,9 @@ const NewsView: React.FC = () => {
                                                         onClick={() => {
                                                             try {
                                                                 URL.revokeObjectURL(url);
-                                                            } catch (e) { }
+                                                            } catch (e) {
+                                                                console.log(e);
+                                                            }
                                                             setImagePreviews((prev) => prev.filter((_, i) => i !== idx));
                                                             setForm((prev) => {
                                                                 const apiCount = apiPreviewCountRef.current;
@@ -367,10 +371,10 @@ const NewsView: React.FC = () => {
                                 </div>
                             </div>
                         ) : (
-                            <div style={{ marginBottom: 10 }}></div>
+                            <div style={{ marginBottom: 10 }} />
                         )}
 
-                        <div className="form-group">
+                        {/* <div className="form-group">
                             <label>Ngày kết thúc chương trình</label>
                             <Form.Control
                                 type="date"
@@ -382,7 +386,7 @@ const NewsView: React.FC = () => {
                                     }))
                                 }
                             />
-                        </div>
+                        </div> */}
                         <div className="form-group">
                             <label>Mô tả</label>
                             <Form.Control
@@ -422,7 +426,7 @@ const NewsView: React.FC = () => {
                     <Modal.Title {...({} as any)}>Xác nhận xoá</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Bạn có chắc muốn xoá tin khuyến mãi "{confirmDelete.label}" không?
+                    Bạn có chắc muốn xoá tin khuyến mãi &quot;{confirmDelete.label}&quot; không?
                 </Modal.Body>
                 <Modal.Footer>
                     <Button

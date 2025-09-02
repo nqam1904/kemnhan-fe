@@ -1,12 +1,13 @@
 import { Spinner } from 'react-activity';
-import { SpinnerContainer, SplashWrapper, Wrapper } from './styled';
+
+import { Wrapper, SplashWrapper, SpinnerContainer } from './styled';
 
 export function SplashScreen() {
     const content = (
         <Wrapper>
             <SplashWrapper>
                 <SpinnerContainer>
-                    <Spinner size={32} speed={1} animating={true} />
+                    <Spinner size={32} speed={1} animating />
                 </SpinnerContainer>
             </SplashWrapper>
         </Wrapper>

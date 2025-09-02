@@ -1,5 +1,6 @@
-import ImageAssets from '@/constants/ImagesAsset';
+/* eslint-disable react/prop-types */
 import React, { useMemo } from 'react';
+import ImageAssets from '@/constants/ImagesAsset';
 
 type ClearableInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
     onClear?: () => void;

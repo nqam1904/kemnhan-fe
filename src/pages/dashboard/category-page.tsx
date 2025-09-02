@@ -1,6 +1,6 @@
 import { CONFIG } from '@/config-global';
-import CategoryView from '@/views/dashboard/category/view';
 import { Helmet } from 'react-helmet-async';
+import CategoryView from '@/views/dashboard/category/view';
 
 const metadata = { title: `Danh mục - ${CONFIG.appName}` };
 

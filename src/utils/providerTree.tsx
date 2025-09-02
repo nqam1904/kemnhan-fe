@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { ProviderWithProps } from 'types/commont';
+import type { ProviderWithProps } from '@/types/commont';
 
 const buildProvidersTree = (componentsWithProps: ProviderWithProps[]) => {
     const initialComponent: React.FC<{ children: ReactNode }> = ({ children }) => <>{children}</>;

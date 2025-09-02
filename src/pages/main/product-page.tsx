@@ -1,8 +1,8 @@
 import { CONFIG } from '@/config-global';
+import { useDispatch } from 'react-redux';
+import { Helmet } from 'react-helmet-async';
 import { addToCart } from '@/store/slices/cart';
 import ProductDetail from '@/views/main/product-detail/view';
-import { Helmet } from 'react-helmet-async';
-import { useDispatch } from 'react-redux';
 
 const metadata = { title: `Product - ${CONFIG.appName}` };
 

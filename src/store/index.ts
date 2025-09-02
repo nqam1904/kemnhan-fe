@@ -1,13 +1,12 @@
 import type { Action, ThunkAction } from '@reduxjs/toolkit';
 
+import { CONFIG } from '@/config-global';
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useStore, useDispatch, useSelector } from 'react-redux';
 
-import { CONFIG } from '@/config-global';
-
-import { RTKQueryApi } from './create-api';
 import rootReducer from './reducers';
+import { RTKQueryApi } from './create-api';
 
 export const store = configureStore({
     reducer: rootReducer,

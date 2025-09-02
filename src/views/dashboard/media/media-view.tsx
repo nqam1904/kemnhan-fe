@@ -1,15 +1,16 @@
+import type { Setting } from '@/store/types/setting';
+
+import { fDate } from '@/utils/format-time';
+import { Modal, Button } from 'react-bootstrap';
+import React, { useMemo, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import { toast, ToastContainer } from 'react-toastify';
 import compactDataTableStyles from '@/components/data-table/styles';
 import {
     useGetSettingsQuery,
-    useLazyGetSettingByIdQuery,
     useUpdateSettingMutation,
+    useLazyGetSettingByIdQuery,
 } from '@/store/apis/settings';
-import type { Setting } from '@/store/types/setting';
-import { fDate } from '@/utils/format-time';
-import React, { useMemo, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
-import DataTable from 'react-data-table-component';
-import { toast, ToastContainer } from 'react-toastify';
 
 function MediaComponent(): React.ReactNode {
     const { data: media = [], isLoading, refetch } = useGetSettingsQuery();
@@ -79,15 +80,13 @@ function MediaComponent(): React.ReactNode {
             {
                 name: 'Hành động',
                 selector: (data: Setting) => (
-                    <>
-                        <Button
+                    <Button
                             type="button"
                             className="btn btn-success white mr-10"
                             onClick={() => onEdit(data.id)}
                         >
                             Cập nhật
                         </Button>
-                    </>
                 ),
             },
         ],
@@ -100,13 +99,13 @@ function MediaComponent(): React.ReactNode {
             <ToastContainer autoClose={1000} />
 
             <DataTable
-                title="Youtube"
+                title=""
                 columns={columns as any}
                 data={media as any}
                 defaultSortFieldId="title"
                 pagination
                 progressPending={isLoading}
-                responsive={true}
+                responsive
                 dense
                 customStyles={compactDataTableStyles}
             />

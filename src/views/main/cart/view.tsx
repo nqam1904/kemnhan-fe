@@ -1,44 +1,29 @@
-import { CONFIG } from '@/config-global';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-
-import ClearableInput from '@/components/clearable-input';
-import { isValidEmailAddress, validatePhoneNumber } from '@/utils/format-string';
-import ImageAssets from 'constants/ImagesAsset';
-import { fNumber } from 'utils/format-number';
-import CartItem from './cart-item';
 import './Cart.css';
 
-interface CartComponentProps {
-    cartItem: any[];
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { CONFIG } from '@/config-global';
+import { fNumber } from '@/utils/format-number';
+import ImageAssets from '@/constants/ImagesAsset';
+import { useMemo, useState, useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import ClearableInput from '@/components/clearable-input';
+import { isValidEmailAddress, validatePhoneNumber } from '@/utils/format-string';
+
+import CartItem from './cart-item';
+
+type Product = { id: string | number; price: number };
+type LineItem = { product: Product; quantity: number };
+
+interface CartViewProps {
+    cartItem: LineItem[];
     actDeleteAll: () => void;
-    actUpdateItem: (id: any, quantity: any) => void;
-    actDeleteItem: (id: any) => void;
+    actUpdateItem: (id: string | number, quantityDelta: number) => void;
+    actDeleteItem: (id: string | number) => void;
 }
 
-interface CartComponentState {
-    count: number;
-    showCustom: boolean;
-    cart: any[];
-    cartItem: any[];
-    layout: string;
-    firstName: string;
-    lastName: string;
-    phone: string;
-    email: string;
-    address: string;
-    customer: any[];
-    emailIsValid: string;
-    errorMessage: string;
-    note: string;
-    [key: string]: any;
-}
-
-function CartComponent(props: CartComponentProps) {
+function CartView(props: CartViewProps) {
     const [showCustom, setShowCustom] = useState<boolean>(false);
-    const [cart, setCart] = useState<any[]>([]);
     const [layout, setLayout] = useState<string>('container-fluid');
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
@@ -55,66 +40,57 @@ function CartComponent(props: CartComponentProps) {
         }
     }, []);
 
+    const handleChangeQuantity = (
+        currentQuantity: number,
+        productId: string | number,
+        delta: 1 | -1
+    ) => {
+        if ((delta === -1 && currentQuantity <= 1) || (delta === 1 && currentQuantity >= 100)) return;
+        const { actUpdateItem } = props;
+        actUpdateItem(productId, delta);
+        toast.success('Cập nhật thành công!');
+    };
+
     const showCartItem = () => {
-        var result = null;
         const { cartItem } = props;
-        if (cartItem.length > 0) {
-            result = cartItem.map((item: any, index: any) => {
-                const quantity = parseInt(item.quantity);
-                return (
-                    <CartItem
-                        key={index}
-                        item={item}
-                        onDeleteItem={() => onDeleteItem(item.product.id)}
-                        subItem={() => subItem(quantity, item.product.id)}
-                        plusItem={() => plusItem(quantity, item.product.id)}
-                    />
-                );
-            });
-        }
-        return result;
-    };
-    const subItem = (quantity, id) => {
-        if (quantity > 1) {
-            const sl = -1;
-            props.actUpdateItem(id, sl);
-            toast.success('Cập nhật thành công!');
-        }
+        if (!Array.isArray(cartItem) || cartItem.length === 0) return null;
+        return cartItem.map((item, index) => {
+            const quantity = Number(item.quantity) || 0;
+            return (
+                <CartItem
+                    key={`${String(item.product?.id)}-${index}`}
+                    item={item as any}
+                    onDeleteItem={() => onDeleteItem(item.product.id)}
+                    subItem={() => handleChangeQuantity(quantity, item.product.id, -1)}
+                    plusItem={() => handleChangeQuantity(quantity, item.product.id, 1)}
+                />
+            );
+        });
     };
 
-    const plusItem = (quantity, id) => {
-        if (quantity < 100) {
-            const sl = 1;
-            props.actUpdateItem(id, sl);
-            toast.success('Cập nhật thành công!');
-        }
-    };
-
-    const onDeleteItem = (id: any) => {
+    const onDeleteItem = (id: string | number) => {
         if (window.confirm('Bạn muốn xoá sản phẩm này')) {
-            props.actDeleteItem(id);
+            const { actDeleteItem } = props;
+            actDeleteItem(id);
             toast.success('Cập nhật thành công!');
-            setCart(props.cartItem);
             if (!(localStorage.getItem('token') || '')) {
                 setShowCustom(false);
                 setLayout('container');
             }
         }
     };
-    const showTotalAmount = (cartItem) => {
-        var result = 0;
-        if (cartItem.length > 0) {
-            for (var i = 0; i < cartItem.length; i++) {
-                result += cartItem[i].product.price * cartItem[i].quantity;
-            }
-        }
-        return fNumber(result);
-    };
+    const totalAmount = useMemo(() => {
+        const items = props?.cartItem ?? [];
+        return items.reduce(
+            (sum, it) => sum + (Number(it?.product?.price) || 0) * (Number(it?.quantity) || 0),
+            0
+        );
+    }, [props?.cartItem]);
     const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         e.preventDefault();
-        var target = e.target;
-        var name = target.name;
-        var value = target.value;
+        const { target } = e;
+        const { name } = target;
+        const { value } = target;
         if (name === 'firstName') setFirstName(value);
         else if (name === 'lastName') setLastName(value);
         else if (name === 'address') setAddress(value);
@@ -126,54 +102,53 @@ function CartComponent(props: CartComponentProps) {
         const { cartItem } = props;
         const date = new Date();
         if (firstName === '' || lastName === '' || email === '' || address === '' || phone === '') {
-            return toast.warning('Vui lòng nhập đủ thông tin của bạn!');
-        } else if (!isValidEmailAddress(email)) {
+            toast.warning('Vui lòng nhập đủ thông tin của bạn!');
+            return;
+        }
+        if (!isValidEmailAddress(email)) {
             toast.error('Nhập đúng định dạng email!');
             return;
-        } else if (!validatePhoneNumber(phone)) {
+        }
+        if (!validatePhoneNumber(phone)) {
             toast.error('Số điện thoại phải có 10-11 chữ số!');
             return;
-        } else {
-            let listProduct = [];
-            for (var item of cartItem) {
-                listProduct.push({
-                    productId: item.product.id,
-                    quantity: item.quantity,
-                    unitPrice: item.product.price,
-                    subtotal: item.product.price * item.quantity,
-                    discount: 0,
-                    note: note,
-                });
-            }
-            axios
-                .post(`${CONFIG.serverUrl}/orders`, {
-                    data: date,
-                    expectDateDelivery: date,
-                    note: note,
-                    customer: {
-                        firstName: firstName,
-                        lastName: lastName,
-                        phone: phone,
-                        email: email,
-                        address: address,
-                    },
-                    lines: listProduct,
-                })
-                .then((_) => {
-                    props.actDeleteAll();
-                    setShowCustom(false);
-                    setLayout('container');
-                    window.location.href = '/SuccessPayment';
-                })
-                .catch((_) => {
-                    toast.error('Có lỗi xảy ra');
-                });
         }
+        const listProduct = (cartItem || []).map((item) => ({
+            productId: item.product.id,
+            quantity: item.quantity,
+            unitPrice: item.product.price,
+            subtotal: item.product.price * item.quantity,
+            discount: 0,
+            note,
+        }));
+        axios
+            .post(`${CONFIG.serverUrl}/orders`, {
+                data: date,
+                expectDateDelivery: date,
+                note,
+                customer: {
+                    firstName,
+                    lastName,
+                    phone,
+                    email,
+                    address,
+                },
+                lines: listProduct,
+            })
+            .then((_) => {
+                props?.actDeleteAll();
+                setShowCustom(false);
+                setLayout('container');
+                window.location.href = '/SuccessPayment';
+            })
+            .catch((_) => {
+                toast.error('Có lỗi xảy ra');
+            });
     };
 
     const onDeleteAll = () => {
         if (localStorage.getItem('token') || '') {
-            props.actDeleteAll();
+            props?.actDeleteAll();
             setShowCustom(false);
             setLayout('container');
             toast.success('Thành công!');
@@ -258,13 +233,13 @@ function CartComponent(props: CartComponentProps) {
                     <p>Tổng cộng:</p>
                 </div>
                 <div className="thanhtoan">
-                    <p>{fNumber(props.cartItem[0]?.product.price)} đ</p>
-                    <p className="total">{showTotalAmount(props.cartItem)} đ</p>
+                    <p>{fNumber(props?.cartItem?.[0]?.product?.price || 0)} đ</p>
+                    <p className="total">{fNumber(totalAmount)} đ</p>
                 </div>
             </div>
-            <div className="btn_payment" onClick={() => payment()}>
+            <button type="button" className="btn_payment" onClick={payment}>
                 Đặt mua
-            </div>
+            </button>
         </div>
     );
     return (
@@ -274,7 +249,7 @@ function CartComponent(props: CartComponentProps) {
                 <div className="card_cart">
                     <div className="cart_header">
                         <p className="content_cart">Giỏ hàng</p>
-                        <p className="number_cart">{props.cartItem.length ?? 0} Sản phẩm</p>
+                        <p className="number_cart">{props?.cartItem.length ?? 0} Sản phẩm</p>
                     </div>
                     <div className="cart_body">
                         <div className="option">
@@ -284,10 +259,10 @@ function CartComponent(props: CartComponentProps) {
                                     Chọn tất cả
                                 </p>
                             </div>
-                            <div className="delete_item" onClick={() => onDeleteAll()}>
+                            <button type="button" className="delete_item" onClick={onDeleteAll}>
                                 <img src={ImageAssets.delete} alt="delete" />
                                 <p className="text_delete">Xoá Tất cả</p>
-                            </div>
+                            </button>
                         </div>
                         <div className="content_cart_item">
                             {!(localStorage.getItem('token') || '') ? emptyCart : showCartItem()}
@@ -300,4 +275,4 @@ function CartComponent(props: CartComponentProps) {
     );
 }
 
-export default CartComponent;
+export default CartView;

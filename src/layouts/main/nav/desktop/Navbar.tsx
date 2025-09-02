@@ -1,9 +1,12 @@
-import { paths } from '@/routes/paths';
-import ImageAssets from 'constants/ImagesAsset';
-import type { MouseEvent } from 'react';
-import { useCallback, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import '../Navbar.css';
+
+import type { MouseEvent } from 'react';
+
+import { paths } from '@/routes/paths';
+import { Link } from 'react-router-dom';
+import { useMemo, useCallback } from 'react';
+import ImageAssets from '@/constants/ImagesAsset';
+
 import NavbarMobile from '../mobile/NavbarMobile';
 
 function Navbar() {

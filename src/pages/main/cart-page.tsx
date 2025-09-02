@@ -1,6 +1,6 @@
+import CardView from '@/views/main/cart/view';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeAllCart, removeCartItem, updateCartItem } from '../../store/slices/cart';
-import CartComponent from '../../views/main/cart/view';
+import { removeAllCart, removeCartItem, updateCartItem } from '@/store/slices/cart';
 
 export default function CartPage() {
     const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export default function CartPage() {
     };
 
     return (
-        <CartComponent
+        <CardView
             cartItem={cartItem}
             actUpdateItem={actUpdateItem}
             actDeleteItem={actDeleteItem}

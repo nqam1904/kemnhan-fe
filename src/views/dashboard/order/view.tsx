@@ -1,15 +1,16 @@
-import compactDataTableStyles from '@/components/data-table/styles';
-import ImageAssets from '@/constants/ImagesAsset';
-import { useGetOrdersQuery, useUpdateOrderStatusMutation } from '@/store/apis/orders';
 import type { Order } from '@/store/types/order';
-import { fCurrency } from '@/utils/format-number';
+
 import { fDate } from '@/utils/format-time';
+import { Modal, Button } from 'react-bootstrap';
 import React, { useMemo, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import ImageAssets from '@/constants/ImagesAsset';
+import { fCurrency } from '@/utils/format-number';
 import DataTable from 'react-data-table-component';
 import { toast, ToastContainer } from 'react-toastify';
+import compactDataTableStyles from '@/components/data-table/styles';
+import { useGetOrdersQuery, useUpdateOrderStatusMutation } from '@/store/apis/orders';
 
-const OrderComponents: React.FC = () => {
+const OrderView: React.FC = () => {
     const { data: orders = [], isLoading, refetch } = useGetOrdersQuery();
     const [updateStatus] = useUpdateOrderStatusMutation();
     const [confirm, setConfirm] = useState<{ show: boolean; id: any; label: string; next: number }>(
@@ -104,7 +105,7 @@ const OrderComponents: React.FC = () => {
     return (
         <>
             <div className="d-flex align-items-center justify-content-between mt-10 mbt-10">
-                <h1 className="m-0">Đơn hàng</h1>
+                <h1 className="m-0">Danh sách đơn hàng</h1>
                 <div>
                     <Button
                         variant="success"
@@ -117,13 +118,13 @@ const OrderComponents: React.FC = () => {
             </div>
             <ToastContainer autoClose={1000} />
             <DataTable
-                title="Hoá đơn"
+                title=""
                 columns={columns as any}
                 data={orders as any}
                 defaultSortFieldId="title"
                 pagination
                 progressPending={isLoading}
-                responsive={true}
+                responsive
                 dense
                 customStyles={compactDataTableStyles}
             />
@@ -164,4 +165,4 @@ const OrderComponents: React.FC = () => {
     );
 };
 
-export default OrderComponents;
+export default OrderView;

@@ -36,4 +36,4 @@ const SpinnerContainer = styled.div`
     height: 48px;
 `;
 
-export { ImageLoading, SpinnerContainer, SplashWrapper, Wrapper };
+export { Wrapper, ImageLoading, SplashWrapper, SpinnerContainer };

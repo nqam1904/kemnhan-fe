@@ -1,4 +1,5 @@
 import { endpoints } from '@/utils/axios';
+
 import { RTKQueryApi } from '../create-api';
 
 export const productsApi = RTKQueryApi.injectEndpoints({

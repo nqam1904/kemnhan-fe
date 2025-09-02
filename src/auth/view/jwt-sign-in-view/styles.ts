@@ -62,4 +62,4 @@ const Footer = styled.div`
     }
 `;
 
-export { BackgroundImage, Footer, LoginContainer, Logo, LogoWrapper, Wrapper };
+export { Logo, Footer, Wrapper, LogoWrapper, LoginContainer, BackgroundImage };

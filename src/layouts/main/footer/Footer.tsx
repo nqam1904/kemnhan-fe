@@ -1,6 +1,7 @@
-import { CONFIG } from '@/config-global';
-import ImageAssets from 'constants/ImagesAsset';
 import './Footer.css';
+
+import { CONFIG } from '@/config-global';
+import ImageAssets from '@/constants/ImagesAsset';
 
 interface SocialItem {
     id: number;

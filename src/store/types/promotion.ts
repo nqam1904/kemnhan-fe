@@ -7,9 +7,9 @@ export type Promotion = {
     id: number | string;
     name: string;
     content?: string;
-    endDate?: string;
     isActive?: boolean;
     slug?: string;
+    endDate?: string; // ISO string from server
     images?: PromotionImage[];
     createDate?: string;
     writeDate?: string;
@@ -17,11 +17,11 @@ export type Promotion = {
 
 export type PromotionCreateRequest = {
     name: string;
-    content?: string;
-    endDate?: string;
-    isActive?: boolean;
-    slug?: string;
-    images?: File[];
+    slug: string;
+    content: string;
+    endDate: string; // send ISO string
+    images: File[];
+    isActive: boolean;
 };
 
 export type PromotionUpdateRequest = Partial<PromotionCreateRequest>;

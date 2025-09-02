@@ -1,11 +1,11 @@
+import React from 'react';
+import { paths } from '@/routes/paths';
+import { Link } from 'react-router-dom';
+import { useRouter } from '@/routes/hooks';
+import ImageAssets from '@/constants/ImagesAsset';
 import { signOut } from '@/auth/context/jwt/action';
 import { useAuthContext } from '@/auth/hooks/use-auth-context';
-import ImageAssets from '@/constants/ImagesAsset';
-import { useRouter } from '@/routes/hooks';
-import { paths } from '@/routes/paths';
-import React from 'react';
-import { Navbar as BsNavbar, Container, Nav, NavDropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Nav, Container, NavDropdown, Navbar as BsNavbar } from 'react-bootstrap';
 
 const NAV_LINKS = [
     { to: paths.dashboard.banner, label: 'Banner' },
@@ -15,7 +15,7 @@ const NAV_LINKS = [
     { to: paths.dashboard.customer, label: 'Khách hàng' },
     { to: paths.dashboard.order, label: 'Đơn hàng' },
     // { to: paths.dashboard.media, label: 'YouTube' },
-    { to: paths.dashboard.news, label: 'Khuyến mãi' },
+    { to: paths.dashboard.news, label: 'Tin tức' },
 ];
 
 const Navbar: React.FC = () => {

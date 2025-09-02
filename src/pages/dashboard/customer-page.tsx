@@ -1,6 +1,6 @@
 import { CONFIG } from '@/config-global';
-import CustomerComponent from '@/views/dashboard/customer/view';
 import { Helmet } from 'react-helmet-async';
+import CustomView from '@/views/dashboard/customer/view';
 
 const metadata = { title: `Khách hàng - ${CONFIG.appName}` };
 
@@ -10,7 +10,7 @@ export default function Page() {
             <Helmet>
                 <title> {metadata.title}</title>
             </Helmet>
-            <CustomerComponent />
+            <CustomView />
         </>
     );
 }

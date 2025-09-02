@@ -1,12 +1,9 @@
-import 'global.css';
-
 // ----------------------------------------------------------------------
 
-import { Router } from 'routes/sections';
-
-import { AuthProvider as JwtAuthProvider } from 'auth/context/jwt';
-
+import { Router } from '@/routes/sections';
 import { ToastContainer } from 'react-toastify';
+import { AuthProvider as JwtAuthProvider } from '@/auth/context/jwt';
+
 import { ProgressBar } from './components';
 import ReduxProvider from './store/provider';
 import { buildProvidersTree } from './utils/providerTree';

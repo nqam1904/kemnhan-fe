@@ -1,5 +1,7 @@
 import { endpoints } from '@/utils/axios';
+
 import { RTKQueryApi } from '../create-api';
+
 import type { Customer, CustomerListResponse } from '../types/customer';
 
 export const customersApi = RTKQueryApi.injectEndpoints({

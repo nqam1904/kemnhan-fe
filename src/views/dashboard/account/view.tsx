@@ -1,21 +1,21 @@
+import type { Account as AccountModel } from '@/store/types/account';
+
+import * as z from 'zod';
+import { fDate } from '@/utils/format-time';
+import { ROLE_OPTIONS } from '@/constants/enums';
+import ImageAssets from '@/constants/ImagesAsset';
+import DataTable from 'react-data-table-component';
+import { Form, Modal, Button } from 'react-bootstrap';
+import { toast, ToastContainer } from 'react-toastify';
 import ClearableInput from '@/components/clearable-input';
+import React, { useMemo, useState, useLayoutEffect } from 'react';
 import compactDataTableStyles from '@/components/data-table/styles';
 import {
     useCreateUserMutation,
     useDeleteUserMutation,
-    useLazyGetListUserQuery,
     useUpdateUserMutation,
+    useLazyGetListUserQuery,
 } from '@/store/apis/account';
-import type { Account as AccountModel } from '@/store/types/account';
-import { fDate } from '@/utils/format-time';
-import React, { useLayoutEffect, useMemo, useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
-import DataTable from 'react-data-table-component';
-import { toast, ToastContainer } from 'react-toastify';
-import * as z from 'zod';
-
-import { ROLE_OPTIONS } from '@/constants/enums';
-import ImageAssets from '@/constants/ImagesAsset';
 
 type AccountForm = {
     id: string | number | null;
@@ -154,18 +154,14 @@ const AccountView: React.FC = () => {
                 selector: 'createDate',
                 sortable: true,
                 right: true,
-                cell: (row: any) => {
-                    return <span>{fDate(row.createDate, 'DD/MM/YYYY')}</span>;
-                },
+                cell: (row: any) => <span>{fDate(row.createDate, 'DD/MM/YYYY')}</span>,
             },
             {
                 name: 'Ngày chỉnh sửa',
                 selector: 'writeDate',
                 sortable: true,
                 right: true,
-                cell: (row: any) => {
-                    return <span>{fDate(row.writeDate, 'DD/MM/YYYY')}</span>;
-                },
+                cell: (row: any) => <span>{fDate(row.writeDate, 'DD/MM/YYYY')}</span>,
             },
             {
                 name: 'Chức năng',
@@ -201,7 +197,7 @@ const AccountView: React.FC = () => {
         // Do not toggle native Bootstrap validation classes; use Zod-driven errors instead
 
         const { id, ...payload } = form;
-        const schemaToUse = form.id
+        const schemaToUse = id
             ? schema
             : schema.extend({ password: z.string().min(6, 'Mật khẩu tối thiểu 6 ký tự') });
 
@@ -242,7 +238,7 @@ const AccountView: React.FC = () => {
         }
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target as { name: string; value: string };
         const nextValue = name === 'phone' ? value.replace(/\D/g, '').slice(0, 11) : value;
         setForm((prev) => ({ ...prev, [name]: nextValue }));
@@ -269,13 +265,13 @@ const AccountView: React.FC = () => {
             </div>
             <ToastContainer autoClose={1000} />
             <DataTable
-                title="Tài khoản"
+                title=""
                 columns={columns}
                 data={account}
                 defaultSortFieldId="title"
                 pagination
                 progressPending={isLoading}
-                responsive={true}
+                responsive
                 dense
                 customStyles={compactDataTableStyles}
             />
@@ -423,13 +419,11 @@ const AccountView: React.FC = () => {
                                     <option value="" disabled>
                                         Chức vụ
                                     </option>
-                                    {ROLE_OPTIONS.map((item: any, index: any) => {
-                                        return (
-                                            <option value={item.name} key={index}>
-                                                {item.name}
-                                            </option>
-                                        );
-                                    })}
+                                    {ROLE_OPTIONS.map((item: any, index: any) => (
+                                        <option value={item.name} key={index}>
+                                            {item.name}
+                                        </option>
+                                    ))}
                                 </Form.Control>
                                 <div className="invalid-feedback">{errors.role}</div>
                             </div>
@@ -461,7 +455,7 @@ const AccountView: React.FC = () => {
                     <Modal.Title {...({} as any)}>Xác nhận xoá</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Bạn có chắc muốn xoá tài khoản "{confirmDelete.label}" không?
+                    Bạn có chắc muốn xoá tài khoản &quot;{confirmDelete.label}&quot; không?
                 </Modal.Body>
                 <Modal.Footer>
                     <Button

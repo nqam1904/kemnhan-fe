@@ -1,8 +1,8 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 
 import { authRoutes } from './auth';
-import { dashboardRoutes } from './dashboard';
 import { mainRoutes } from './main';
+import { dashboardRoutes } from './dashboard';
 
 // ----------------------------------------------------------------------
 

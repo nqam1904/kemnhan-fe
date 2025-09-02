@@ -1,5 +1,3 @@
-export const HomeView = () => {
-    return <div></div>;
-};
+const HomeView = () => <div />;
 
 export default HomeView;

@@ -1,26 +1,23 @@
 import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-
-import { MainLayout } from 'layouts/main/main';
-
 import { SplashScreen } from '@/components';
-
+import { MainLayout } from '@/layouts/main/main';
 import NotFoundPage from '@/pages/dashboard/not-found-page';
 import ProductListPage from '@/views/main/home/product-list';
 
-const ComingSoonPage = lazy(() => import('pages/coming-soon'));
-const HomePage = lazy(() => import('pages/main/home-page'));
-const AboutPage = lazy(() => import('pages/main/about-page'));
-const ProductDetailPage = lazy(() => import('pages/main/product-page'));
-const NewsPage = lazy(() => import('pages/main/news-page'));
-const CartPage = lazy(() => import('pages/main/cart-page'));
-const SuccessPaymentPage = lazy(() => import('pages/main/payment-page'));
+const ComingSoonPage = lazy(() => import('@/pages/coming-soon'));
+const HomePage = lazy(() => import('@/pages/main/home-page'));
+const AboutPage = lazy(() => import('@/pages/main/about-page'));
+const ProductDetailPage = lazy(() => import('@/pages/main/product-page'));
+const NewsPage = lazy(() => import('@/pages/main/news-page'));
+const CartPage = lazy(() => import('@/pages/main/cart-page'));
+const SuccessPaymentPage = lazy(() => import('@/pages/main/payment-page'));
 
 // ----------------------------------------------------------------------
 // Error
-const Page500 = lazy(() => import('pages/error/500'));
-const Page403 = lazy(() => import('pages/error/403'));
-const Page404 = lazy(() => import('pages/error/404'));
+const Page500 = lazy(() => import('@/pages/error/500'));
+const Page403 = lazy(() => import('@/pages/error/403'));
+const Page404 = lazy(() => import('@/pages/error/404'));
 
 // ----------------------------------------------------------------------
 

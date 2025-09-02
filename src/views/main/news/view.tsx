@@ -1,9 +1,12 @@
+import './news.css';
+
+import type { Promotion } from '@/store/types/promotion';
+
+import { Spinner } from 'react-bootstrap';
+import resolveImageUrl from '@/utils/image-url';
 import ImageAssets from '@/constants/ImagesAsset';
 import { useGetProductsQuery } from '@/store/apis/products';
 import { useGetPromotionsQuery } from '@/store/apis/promotions';
-import type { Promotion } from '@/store/types/promotion';
-import resolveImageUrl from '@/utils/image-url';
-import './news.css';
 
 function NewsView() {
     const { data: promotions = [], isLoading } = useGetPromotionsQuery();
@@ -17,7 +20,14 @@ function NewsView() {
                     <div className="news-grid">
                         {isLoading && (
                             <div className="news-loading">
-                                <img src={ImageAssets.loading} alt="loading" width={120} />
+                                <Spinner
+                                    animation="border"
+                                    variant="primary"
+                                    role="status"
+                                    style={{ width: 120, height: 120 }}
+                                >
+                                    <span className="visually-hidden">Loading...</span>
+                                </Spinner>
                             </div>
                         )}
                         {!isLoading && promotions.length === 0 && (
@@ -41,7 +51,7 @@ function NewsView() {
                                             <p
                                                 className="news-card__excerpt"
                                                 dangerouslySetInnerHTML={{ __html: item.content || '' }}
-                                            ></p>
+                                             />
                                         </div>
                                     </article>
                                 );

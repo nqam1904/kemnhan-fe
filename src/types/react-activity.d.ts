@@ -1,5 +1,5 @@
 declare module 'react-activity' {
-    import * as React from 'react';
+    import type * as React from 'react';
 
     interface SpinnerProps {
         size?: number;

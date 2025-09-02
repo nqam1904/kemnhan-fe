@@ -1,38 +1,38 @@
+import menu from '@/assets/images/menu.jpg';
+import bg3Img from '@/assets/images/bg3.png';
+import eyeImg from '@/assets/images/eye.png';
+import truImg from '@/assets/images/tru.png';
+import logoImg from '@/assets/images/logo.png';
+import plusImg from '@/assets/images/plus.png';
+import textImg from '@/assets/images/text.png';
+import zaloImg from '@/assets/images/zalo.png';
 import aboutImg from '@/assets/images/about.png';
 import arrowImg from '@/assets/images/arrow.png';
-import bannerAboutImg from '@/assets/images/banner_about.png';
-import bg3Img from '@/assets/images/bg3.png';
-import deleteImg from '@/assets/images/Delete.png';
 import emptyImg from '@/assets/images/empty.png';
-import eyeImg from '@/assets/images/eye.png';
-import facebookImg from '@/assets/images/Facebook.png';
-import headerImg from '@/assets/images/header.png';
-import icCartImg from '@/assets/images/ic_cart.png';
-import icClear from '@/assets/images/ic_clear.png';
-import icCloseCancel from '@/assets/images/ic_close_cancel.png';
-import icEyeImg from '@/assets/images/ic_eye.png';
-import icLocationImg from '@/assets/images/ic_location.png';
-import icNoEyeImg from '@/assets/images/ic_no_eye.png';
 import imageImg from '@/assets/images/image.png';
-import image35Img from '@/assets/images/image_35.png';
-import increaseImg from '@/assets/images/increase.png';
-import informationImg from '@/assets/images/information.png';
-import instagramImg from '@/assets/images/instagram.png';
-import kemnhanonlineImg from '@/assets/images/Kemnhanonline.png';
-import loadingGif from '@/assets/images/loading.gif';
-import logoImg from '@/assets/images/logo.png';
 import logo1Img from '@/assets/images/logo1.png';
-import menu from '@/assets/images/menu.jpg';
-import phoneCallImg from '@/assets/images/phone-call.png';
-import plusImg from '@/assets/images/plus.png';
+import icEyeImg from '@/assets/images/ic_eye.png';
+import deleteImg from '@/assets/images/Delete.png';
+import headerImg from '@/assets/images/header.png';
+import icClear from '@/assets/images/ic_clear.png';
 import shopeeImg from '@/assets/images/shopee.png';
-import successImg from '@/assets/images/success.png';
-import textImg from '@/assets/images/text.png';
 import tiktokImg from '@/assets/images/tiktok.png';
-import truImg from '@/assets/images/tru.png';
-import upwardsArrowImg from '@/assets/images/upwards-arrow.png';
+import icCartImg from '@/assets/images/ic_cart.png';
+import loadingGif from '@/assets/images/loading.gif';
+import successImg from '@/assets/images/success.png';
 import youtubeImg from '@/assets/images/Youtube.png';
-import zaloImg from '@/assets/images/zalo.png';
+import image35Img from '@/assets/images/image_35.png';
+import facebookImg from '@/assets/images/Facebook.png';
+import icNoEyeImg from '@/assets/images/ic_no_eye.png';
+import increaseImg from '@/assets/images/increase.png';
+import instagramImg from '@/assets/images/instagram.png';
+import phoneCallImg from '@/assets/images/phone-call.png';
+import icLocationImg from '@/assets/images/ic_location.png';
+import informationImg from '@/assets/images/information.png';
+import bannerAboutImg from '@/assets/images/banner_about.png';
+import icCloseCancel from '@/assets/images/ic_close_cancel.png';
+import upwardsArrowImg from '@/assets/images/upwards-arrow.png';
+import kemnhanonlineImg from '@/assets/images/Kemnhanonline.png';
 
 const ImageAssets = {
     // Core logos
@@ -88,7 +88,7 @@ const ImageAssets = {
     upwardsArrow: upwardsArrowImg,
     ic_close_cancel: icCloseCancel,
     ic_clear: icClear,
-    menu: menu,
+    menu,
 };
 
 export default ImageAssets;

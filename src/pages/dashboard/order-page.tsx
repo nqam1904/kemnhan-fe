@@ -1,6 +1,6 @@
 import { CONFIG } from '@/config-global';
-import OrderComponents from '@/views/dashboard/order/view';
 import { Helmet } from 'react-helmet-async';
+import OrderView from '@/views/dashboard/order/view';
 
 const metadata = { title: `Hóa đơn - ${CONFIG.appName}` };
 
@@ -10,7 +10,7 @@ export default function Page() {
             <Helmet>
                 <title> {metadata.title}</title>
             </Helmet>
-            <OrderComponents />
+            <OrderView />
         </>
     );
 }
