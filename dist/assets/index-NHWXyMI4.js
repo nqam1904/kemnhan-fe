@@ -1,1 +1,0 @@
-import{j as a,H as t,f as e,N as s,v as r}from"./index-CvJx62Zl.js";const i={title:`Dashboard - ${e.appName}`};function l(){return a.jsxs(a.Fragment,{children:[a.jsx(t,{children:a.jsxs("title",{children:[" ",i.title]})}),a.jsx(s,{to:r.dashboard.home,replace:!0})]})}export{l as default};

@@ -1,1 +1,0 @@
-import{j as t,H as e,f as s}from"./index-CvJx62Zl.js";const a=()=>t.jsx("div",{}),i={title:`Trang chủ - ${s.appName}`};function r(){return t.jsxs(t.Fragment,{children:[t.jsx(e,{children:t.jsxs("title",{children:[" ",i.title]})}),t.jsx(a,{})]})}export{r as default};
