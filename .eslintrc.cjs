@@ -36,6 +36,17 @@ module.exports = {
     'no-restricted-exports': 0,
     'no-promise-executor-return': 0,
     'import/prefer-default-export': 0,
+    // allow extensionless imports for ts/tsx
+    'import/extensions': [
+      1,
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
     'prefer-destructuring': [1, { object: true, array: false }],
     'import/no-cycle': 'off',
     // typescript

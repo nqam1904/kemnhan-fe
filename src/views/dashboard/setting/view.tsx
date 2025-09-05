@@ -1,45 +1,35 @@
-import axios from 'axios';
-import { CONFIG } from '@/config-global';
-import { Modal, Button } from 'react-bootstrap';
-import DataTable from 'react-data-table-component';
-import { toast, ToastContainer } from 'react-toastify';
 import ClearableInput from '@/components/clearable-input';
 import compactDataTableStyles from '@/components/data-table/styles';
-import React, { useMemo, useState, useEffect, useCallback } from 'react';
+import axiosInstance, { endpoints } from '@/utils/axios';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, Modal } from 'react-bootstrap';
+import DataTable from 'react-data-table-component';
+import { toast, ToastContainer } from 'react-toastify';
 
 const SettingComponent: React.FC = () => {
     const [settings, setSettings] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [titleModal, setTitleModal] = useState<string>('');
     const [value, setValue] = useState<string>('');
     const [id, setId] = useState<string>('');
 
     const getDataMedia = useCallback(() => {
-        axios
-            .get(`${CONFIG.serverUrl}/settings`)
+        setLoading(true);
+        axiosInstance
+            .get(endpoints.main.settings)
             .then((res) => {
                 setSettings(res.data || []);
             })
             .catch((_err) => {
                 toast.error('Có lỗi xảy ra');
-            });
+            })
+            .finally(() => setLoading(false));
     }, []);
 
     useEffect(() => {
         getDataMedia();
     }, [getDataMedia]);
-
-    const onEdit = useCallback((settingId: any) => {
-        axios
-            .get(`${CONFIG.serverUrl}/settings/${settingId}`)
-            .then((res) => {
-                setId(settingId);
-                setShowModal(true);
-                setTitleModal('Cập nhật danh mục');
-                setValue(res.data.value || '');
-            })
-            .catch((_err) => toast.error('Có lỗi xảy ra'));
-    }, []);
 
     const onSave = useCallback(
         (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,9 +39,9 @@ const SettingComponent: React.FC = () => {
                 return;
             }
             if (id) {
-                axios
-                    .put(`${CONFIG.serverUrl}/settings/${id}`, { value })
-                    .then((_res) => {
+                axiosInstance
+                    .put(`${endpoints.main.settings}/${id}`, { value })
+                    .then(() => {
                         setShowModal(false);
                         setValue('');
                         setId('');
@@ -68,6 +58,24 @@ const SettingComponent: React.FC = () => {
         () => [
             { name: '#', selector: 'id', sortable: true },
             { name: 'Thông báo', selector: 'value', sortable: true },
+            {
+                name: 'Chức năng',
+                selector: (row: any) => row.id,
+                cell: (row: any) => (
+                    <Button
+                        type="button"
+                        className="btn btn-warning white"
+                        onClick={() => {
+                            setId(String(row.id));
+                            setValue(String(row.value || ''));
+                            setTitleModal('Cập nhật thông báo');
+                            setShowModal(true);
+                        }}
+                    >
+                        Sửa
+                    </Button>
+                ),
+            },
         ],
         []
     );
@@ -81,6 +89,7 @@ const SettingComponent: React.FC = () => {
                 columns={columns as any}
                 data={settings}
                 defaultSortFieldId="title"
+                progressPending={loading}
                 pagination
                 responsive
                 dense

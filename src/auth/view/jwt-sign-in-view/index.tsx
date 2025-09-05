@@ -1,15 +1,15 @@
-import { toast } from 'react-toastify';
-import React, { useState } from 'react';
-import { useRouter } from '@/routes/hooks';
-import { CustomAlert } from '@/components';
-import { useAuthContext } from '@/auth/hooks';
-import ImageAssets from '@/constants/ImagesAsset';
-import { Card, Form, Button } from 'react-bootstrap';
 import { setLocalStorage } from '@/auth/context/jwt';
+import { useAuthContext } from '@/auth/hooks';
+import { CustomAlert } from '@/components';
+import ImageAssets from '@/constants/ImagesAsset';
+import { useRouter } from '@/routes/hooks';
 import { useSignInMutation } from '@/store/apis/auth';
 import { isValidEmailAddress } from '@/utils/format-string';
+import React, { useState } from 'react';
+import { Button, Card, Form } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
-import { Logo, Wrapper, LogoWrapper, LoginContainer, BackgroundImage } from './styles';
+import { BackgroundImage, LoginContainer, Logo, LogoWrapper, Wrapper } from './styles';
 
 const LOGO = '/assets/images/logo.png';
 const BACKGROUND_IMAGE = '/assets/images/bg3.png';
@@ -43,10 +43,11 @@ export const JwtSignInView: React.FC = () => {
                 }
             }
         } catch (e) {
-            toast.error('Sai username hoặc password. Vui lòng kiểm tra và thử lại.');
-            // Show the error message only under the email field, not password
-            setErrorUsername('Sai username hoặc password. Vui lòng kiểm tra và thử lại.');
-            setErrorPassword('');
+            const msg = 'Sai username hoặc password. Vui lòng kiểm tra và thử lại.';
+            toast.error(msg);
+            // Mark both fields invalid so borders show on email and password
+            setErrorUsername(msg);
+            setErrorPassword(msg);
             console.log('ERROR', e);
         }
     };

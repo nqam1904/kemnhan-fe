@@ -4,36 +4,22 @@ import { useGetProductsQuery } from '@/store/apis/products';
 import { useRef, useMemo, useState, useEffect } from 'react';
 
 import ItemProductShow from './item-product-show';
-
-interface Product {
-    id: string | number;
-    name: string;
-    description: string;
-    images: Array<{ key: string }>;
-    isFeature: boolean;
-    isActive: boolean;
-    sellPrice?: number;
-}
+import ProductCardSkeleton from './product-card-skeleton';
 
 function ProductList() {
-    const [products, setProducts] = useState<Product[]>([]);
-    const { data: productsData } = useGetProductsQuery();
+    const { data: productsData, isLoading } = useGetProductsQuery();
     const trackRef = useRef<HTMLDivElement>(null);
     const [canPrev, setCanPrev] = useState(false);
     const [canNext, setCanNext] = useState(false);
 
-    useEffect(() => {
-        if (productsData) {
-            setProducts(productsData);
-        }
-    }, [productsData]);
-
     const updateCanScroll = () => {
         const el = trackRef.current;
         if (!el) return;
-        const maxScrollLeft = el.scrollWidth - el.clientWidth - 1;
-        setCanPrev(el.scrollLeft > 0);
-        setCanNext(el.scrollLeft < maxScrollLeft);
+        const epsilon = 2; // guard for rounding
+        const atStart = Math.floor(el.scrollLeft) <= epsilon;
+        const atEnd = Math.ceil(el.scrollLeft + el.clientWidth) >= el.scrollWidth - epsilon;
+        setCanPrev(!atStart);
+        setCanNext(!atEnd);
     };
 
     useEffect(() => {
@@ -54,35 +40,14 @@ function ProductList() {
     }, [trackRef]);
 
     useEffect(() => {
-        // Re-evaluate when product list changes (width/scrollWidth may change)
         updateCanScroll();
-    }, [products]);
+    }, []);
 
-    // Auto-scroll carousel every 2 seconds and loop
-    useEffect(() => {
-        const el = trackRef.current;
-        if (!el) {
-            return () => { };
-        }
-
-        const intervalId = window.setInterval(() => {
-            // If there is nothing to scroll, do nothing
-            const maxScrollLeft = el.scrollWidth - el.clientWidth;
-            if (maxScrollLeft <= 0) return;
-
-            const nextLeft = el.scrollLeft + el.clientWidth;
-            if (nextLeft >= maxScrollLeft - 1) {
-                el.scrollTo({ left: 0, behavior: 'smooth' });
-            } else {
-                el.scrollBy({ left: el.clientWidth, behavior: 'smooth' });
-            }
-        }, 2000);
-
-        return () => { window.clearInterval(intervalId); };
-    }, [products]);
+    // Removed auto-advance to avoid unexpected wrap to start when user clicks next
 
     const showProduct = useMemo(() => {
         let result = null;
+        const products = Array.isArray(productsData) ? productsData : [];
         if (products.length > 0) {
             const featureProduct = products.filter((x) => x.isFeature);
             const productShow = featureProduct;
@@ -104,13 +69,19 @@ function ProductList() {
             });
         }
         return result;
-    }, [products]);
+    }, [productsData]);
+
+    const skeletonItems = useMemo(() => Array.from({ length: 4 }).map((_, idx) => (
+        <ProductCardSkeleton key={`skeleton-${idx}`} />
+    )), []);
 
     return (
         <div className="page__product">
             <div className="list__products">
                 <div className="text">
-                    <p className="text-detail">Cần gì nến và hoa, khi kem chính là một món quà</p>
+                    {/* <p className="text-detail">Cần gì nến và hoa, khi kem chính là một món quà</p> */}
+                    <p className="text-detail">Sản phẩm nổi bật</p>
+
                 </div>
                 <div className="carousel">
                     <button
@@ -126,7 +97,7 @@ function ProductList() {
                         ‹
                     </button>
                     <div className="list_product" ref={trackRef}>
-                        {showProduct}
+                        {isLoading ? skeletonItems : showProduct}
                     </div>
                     <button
                         type="button"

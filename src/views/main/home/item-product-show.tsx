@@ -1,3 +1,4 @@
+import { paths } from '@/routes/paths';
 import Card from 'react-bootstrap/Card';
 import React, { useEffect } from 'react';
 import resolveImageUrl from '@/utils/image-url';
@@ -27,7 +28,7 @@ const ItemProductShow: React.FC<ItemProductShowProps> = (props: any) => {
         <Card
             className="product-card"
             onClick={() => {
-                window.open(`/chi-tiet-san-pham?id=${id}`, '_blank');
+                window.open(paths.main.productDetail(id), '_blank');
             }}
             style={{ cursor: 'pointer' }}
         >

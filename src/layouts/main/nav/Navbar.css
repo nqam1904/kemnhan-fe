@@ -1,31 +1,39 @@
-.nav {
+.header_client {
     position: fixed;
     z-index: 1;
     top: 0;
     right: 0;
     left: 0;
-    height: 200px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    background: linear-gradient(
-        180deg,
-        rgba(255, 240, 246, 0.07) 0%,
-        rgba(255, 240, 246, 0.5) 31.05%,
-        #fff0f6 100%
-    );
-    /* background image set inline via React to avoid css-loader resolving public asset */
+    height: 180px;
+    background: linear-gradient(180deg,
+            rgba(255, 240, 246, 0.07) 0%,
+            rgba(255, 240, 246, 0.5) 31.05%,
+            #fff0f6 100%);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    /* background-color: #FEFFE6; */
-    /* z-index: 1; */
 }
 
-.nav .links a {
-    margin-top: 20px;
-    display: inline-block;
-    margin-left: 40px;
+.header_client-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 100px;
+}
+
+.header_client-container-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+}
+
+.header_client .links a {
+    margin-top: 0;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0;
     font-family: 'Roboto Mono', monospace;
     font-style: normal;
     font-weight: 500;
@@ -34,44 +42,33 @@
     line-height: 30px;
 }
 
-.nav .links .mainlink {
-    color: #e0501b;
+.header_client .links {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    height: 60px;
 }
 
 .group-logo {
     display: flex;
     justify-content: center;
-    margin-top: 6px;
-    margin-left: 80px;
+    align-items: center;
+    margin-top: 0;
 }
 
-.logo {
-    position: relative;
-    max-width: 50px;
-    height: 50px;
-    margin-top: 8px;
-}
-
-.logo1 {
-    max-width: 60px;
-    height: 60px;
-    margin-top: 0px;
-}
-
-.logo-title {
+.logo-desktop {
     position: relative;
     justify-content: center;
     align-items: center;
-    margin-top: 1px;
     width: 100px;
     height: 24px;
+    object-fit: cover;
     margin-left: 18px;
 }
 
+
+
 .button-cart {
-    position: absolute;
-    top: 13px;
-    right: 78px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -85,6 +82,7 @@
 
 .button-cart:hover {
     cursor: pointer;
+    background: #fa541c;
 }
 
 .button-cart .ic_cart {
@@ -95,50 +93,25 @@
 
 .button-cart .title_cart {
     color: #fa541c;
-    padding-top: 13px;
+    padding-top: 0;
+    margin: 0;
 }
 
-.footer__modal {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start !important;
-    padding: 0.75rem;
-    border-top: 1px solid #dee2e6;
-    border-bottom-right-radius: calc(0.3rem - 1px);
-    border-bottom-left-radius: calc(0.3rem - 1px);
+.button-cart:hover .title_cart {
+    color: white;
 }
 
-.footer__modal span {
-    margin-left: 10px;
+/* // ------------------------------------------------ */
+
+.logo {
+    position: relative;
+    max-width: 50px;
+    height: 50px;
+    margin-top: 0;
 }
 
-.content__news {
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-}
-
-.list__news {
-    overflow-y: scroll;
-    height: 500px;
-}
-
-.custom__link:hover {
-    cursor: pointer;
-}
-
-.image__news {
-    margin: 20px;
-}
-
-.image__news:hover {
-    cursor: pointer;
-}
-
-.item__news {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.logo-client {
+    max-width: 60px;
+    height: 60px;
+    margin-top: 0px;
 }

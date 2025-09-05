@@ -1,8 +1,7 @@
 import { lazy, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
 import { SplashScreen } from '@/components';
 import { MainLayout } from '@/layouts/main/main';
-import NotFoundPage from '@/pages/dashboard/not-found-page';
+import { Outlet, Navigate } from 'react-router-dom';
 import ProductListPage from '@/views/main/home/product-list';
 
 const ComingSoonPage = lazy(() => import('@/pages/coming-soon'));
@@ -12,7 +11,7 @@ const ProductDetailPage = lazy(() => import('@/pages/main/product-page'));
 const NewsPage = lazy(() => import('@/pages/main/news-page'));
 const CartPage = lazy(() => import('@/pages/main/cart-page'));
 const SuccessPaymentPage = lazy(() => import('@/pages/main/payment-page'));
-
+const NotFoundPage = lazy(() => import('@/views/main/not-found-page/view'));
 // ----------------------------------------------------------------------
 // Error
 const Page500 = lazy(() => import('@/pages/error/500'));
@@ -48,6 +47,10 @@ export const mainRoutes = [
                         path: 'not-found',
                         element: <NotFoundPage />,
                     },
+                    {
+                        path: '*',
+                        element: <Navigate to="not-found" replace />,
+                    },
                 ],
             },
             {
@@ -57,6 +60,7 @@ export const mainRoutes = [
             { path: '500', element: <Page500 /> },
             { path: '404', element: <Page404 /> },
             { path: '403', element: <Page403 /> },
+            { path: '*', element: <Navigate to="/not-found" replace /> },
         ],
     },
 ];

@@ -7,7 +7,20 @@ import checker from 'vite-plugin-checker';
 
 const PORT = 8080;
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  build: {
+    outDir: 'dist',
+    minify: 'esbuild',
+    chunkSizeWarningLimit: 1024,
+    sourcemap: mode === 'development',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     checker({
@@ -40,4 +53,4 @@ export default defineConfig({
   },
   server: { port: PORT, host: true },
   preview: { port: PORT, host: true },
-});
+}));
