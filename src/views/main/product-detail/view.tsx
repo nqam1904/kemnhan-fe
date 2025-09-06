@@ -1,6 +1,8 @@
 import './product-detail.css';
 
+import { paths } from '@/routes/paths';
 import { useDispatch } from 'react-redux';
+import { useRouter } from '@/routes/hooks';
 import { useParams } from 'react-router-dom';
 import { addToCart } from '@/store/slices/cart';
 import { fNumber } from '@/utils/format-number';
@@ -15,7 +17,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 function ProductDetail() {
     const dispatch = useDispatch();
     const [product, setProduct] = useState<any | null>(null);
-
+    const router = useRouter();
     const { id: routeId } = useParams<{ id: string }>();
     const id = useMemo(() => routeId, [routeId]);
 
@@ -121,7 +123,19 @@ function ProductDetail() {
                         </div>
                         <div className="product_body">
                             <div className="product_content">
-                                <h1 className="product-title">{product?.name}</h1>
+                                <h1 className="product-title">
+                                    {product?.name}
+                                    {hasShopee && (
+                                        <span
+                                            className="shopee-inline"
+                                            onClick={() => router.push(product?.shopeeUrl)}
+                                            role="link"
+                                            aria-label="Mua trên Shopee"
+                                        >
+                                            <img src={ImageAssets.shopee} alt="shopee" />
+                                        </span>
+                                    )}
+                                </h1>
                                 <p className="content_price">
                                     {fNumber(product?.sellPrice || 0)}đ/{product?.unit}
                                 </p>
@@ -129,37 +143,28 @@ function ProductDetail() {
                                     id="btn_cart"
                                     onClick={() => {
                                         addCart();
-                                        window.location.href = '/gio-hang';
+                                        router.push(paths.main.cart);
                                     }}
                                     className="btn_mobile_cart"
                                 >
-                                    <img src={ImageAssets.icCart} width={35} alt="add to cart" />
                                     <p>Mua ngay</p>
                                 </div>
                             </div>
                             <div className="option_detail">
                                 <div className="btn_buy" onClick={() => addCart()}>
-                                    <img src={ImageAssets.icCart} width={35} alt="add to cart" />
+                                    <img src={ImageAssets.icCart} width={35} alt="add to cart" style={{ marginRight: 10 }} />
                                     <span>Thêm vào giỏ hàng</span>
                                 </div>
                                 <div
                                     className="btn_buy"
                                     onClick={() => {
                                         addCart();
-                                        window.location.href = '/gio-hang';
+                                        router.push(paths.main.cart);
                                     }}
                                 >
                                     <span>Mua ngay</span>
                                 </div>
-                                {hasShopee && (
-                                    <div
-                                        className="btn_shopee"
-                                        onClick={() => window.open(product?.shopeeUrl, '_blank')}
-                                    >
-                                        <img src={ImageAssets.shopee} width={40} alt="shopee" />
-                                        <span style={{ marginLeft: 10 }}>Shopee</span>
-                                    </div>
-                                )}
+                                {/* Shopee button removed; inline icon is shown near the title */}
                             </div>
                             <p className="content_des" style={{ marginTop: 16 }}>{product?.description}</p>
                         </div>

@@ -45,6 +45,9 @@ function NewsDetailView() {
 
                     <article className="news-detail">
                         <h1 className="news-detail__title">{title}</h1>
+                        {createdAt && createdAt.isValid() && (
+                            <div className="news-detail__meta">Ngày đăng: {createdAt.format('DD/MM/YYYY')}</div>
+                        )}
                         {isLoading ? (
                             <div style={{ width: '100%', paddingTop: '56%', background: '#e9ecef' }} />
                         ) : (
@@ -135,8 +138,12 @@ function NewsDetailView() {
                                     const img = key ? resolveImageUrl(`${key}`) : ImageAssets.logo;
                                     return (
                                         <li key={`fp-${String(p.id)}`} className="news-list__item">
-                                            <img src={img} alt={p.name} />
-                                            <span>{p.name}</span>
+                                            <Link to={paths.main.productDetail(p.id)}>
+                                                <img src={img} alt={p.name} />
+                                            </Link>
+                                            <span>
+                                                <Link to={paths.main.productDetail(p.id)}>{p.name}</Link>
+                                            </span>
                                         </li>
                                     );
                                 })}

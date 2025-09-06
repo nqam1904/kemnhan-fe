@@ -1,1 +1,0 @@
-import{j as t,H as e,d as a}from"./index-CGSQnQu3.js";import"./vendor-D10guwLI.js";const s={title:`About - ${a.appName}`};function o(){return t.jsx(e,{children:t.jsxs("title",{children:[" ",s.title]})})}export{o as default};

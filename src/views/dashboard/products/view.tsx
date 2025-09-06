@@ -2,6 +2,7 @@ import './product.css';
 
 import * as z from 'zod';
 import axiosInstance from '@/utils/axios';
+import { useRouter } from '@/routes/hooks';
 import { fNumber } from '@/utils/format-number';
 import resolveImageUrl from '@/utils/image-url';
 import ImageAssets from '@/constants/ImagesAsset';
@@ -22,6 +23,7 @@ import {
 
 const ProductsView: React.FC = () => {
     const { data: products = [], isLoading, refetch } = useGetProductsQuery();
+    const router = useRouter();
     const { data: categories = [] } = useGetCategoriesQuery();
     const [createProduct] = useCreateProductMutation();
     const [updateProduct] = useUpdateProductMutation();
@@ -377,7 +379,7 @@ const ProductsView: React.FC = () => {
                         className="ml-10"
                         type="button"
                         onClick={() => {
-                            window.open('https://kemnhanonline.vn/api/products/export', '_blank');
+                            router.push('https://kemnhanonline.vn/api/products/export');
                         }}
                     >
                         Xuất Excel

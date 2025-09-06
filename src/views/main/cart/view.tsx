@@ -2,7 +2,9 @@ import './Cart.css';
 
 import { paths } from '@/routes/paths';
 import { Link } from 'react-router-dom';
+import { useRouter } from '@/routes/hooks';
 import { fNumber } from '@/utils/format-number';
+import { Modal, Button } from 'react-bootstrap';
 import ImageAssets from '@/constants/ImagesAsset';
 import { useMemo, useState, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -33,9 +35,14 @@ interface CartViewProps {
 }
 
 function CartView(props: CartViewProps) {
+    const router = useRouter();
     const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
     const [showCustom, setShowCustom] = useState<boolean>(false);
     const [layout, setLayout] = useState<string>('container-fluid');
+    const [confirmDelete, setConfirmDelete] = useState<{ show: boolean; id: string | number | null }>({
+        show: false,
+        id: null,
+    });
     const [form, setForm] = useState<CustomerForm>({
         firstName: '',
         lastName: '',
@@ -48,9 +55,9 @@ function CartView(props: CartViewProps) {
     useEffect(() => {
         if (!(localStorageGetItem('token') || '')) {
             setLayout('container');
-        } else {
-            setShowCustom(true);
         }
+        // Always show the customer info form (guest checkout allowed)
+        setShowCustom(true);
     }, []);
 
     const handleChangeQuantity = (
@@ -73,7 +80,7 @@ function CartView(props: CartViewProps) {
                 <CartItem
                     key={`${String(item.product?.id)}-${index}`}
                     item={item as any}
-                    onDeleteItem={() => onDeleteItem(item.product.id)}
+                    onDeleteItem={() => setConfirmDelete({ show: true, id: item.product.id })}
                     subItem={() => handleChangeQuantity(quantity, item.product.id, -1)}
                     plusItem={() => handleChangeQuantity(quantity, item.product.id, 1)}
                 />
@@ -82,14 +89,12 @@ function CartView(props: CartViewProps) {
     }, [cartItems]);
 
     const onDeleteItem = (id: string | number) => {
-        if (window.confirm('Bạn muốn xoá sản phẩm này')) {
-            const { actDeleteItem } = props;
-            actDeleteItem(id);
-            toast.success('Cập nhật thành công!');
-            if (!(localStorage.getItem('token') || '')) {
-                setShowCustom(false);
-                setLayout('container');
-            }
+        const { actDeleteItem } = props;
+        actDeleteItem(id);
+        toast.success('Cập nhật thành công!');
+        if (!(localStorageGetItem('token') || '')) {
+            setShowCustom(false);
+            setLayout('container');
         }
     };
     const totalAmount = useMemo(
@@ -148,7 +153,7 @@ function CartView(props: CartViewProps) {
             props?.actDeleteAll();
             setShowCustom(false);
             setLayout('container');
-            window.location.href = paths.main.successPayment;
+            router.push(paths.main.successPayment);
         } catch (error) {
             toast.error('Có lỗi xảy ra');
         }
@@ -265,10 +270,12 @@ function CartView(props: CartViewProps) {
                                     Chọn tất cả
                                 </p>
                             </div>
-                            <button type="button" className="delete_item" onClick={onDeleteAll}>
-                                <img src={ImageAssets.delete} alt="delete" />
-                                <p className="text_delete">Xoá tất cả</p>
-                            </button>
+                            {(props?.cartItem?.length ?? 0) > 0 && (
+                                <button type="button" className="delete_item" onClick={onDeleteAll}>
+                                    <img src={ImageAssets.delete} alt="delete" />
+                                    <p className="text_delete">Xoá tất cả</p>
+                                </button>
+                            )}
                         </div>
                         <div className="content_cart_item">
                             {props?.cartItem?.length ? renderCartItems : emptyCart}
@@ -276,6 +283,30 @@ function CartView(props: CartViewProps) {
                     </div>
                 </div>
                 {elemCustom}
+                <Modal
+                    centered
+                    show={confirmDelete.show}
+                    onHide={() => setConfirmDelete({ show: false, id: null })}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Xác nhận</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Bạn muốn xoá sản phẩm này?</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setConfirmDelete({ show: false, id: null })}>
+                            Huỷ
+                        </Button>
+                        <Button
+                            variant="danger"
+                            onClick={() => {
+                                if (confirmDelete.id !== null) onDeleteItem(confirmDelete.id);
+                                setConfirmDelete({ show: false, id: null });
+                            }}
+                        >
+                            Xoá
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         </div>
     );

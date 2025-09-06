@@ -1,5 +1,7 @@
 import './home.css';
 
+import { paths } from '@/routes/paths';
+import { Link } from 'react-router-dom';
 import { useGetProductsQuery } from '@/store/apis/products';
 import { useRef, useMemo, useState, useEffect } from 'react';
 
@@ -54,7 +56,13 @@ function ProductList() {
             result = productShow.map((item, idx) => {
                 const firstImageKey = item?.images?.[0]?.key;
                 return (
-                    <div key={idx} className="item_product" id="product">
+                    <Link
+                        key={idx}
+                        to={paths.main.productDetail(item.id)}
+                        className="item_product link_product"
+                        id="product"
+                        aria-label={`Xem chi tiết ${item.name}`}
+                    >
                         <ItemProductShow
                             name={item.name}
                             id={item.id}
@@ -64,7 +72,7 @@ function ProductList() {
                             isActive={item.isActive}
                             price={item.sellPrice}
                         />
-                    </div>
+                    </Link>
                 );
             });
         }

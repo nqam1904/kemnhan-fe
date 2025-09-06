@@ -53,17 +53,15 @@
     margin-left: 1rem;
     color: #fa541c;
     display: block;
-    padding: 12px 0;
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-size: 1.4rem;
 }
 
 .menu__mobile__close {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     color: #fff;
     position: absolute;
-    top: 0.4rem;
+    top: 24px;
     right: 1rem;
 }
 
@@ -118,7 +116,7 @@
 
 @media (max-width: 1190px) {
     .mobile-topbar {
-        height: 56px;
+        height: 80px;
         display: flex !important;
         align-items: center;
         justify-content: space-between;

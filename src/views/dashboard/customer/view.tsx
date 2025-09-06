@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import { useRouter } from '@/routes/hooks';
 import { Modal, Button } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import React, { useMemo, useState, useCallback } from 'react';
@@ -7,6 +8,7 @@ import { useGetCustomersQuery, useLazyGetCustomerByIdQuery } from '@/store/apis/
 
 const CustomerView: React.FC = () => {
     const { data: customers = [], isLoading } = useGetCustomersQuery();
+    const router = useRouter();
     const [getCustomerById] = useLazyGetCustomerByIdQuery();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [titleModal, setTitleModal] = useState<string>('');
@@ -46,12 +48,12 @@ const CustomerView: React.FC = () => {
                 name: 'Hành động',
                 selector: (data: any) => (
                     <Button
-                            type="button"
-                            className="btn btn-primary white mr-10"
-                            onClick={() => onEdit(data.id)}
-                        >
-                            Xem chi tiết
-                        </Button>
+                        type="button"
+                        className="btn btn-primary white mr-10"
+                        onClick={() => onEdit(data.id)}
+                    >
+                        Xem chi tiết
+                    </Button>
                 ),
             },
         ],
@@ -67,7 +69,7 @@ const CustomerView: React.FC = () => {
                         variant="success"
                         type="button"
                         onClick={() => {
-                            window.open('https://kemnhanonline.vn/api/customers/export', '_blank');
+                            router.push('https://kemnhanonline.vn/api/customers/export');
                         }}
                     >
                         Xuất Excel

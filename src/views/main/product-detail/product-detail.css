@@ -17,7 +17,7 @@
     padding: 0 16px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0;
     color: #8c8c8c;
 }
 
@@ -37,6 +37,18 @@
 .breadcrumb__current {
     color: #595959;
     font-weight: 500;
+}
+
+/* Tighter spacing around the separator "/" */
+.breadcrumb-item+.breadcrumb-item::before {
+    padding-left: 6px;
+    padding-right: 6px;
+    color: #bfbfbf;
+}
+
+/* Remove default left padding between breadcrumb items */
+.breadcrumb-item+.breadcrumb-item {
+    padding-left: 0;
 }
 
 .product_img img {
@@ -112,7 +124,6 @@ div .product_img_slide figure {
 
 .option_detail {
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: 12px;
@@ -151,6 +162,30 @@ div .product_img_slide figure {
     font-size: 28px;
     line-height: 36px;
     font-weight: 700;
+}
+
+/* Inline Shopee icon next to product title */
+.shopee-inline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #ff6f3d;
+    /* Shopee orange */
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.shopee-inline img {
+    width: 18px;
+    height: 18px;
+}
+
+.shopee-inline:hover {
+    filter: brightness(0.95);
 }
 
 .btn_buy {
@@ -283,7 +318,6 @@ div .product_img_slide figure {
         width: 100%;
         flex-direction: column;
         align-items: stretch;
-        justify-content: center;
         gap: 12px;
         padding: 0;
     }

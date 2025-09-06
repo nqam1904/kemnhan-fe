@@ -99,7 +99,9 @@ const BannerCarouselView: React.FC = () => {
     const carousel = useMemo(() => {
         const sources = previews.length
             ? previews
-            : (carousels || []).map((c: any) => c?.image?.url || c?.image?.key).filter(Boolean);
+            : (carousels || [])
+                .map((c: any) => c?.image?.url || (c?.image?.key ? resolveImageUrl(c?.image?.key) : ''))
+                .filter((src: string) => Boolean(src));
         if (!sources.length) return null;
         return (
             <div style={{ maxWidth: 1920, margin: '0 auto' }}>
@@ -115,6 +117,12 @@ const BannerCarouselView: React.FC = () => {
                                     aspectRatio: '1920 / 700',
                                     objectFit: 'cover',
                                     borderRadius: 8,
+                                }}
+                                onError={(e: any) => {
+                                    // Hide broken images to avoid showing alt text in preview area
+                                    try { e.currentTarget.style.display = 'none'; } catch (_e) {
+                                        console.log(_e);
+                                    }
                                 }}
                             />
                         </Carousel.Item>
@@ -172,10 +180,18 @@ const BannerCarouselView: React.FC = () => {
                 selector: (row: any) => row?.id,
                 cell: (row: any) => (
                     <>
-                        <Button variant="outline-secondary" size="sm" className="mr-2" disabled>
-                            ✏️
+                        <Button
+                            type="button"
+                            className="btn btn-warning white mr-10"
+                            onClick={() => { }}
+                        >
+                            Sửa
                         </Button>
-                        <Button variant="outline-danger" size="sm" onClick={() => onDelete(row.id)}>
+                        <Button
+                            type="button"
+                            className="btn btn-danger white"
+                            onClick={() => onDelete(row.id)}
+                        >
                             Xóa
                         </Button>
                     </>
@@ -211,8 +227,8 @@ const BannerCarouselView: React.FC = () => {
                 <Modal.Body>
                     <div className="mb-3">
                         <Form.Group controlId="banner-upload">
-                            <Form.Label>Chọn ảnh banner (có thể chọn nhiều ảnh)</Form.Label>
-                            <Form.Control ref={fileInputRef as any} type="file" multiple onChange={onSelectFiles} />
+                            <Form.Label>Chọn ảnh banner</Form.Label>
+                            <Form.Control ref={fileInputRef as any} type="file" onChange={onSelectFiles} />
                         </Form.Group>
                     </div>
 

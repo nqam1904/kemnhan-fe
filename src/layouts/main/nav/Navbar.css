@@ -1,6 +1,6 @@
 .header_client {
     position: fixed;
-    z-index: 1;
+    z-index: 1000;
     top: 0;
     right: 0;
     left: 0;
@@ -114,4 +114,30 @@
     max-width: 60px;
     height: 60px;
     margin-top: 0px;
+}
+
+/* Mobile: compact header with no background image so banner shows cleanly */
+@media (max-width: 1190px) {
+    .header_client {
+        height: auto;
+        background: #ffffff;
+        background-image: none !important;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .header_client-container {
+        display: none;
+    }
+
+    .group-logo {
+        display: none;
+    }
+
+    .links {
+        display: none;
+    }
+
+    .button-cart {
+        display: none;
+    }
 }

@@ -1,6 +1,7 @@
 import './Footer.css';
 
 import { CONFIG } from '@/config-global';
+import { phonesNumber } from '@/constants/enums';
 import ImageAssets from '@/constants/ImagesAsset';
 
 interface SocialItem {
@@ -61,9 +62,9 @@ function Footer() {
                                     Địa chỉ: Quận 3, Thành Phố Hồ Chí Minh
                                 </div>
                                 <div>
-                                    Điện thoại: (02203) 838 838 – 844 444
+                                    Điện thoại: {phonesNumber.join(' - ')}
                                 </div>
-                                <div>
+                                <div>   
                                     Website: <a className="footer__link" href={CONFIG.domain} target="_blank" rel="noreferrer">kemnhanonline.vn</a>
                                 </div>
                                 <div>

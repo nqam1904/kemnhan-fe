@@ -7,3 +7,4 @@ export const ROLE_OPTIONS = [
     { id: 1, name: UserRole.Admin },
     { id: 2, name: UserRole.Staff },
 ];
+export const phonesNumber = ['0973277739', '0977667866']

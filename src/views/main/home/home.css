@@ -1,7 +1,29 @@
-.landing img {
-    background-size: contain;
-    background-repeat: no-repeat;
+.landing__img {
     width: 100%;
+    height: 550px;
+    object-fit: cover;
+    display: block;
+}
+
+.landing {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Ensure sections after banner are above it */
+.wrapper .page__product,
+.wrapper .list__products,
+.wrapper .carousel,
+.wrapper .about,
+.wrapper section,
+.wrapper .text,
+.wrapper .product-card {
+    position: relative;
+    z-index: 1;
 }
 
 /* New product card styles */
@@ -53,6 +75,21 @@
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 8px;
+}
+
+/* Hover: mimic news hover color change */
+.product-card {
+    transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.product-card:hover .card-title,
+.product-card:hover .product-card__title {
+    color: var(--brand-color);
 }
 
 .product-card__contact {
@@ -132,6 +169,7 @@ h5 {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 24px 20px;
 }
 
 .list__products {
@@ -139,7 +177,7 @@ h5 {
     background: #fff;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.06);
     border-radius: 12px;
-    margin-top: -100px;
+    margin-top: 24px;
     width: 1350px !important;
 }
 
@@ -183,6 +221,11 @@ h5 {
     scroll-snap-align: start;
 }
 
+.link_product {
+    display: block;
+    color: inherit;
+}
+
 /* Hide scrollbar on WebKit (Chrome/Safari/Edge Chromium) */
 .list_product::-webkit-scrollbar {
     display: none;
@@ -190,7 +233,7 @@ h5 {
 
 .carousel {
     position: relative;
-    padding: 0 20px;
+    padding: 0 24px 24px;
     /* 20px gutters on both sides */
 }
 
@@ -226,8 +269,19 @@ h5 {
     right: 4px;
 }
 
-/* Mobile: show 2 items per view */
+/* Mobile: banner + show 2 items per view */
 @media (max-width: 767px) {
+    .landing {
+        padding: 0 0 8px 0;
+    }
+
+    .landing__img {
+        height: 240px;
+        margin-top: 24px;
+        object-fit: contain;
+        background-color: #feffe6;
+    }
+
     .list__products {
         width: 100% !important;
         /* Remove desktop negative offset to avoid overlap with header on mobile */
@@ -269,5 +323,10 @@ h5 {
         top: auto;
         margin: 12px 0 0 0;
         font-size: 28px;
+    }
+
+    /* Ensure banner is visible fully under compact header */
+    .landing {
+        margin-top: 0;
     }
 }

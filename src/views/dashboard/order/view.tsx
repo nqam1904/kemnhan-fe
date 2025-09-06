@@ -1,5 +1,6 @@
 import type { Order } from '@/store/types/order';
 
+import { useRouter } from '@/routes/hooks';
 import { fDate } from '@/utils/format-time';
 import { Modal, Button } from 'react-bootstrap';
 import React, { useMemo, useState } from 'react';
@@ -12,6 +13,7 @@ import { useGetOrdersQuery, useUpdateOrderStatusMutation } from '@/store/apis/or
 
 const OrderView: React.FC = () => {
     const { data: orders = [], isLoading, refetch } = useGetOrdersQuery();
+    const router = useRouter();
     const [updateStatus] = useUpdateOrderStatusMutation();
     const [confirm, setConfirm] = useState<{ show: boolean; id: any; label: string; next: number }>(
         { show: false, id: null, label: '', next: 0 }
@@ -34,7 +36,7 @@ const OrderView: React.FC = () => {
     };
 
     const exportExcel = () => {
-        window.open('https://kemnhanonline.vn/api/orders/export', '_blank');
+        router.push('https://kemnhanonline.vn/api/orders/export');
     };
 
     const statusText = (s: number) =>

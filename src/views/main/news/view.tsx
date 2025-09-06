@@ -153,7 +153,9 @@ function NewsView() {
                                     const img = key ? resolveImageUrl(`${key}`) : ImageAssets.logo;
                                     return (
                                         <li key={`fp-${String(p.id)}`} className="news-list__item">
-                                            <img src={img} alt={p.name} />
+                                            <Link to={paths.main.productDetail(p.id)}>
+                                                <img src={img} alt={p.name} />
+                                            </Link>
                                             <span>{p.name}</span>
                                         </li>
                                     );

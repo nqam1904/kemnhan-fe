@@ -1,8 +1,10 @@
 import './Success.css';
 
+import { useRouter } from '@/routes/hooks';
 import ImageAssets from '@/constants/ImagesAsset';
 
 function SuccessPayment() {
+    const router = useRouter();
     return (
         <div className="success">
             <div className="form">
@@ -23,7 +25,7 @@ function SuccessPayment() {
                 <div
                     className="form__button"
                     onClick={() => {
-                        window.location.href = '/';
+                        router.push('/');
                     }}
                 >
                     Quay lại trang chủ

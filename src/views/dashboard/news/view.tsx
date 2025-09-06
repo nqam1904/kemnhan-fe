@@ -45,7 +45,7 @@ const NewsView: React.FC = () => {
 
     const [form, setForm] = useState<PromotionForm>(initialForm);
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [titleModal, setTitleModal] = useState<string>('Thêm tin khuyến mãi');
+    const [titleModal, setTitleModal] = useState<string>('Thêm tin tức');
     const [confirmDelete, setConfirmDelete] = useState<{ show: boolean; id: any; label: string }>(
         { show: false, id: null, label: '' }
     );
@@ -79,7 +79,7 @@ const NewsView: React.FC = () => {
             : [];
         setImagePreviews(previews);
         apiPreviewCountRef.current = previews.length;
-        setTitleModal('Cập nhật tin khuyến mãi');
+        setTitleModal('Cập nhật tin tức');
         setShowModal(true);
     };
 
@@ -255,7 +255,7 @@ const NewsView: React.FC = () => {
     return (
         <>
             <div className="d-flex align-items-center justify-content-between mt-10 mbt-10">
-                <h1 className="m-0">Tin Khuyến mãi</h1>
+                <h1 className="m-0">Tin tức</h1>
                 <div>
                     <Button
                         type="button"
@@ -266,7 +266,7 @@ const NewsView: React.FC = () => {
                             resetForm();
                         }}
                     >
-                        Thêm khuyến mãi
+                        Thêm tin tức
                     </Button>
                 </div>
             </div>

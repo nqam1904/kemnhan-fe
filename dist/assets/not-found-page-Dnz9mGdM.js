@@ -1,1 +1,0 @@
-import{j as t,H as e,d as s}from"./index-CGSQnQu3.js";import"./vendor-D10guwLI.js";const a={title:`404 - ${s.appName}`};function n(){return t.jsxs(t.Fragment,{children:[t.jsx(e,{children:t.jsxs("title",{children:[" ",a.title]})}),t.jsx("div",{className:"App",children:t.jsx("h1",{children:"404! Không tìm thấy trang 😥"})})]})}export{n as default};

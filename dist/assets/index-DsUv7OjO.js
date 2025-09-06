@@ -1,1 +1,0 @@
-import{j as t,H as a,d as e,p as s}from"./index-CGSQnQu3.js";import{N as r}from"./vendor-D10guwLI.js";const o={title:`Dashboard - ${e.appName}`};function d(){return t.jsxs(t.Fragment,{children:[t.jsx(a,{children:t.jsxs("title",{children:[" ",o.title]})}),t.jsx(r,{to:s.dashboard.home,replace:!0})]})}export{d as default};

@@ -1,56 +1,49 @@
 import './home.css';
 
-import { useMemo, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import resolveImageUrl from '@/utils/image-url';
-import Carousel from 'react-bootstrap/Carousel';
 import ImageAssets from '@/constants/ImagesAsset';
-import { settingsApi } from '@/store/apis/settings';
+import { useMemo, useState, useEffect } from 'react';
+import { useGetCarouselsQuery } from '@/store/apis/carousel';
 
 import AboutView from '../about/view';
 import ProductList from './product-list';
 
 function HomeView() {
     const [modal, setModal] = useState<boolean>(false);
+    const [activeIndex, setActiveIndex] = useState<number>(0);
 
-    const { data: settings = [] } = settingsApi.useGetSettingsQuery();
+    const { data: carousels = [] } = useGetCarouselsQuery();
     const bannerUrls = useMemo(() => {
-        const list = Array.isArray(settings) ? settings : [];
-        const media = list.find((s: any) => String(s.key || '').toLowerCase().includes('media'));
-        if (!media || !media.value) return [] as string[];
-        try {
-            const parsed = JSON.parse(media.value);
-            if (Array.isArray(parsed)) return parsed.map((k: any) => resolveImageUrl(`${k}`));
-        } catch (_e) {
-            console.log(_e);
-        }
-        const parts = String(media.value).split(',').map((s) => s.trim()).filter(Boolean);
-        return parts.length ? parts.map((k) => resolveImageUrl(`${k}`)) : [];
-    }, [settings]);
+        const list = Array.isArray(carousels) ? carousels : [];
+        const sources = list
+            .map((c: any) => c?.image?.url || (c?.image?.key ? resolveImageUrl(c?.image?.key) : ''))
+            .filter((src: string) => Boolean(src));
+        return sources;
+    }, [carousels]);
 
-    const carousel = useMemo(() => {
-        if (!bannerUrls.length) return null;
-        return (
-            <div className="landing" id="home">
-                <Carousel interval={3000} indicators pause={false} slide={false}>
-                    {bannerUrls.map((src, idx) => (
-                        <Carousel.Item key={`${src}-${idx}`}>
-                            <img alt={`bg-${idx}`} src={src} style={{ width: '100%', height: 'auto', objectFit: 'cover' }} />
-                        </Carousel.Item>
-                    ))}
-                </Carousel>
-            </div>
-        );
+    // Auto-rotate banner images without using react-bootstrap Carousel
+    useEffect(() => {
+        if (!bannerUrls.length) {
+            setActiveIndex(0);
+            return () => { };
+        }
+        const id = window.setInterval(() => {
+            setActiveIndex((prev) => (prev + 1) % bannerUrls.length);
+        }, 3000);
+        return () => window.clearInterval(id);
     }, [bannerUrls]);
 
     return (
         <div className="wrapper">
-            {carousel || (
-                <div className="landing" id="home">
-                    <img alt="bg" src={ImageAssets.bg3} />
-                </div>
-            )}
+            <div className="landing" id="home">
+                <img
+                    className="landing__img"
+                    alt="bg"
+                    src={bannerUrls.length ? bannerUrls[activeIndex] : ImageAssets.bg3}
+                />
+            </div>
             <ProductList />
             <AboutView />
             <Modal

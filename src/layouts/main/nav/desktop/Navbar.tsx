@@ -4,13 +4,20 @@ import type { MouseEvent } from 'react';
 
 import { paths } from '@/routes/paths';
 import { Link } from 'react-router-dom';
-import { useMemo, useCallback } from 'react';
 import ImageAssets from '@/constants/ImagesAsset';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 
 import NavbarMobile from '../mobile/NavbarMobile';
 
 function Navbar() {
+    const [isMobile, setIsMobile] = useState(false);
 
+    useEffect(() => {
+        const update = () => setIsMobile(window.innerWidth <= 1190);
+        update();
+        window.addEventListener('resize', update);
+        return () => window.removeEventListener('resize', update);
+    }, []);
     const scrollToId = useCallback((id: string) => {
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -33,7 +40,7 @@ function Navbar() {
     );
 
     return (
-        <div className="header_client" style={{ backgroundImage: `url(${ImageAssets.header})` }}>
+        <div className="header_client" style={isMobile ? undefined : { backgroundImage: `url(${ImageAssets.header})` }}>
             <div className="header_client-container">
                 <div className="header_client-container-left">
                     <div className="group-logo">
