@@ -51,6 +51,6 @@ export default defineConfig(({ mode }) => ({
       },
     ],
   },
-  server: { port: PORT, host: true, strictPort: true },
-  preview: { port: PORT, host: true, strictPort: true },
+  server: { port: PORT, host: true, strictPort: true, allowedHosts: true },
+  preview: { port: PORT, host: true, strictPort: true, allowedHosts: true },
 }));
