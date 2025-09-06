@@ -1,5 +1,5 @@
+import { useState, useEffect } from 'react';
 import ImageAssets from '@/constants/ImagesAsset';
-import { useEffect, useState } from 'react';
 
 export default function ScrollToTop() {
     const [isVisible, setIsVisible] = useState<boolean>(false);

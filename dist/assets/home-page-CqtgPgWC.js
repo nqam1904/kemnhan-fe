@@ -1,0 +1,1 @@
+import{j as t,H as e,d as s}from"./index-CGSQnQu3.js";import"./vendor-D10guwLI.js";const a=()=>t.jsx("div",{}),i={title:`Trang chủ - ${s.appName}`};function m(){return t.jsxs(t.Fragment,{children:[t.jsx(e,{children:t.jsxs("title",{children:[" ",i.title]})}),t.jsx(a,{})]})}export{m as default};

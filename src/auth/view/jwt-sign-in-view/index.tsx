@@ -1,15 +1,15 @@
-import { setLocalStorage } from '@/auth/context/jwt';
-import { useAuthContext } from '@/auth/hooks';
+import { toast } from 'react-toastify';
+import React, { useState } from 'react';
 import { CustomAlert } from '@/components';
-import ImageAssets from '@/constants/ImagesAsset';
 import { useRouter } from '@/routes/hooks';
+import { useAuthContext } from '@/auth/hooks';
+import ImageAssets from '@/constants/ImagesAsset';
+import { setLocalStorage } from '@/auth/context/jwt';
+import { Card, Form, Button } from 'react-bootstrap';
 import { useSignInMutation } from '@/store/apis/auth';
 import { isValidEmailAddress } from '@/utils/format-string';
-import React, { useState } from 'react';
-import { Button, Card, Form } from 'react-bootstrap';
-import { toast } from 'react-toastify';
 
-import { BackgroundImage, LoginContainer, Logo, LogoWrapper, Wrapper } from './styles';
+import { Logo, Wrapper, LogoWrapper, LoginContainer, BackgroundImage } from './styles';
 
 const LOGO = '/assets/images/logo.png';
 const BACKGROUND_IMAGE = '/assets/images/bg3.png';

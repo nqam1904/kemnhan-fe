@@ -1,0 +1,1 @@
+const p={rows:{style:{minHeight:"42px"}},headCells:{style:{paddingTop:"6px",paddingBottom:"6px",paddingLeft:"12px",paddingRight:"12px"}},cells:{style:{paddingTop:"6px",paddingBottom:"6px",paddingLeft:"12px",paddingRight:"12px"}}};export{p as c};

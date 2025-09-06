@@ -1,5 +1,5 @@
-import ImageAssets from '@/constants/ImagesAsset';
 import { paths } from '@/routes/paths';
+import ImageAssets from '@/constants/ImagesAsset';
 
 export type MobileNavItem = { type: 'link' | 'hash'; to: string; label: string };
 export const navItems: MobileNavItem[] = [

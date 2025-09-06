@@ -1,24 +1,24 @@
 import './product.css';
 
-import compactDataTableStyles from '@/components/data-table/styles';
-import ImageAssets from '@/constants/ImagesAsset';
-import { useGetCategoriesQuery } from '@/store/apis/category';
-import {
-    useCreateProductMutation,
-    useDeleteProductMutation,
-    useGetProductsQuery,
-    useUpdateProductMutation,
-} from '@/store/apis/products';
+import * as z from 'zod';
 import axiosInstance from '@/utils/axios';
 import { fNumber } from '@/utils/format-number';
-import { formatSubstring } from '@/utils/format-string';
 import resolveImageUrl from '@/utils/image-url';
-import React, { useMemo, useRef, useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import ImageAssets from '@/constants/ImagesAsset';
 import DataTable from 'react-data-table-component';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { Form, Modal, Button } from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
-import * as z from 'zod';
+import { formatSubstring } from '@/utils/format-string';
+import React, { useRef, useMemo, useState } from 'react';
+import { useGetCategoriesQuery } from '@/store/apis/category';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import compactDataTableStyles from '@/components/data-table/styles';
+import {
+    useGetProductsQuery,
+    useCreateProductMutation,
+    useDeleteProductMutation,
+    useUpdateProductMutation,
+} from '@/store/apis/products';
 
 const ProductsView: React.FC = () => {
     const { data: products = [], isLoading, refetch } = useGetProductsQuery();

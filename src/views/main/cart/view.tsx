@@ -1,15 +1,15 @@
 import './Cart.css';
 
-import ClearableInput from '@/components/clearable-input';
-import ImageAssets from '@/constants/ImagesAsset';
 import { paths } from '@/routes/paths';
-import { useCreateOrderMutation } from '@/store/apis/orders';
-import { fNumber } from '@/utils/format-number';
-import { isValidEmailAddress, validatePhoneNumber } from '@/utils/format-string';
-import { localStorageGetItem } from '@/utils/storage-available';
-import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { fNumber } from '@/utils/format-number';
+import ImageAssets from '@/constants/ImagesAsset';
+import { useMemo, useState, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import ClearableInput from '@/components/clearable-input';
+import { useCreateOrderMutation } from '@/store/apis/orders';
+import { localStorageGetItem } from '@/utils/storage-available';
+import { isValidEmailAddress, validatePhoneNumber } from '@/utils/format-string';
 
 import CartItem from './cart-item';
 

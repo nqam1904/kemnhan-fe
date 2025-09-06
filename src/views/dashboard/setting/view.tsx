@@ -1,10 +1,10 @@
-import ClearableInput from '@/components/clearable-input';
-import compactDataTableStyles from '@/components/data-table/styles';
-import axiosInstance, { endpoints } from '@/utils/axios';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { toast, ToastContainer } from 'react-toastify';
+import axiosInstance, { endpoints } from '@/utils/axios';
+import ClearableInput from '@/components/clearable-input';
+import compactDataTableStyles from '@/components/data-table/styles';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 
 const SettingComponent: React.FC = () => {
     const [settings, setSettings] = useState<any[]>([]);

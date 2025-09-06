@@ -101,10 +101,10 @@ const baseQuery = () =>
     },
   });
 
-const baseQueryInit = () =>
-  fetchBaseQuery({
-    baseUrl: `${CONFIG.serverUrl}/`,
-  });
+// const baseQueryInit = () =>
+//   fetchBaseQuery({
+//     baseUrl: `${CONFIG.serverUrl}/`,
+//   });
 
 const dynamicBaseQuery: BaseQueryFn<any | FetchArgs, unknown, FetchBaseQueryError> = async (
   args,
