@@ -1,20 +1,20 @@
 import { CONFIG } from '@/config-global';
-import { useDispatch } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
-import { addToCart } from '@/store/slices/cart';
+import { useParams } from 'react-router-dom';
+import { useGetProductQuery } from '@/store/apis/products';
 import ProductDetail from '@/views/main/product-detail/view';
 
-const metadata = { title: `Product - ${CONFIG.appName}` };
-
 export default function Page() {
-    const dispatch = useDispatch();
+    const { id } = useParams<{ id: string }>();
+    const { data: product } = useGetProductQuery({ id: id as string }, { skip: !id });
+    const dynamicTitle = `${product?.name || 'Product'} - ${CONFIG.appName}`;
 
     return (
         <>
             <Helmet>
-                <title> {metadata.title}</title>
+                <title>{dynamicTitle}</title>
             </Helmet>
-            <ProductDetail actAddToCart={(item: any) => dispatch(addToCart(item))} />
+            <ProductDetail />
         </>
     );
 }

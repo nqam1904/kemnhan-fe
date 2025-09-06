@@ -1,24 +1,24 @@
 import './product.css';
 
-import * as z from 'zod';
-import axiosInstance from '@/utils/axios';
-import { fNumber } from '@/utils/format-number';
-import resolveImageUrl from '@/utils/image-url';
-import ImageAssets from '@/constants/ImagesAsset';
-import DataTable from 'react-data-table-component';
-import { Form, Modal, Button } from 'react-bootstrap';
-import { toast, ToastContainer } from 'react-toastify';
-import { formatSubstring } from '@/utils/format-string';
-import React, { useRef, useMemo, useState } from 'react';
-import { useGetCategoriesQuery } from '@/store/apis/category';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import compactDataTableStyles from '@/components/data-table/styles';
+import ImageAssets from '@/constants/ImagesAsset';
+import { useGetCategoriesQuery } from '@/store/apis/category';
 import {
-    useGetProductsQuery,
     useCreateProductMutation,
     useDeleteProductMutation,
+    useGetProductsQuery,
     useUpdateProductMutation,
 } from '@/store/apis/products';
+import axiosInstance from '@/utils/axios';
+import { fNumber } from '@/utils/format-number';
+import { formatSubstring } from '@/utils/format-string';
+import resolveImageUrl from '@/utils/image-url';
+import React, { useMemo, useRef, useState } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
+import DataTable from 'react-data-table-component';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { toast, ToastContainer } from 'react-toastify';
+import * as z from 'zod';
 
 const ProductsView: React.FC = () => {
     const { data: products = [], isLoading, refetch } = useGetProductsQuery();
@@ -199,21 +199,32 @@ const ProductsView: React.FC = () => {
 
         try {
             if (form.id) {
-                await updateProduct({
-                    id: form.id,
-                    body: {
-                        name: form.name,
-                        unit: form.unit,
-                        description: form.description,
-                        displayPrice: parseInt(String((form.displayPrice as any) || 0).replace(/[^\d]/g, ''), 10),
-                        sellPrice: parseInt(String((form.sellPrice as any) || 0).replace(/[^\d]/g, ''), 10),
-                        stockQuantity: parseInt(String((form.stockQuantity as any) || 0).replace(/[^\d]/g, ''), 10),
-                        isFeature: form.isFeature,
-                        isActive: form.isActive,
-                        shopeeUrl: form.shopeeUrl,
-                        categoriesId: [parseInt(String(form.categoryId), 10)],
-                    },
-                }).unwrap();
+                // Upload newly added images (if any) and append to product via imagesId
+                let imagesId: Array<string | number> = [];
+                if (form.images && form.images.length > 0) {
+                    const formData = new FormData();
+                    form.images.forEach((file) => formData.append('medias', file));
+                    const mediaRes = await axiosInstance.post(`media`, formData, {
+                        headers: { 'Content-Type': 'multipart/form-data' },
+                    });
+                    imagesId = mediaRes?.data?.mediasId || [];
+                }
+
+                const body: any = {
+                    name: form.name,
+                    unit: form.unit,
+                    description: form.description,
+                    displayPrice: parseInt(String((form.displayPrice as any) || 0).replace(/[^\d]/g, ''), 10),
+                    sellPrice: parseInt(String((form.sellPrice as any) || 0).replace(/[^\d]/g, ''), 10),
+                    stockQuantity: parseInt(String((form.stockQuantity as any) || 0).replace(/[^\d]/g, ''), 10),
+                    isFeature: form.isFeature,
+                    isActive: form.isActive,
+                    shopeeUrl: form.shopeeUrl,
+                    categoriesId: [parseInt(String(form.categoryId), 10)],
+                };
+                if (imagesId.length > 0) body.imagesId = imagesId;
+
+                await updateProduct({ id: form.id, body }).unwrap();
                 toast.success('Cập nhật thành công!');
             } else {
                 const formData = new FormData();
@@ -499,7 +510,7 @@ const ProductsView: React.FC = () => {
                                                                 URL.revokeObjectURL(url);
                                                             } catch (_e) {
                                                                 console.log(_e);
-                                                             }
+                                                            }
                                                             setImagePreviews((prev) => prev.filter((_, i) => i !== idx));
                                                             setForm((prev) => {
                                                                 const apiCount = apiPreviewCountRef.current;

@@ -7,7 +7,7 @@ export default function CartPage() {
     const cartItem = useSelector((state: any) => state.cart);
 
     const actUpdateItem = (itemUpdate: any, quantity: number) => {
-        dispatch(updateCartItem({ id: itemUpdate, quantityDelta: quantity }));
+        dispatch(updateCartItem({ id: itemUpdate, quantities: quantity }));
     };
     const actDeleteItem = (id: string | number) => {
         dispatch(removeCartItem({ id }));

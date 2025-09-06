@@ -9,6 +9,8 @@ const HomePage = lazy(() => import('@/pages/main/home-page'));
 const AboutPage = lazy(() => import('@/pages/main/about-page'));
 const ProductDetailPage = lazy(() => import('@/pages/main/product-page'));
 const NewsPage = lazy(() => import('@/pages/main/news-page'));
+// Use relative path to satisfy TS path resolution here
+const NewsDetailPage = lazy(() => import('../../pages/main/news-detail-page'));
 const CartPage = lazy(() => import('@/pages/main/cart-page'));
 const SuccessPaymentPage = lazy(() => import('@/pages/main/payment-page'));
 const NotFoundPage = lazy(() => import('@/views/main/not-found-page/view'));
@@ -41,6 +43,7 @@ export const mainRoutes = [
                     { path: 'san-pham', element: <ProductListPage /> },
                     { path: 'chi-tiet-san-pham/:id', element: <ProductDetailPage /> },
                     { path: 'tin-tuc', element: <NewsPage /> },
+                    { path: 'tin-tuc/:id', element: <NewsDetailPage /> },
                     { path: 'gio-hang', element: <CartPage /> },
                     { path: 'thanh-toan-thanh-cong', element: <SuccessPaymentPage /> },
                     {

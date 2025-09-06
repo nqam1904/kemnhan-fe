@@ -60,6 +60,14 @@
     color: #1f1f1f;
 }
 
+/* Single-line ellipsis for product description */
+.product-card__desc {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .button_detail {
     display: flex;
     align-items: center;
@@ -222,6 +230,8 @@ h5 {
 @media (max-width: 767px) {
     .list__products {
         width: 100% !important;
+        /* Remove desktop negative offset to avoid overlap with header on mobile */
+        margin-top: 0 !important;
     }
 
     .list_product {

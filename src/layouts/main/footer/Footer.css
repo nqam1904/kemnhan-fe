@@ -1,7 +1,7 @@
 .footer {
     width: 100%;
     background: #fff0f6;
-    padding: 24px 0 0 0;
+    padding: 16px 0 0 0;
 }
 
 .footer__container {
@@ -10,7 +10,7 @@
     gap: 48px;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 0 24px 24px;
+    padding: 0 16px 16px;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -94,7 +94,7 @@
 
 .footer__bottom {
     border-top: 1px solid rgba(250, 84, 28, 0.3);
-    padding: 12px 24px;
+    padding: 12px 16px;
     display: flex;
     gap: 12px;
     align-items: center;
@@ -140,20 +140,20 @@
         gap: 28px;
         align-items: flex-start;
         justify-items: stretch;
-        padding: 0 20px 28px;
+        padding: 0 16px 16px;
     }
 
-    /* Keep logo on the left next to the title on mobile */
+    /* Stack logo above the brand text on mobile */
     .footer__brand {
-        flex-direction: row;
+        flex-direction: column;
         align-items: flex-start;
         text-align: left;
         gap: 12px;
     }
 
     .footer__brand img {
-        margin-right: 20px;
-        margin-bottom: 0;
+        margin-right: 0;
+        margin-bottom: 8px;
     }
 
     .footer__info {
@@ -186,5 +186,10 @@
     .footer__title {
         font-size: 18px;
         text-align: left;
+    }
+
+    /* Hide the social section on mobile */
+    .footer__container .footer__col:last-child {
+        display: none;
     }
 }

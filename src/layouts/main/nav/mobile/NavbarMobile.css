@@ -1,0 +1,150 @@
+.mobile-topbar {
+    display: none;
+}
+
+.logo_mobile {
+    width: 50px;
+}
+
+.menu__search {
+    display: none;
+}
+
+.menu__btn {
+    width: 40px;
+    height: 40px;
+    color: var(--brand-color);
+    display: none;
+    margin-left: 8px;
+    margin-top: 10px;
+    background: transparent;
+    border: none;
+}
+
+.menu__overplay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none;
+    animation: fadeIn linear 0.2s;
+}
+
+.menu__item__mobile {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 320px;
+    max-width: 100%;
+    background-color: #fff;
+    transform: translateX(-100%);
+    opacity: 0;
+    transition:
+        transform linear 0.2s,
+        opacity linear 0.2s;
+    font-family: 'Roboto', sans-serif;
+}
+
+.titile__link_mobile {
+    margin-top: 24px;
+    margin-left: 1rem;
+    color: #fa541c;
+    display: block;
+    padding: 12px 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.menu__mobile__close {
+    width: 28px;
+    height: 28px;
+    color: #fff;
+    position: absolute;
+    top: 0.4rem;
+    right: 1rem;
+}
+
+/* Sections inside mobile menu */
+.menu__mobile__section {
+    padding: 12px 16px 0 16px;
+}
+
+.menu__mobile__title {
+    margin: 12px 0 8px 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #874d00;
+}
+
+.menu__mobile__contacts {
+    display: grid;
+    gap: 10px;
+}
+
+.menu__mobile__contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #874d00;
+}
+
+.menu__mobile__socials {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 12px;
+    row-gap: 10px;
+}
+
+.menu__mobile__social {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #874d00;
+}
+
+#nav-mobile-input:checked~.menu__overplay,
+#nav-mobile-input:checked+.menu__overplay {
+    display: block;
+}
+
+#nav-mobile-input:checked~.menu__item__mobile,
+#nav-mobile-input:checked+.menu__overplay+.menu__item__mobile {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+@media (max-width: 1190px) {
+    .mobile-topbar {
+        height: 56px;
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+    }
+
+    .mobile-topbar__logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        text-align: center;
+    }
+
+    .menu__search {
+        width: 40px;
+        height: 40px;
+        color: #8a8a8a;
+        background: transparent;
+        border: none;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .menu__btn {
+        display: block !important;
+    }
+}

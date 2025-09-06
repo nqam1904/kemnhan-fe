@@ -1,16 +1,17 @@
 import { CONFIG } from '@/config-global';
 import { Helmet } from 'react-helmet-async';
-import BannerCarouselView from '@/views/dashboard/banner/view';
-
-const metadata = { title: `Banner - ${CONFIG.appName}` };
+import NewsDetailView from '@/views/main/news/detail-view';
 
 export default function Page() {
+    const siteTitle = `Tin tức - ${CONFIG.appName}`;
     return (
         <>
             <Helmet>
-                <title> {metadata.title}</title>
+                <title>{siteTitle}</title>
             </Helmet>
-            <BannerCarouselView />
+            <NewsDetailView />
         </>
     );
 }
+
+

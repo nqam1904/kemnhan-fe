@@ -43,7 +43,6 @@
     "reactstrap-date-picker": "^0.0.11",
     "redux": "^4.0.5",
     "styled-components": "^5.3.11",
-    "web-vitals": "^0.2.4",
     "zod": "^3.25.76"
   },
   "devDependencies": {

@@ -1,90 +1,72 @@
 import './news.css';
 
-import type { Promotion } from '@/store/types/promotion';
-
 import dayjs from 'dayjs';
 import { paths } from '@/routes/paths';
-import { Link } from 'react-router-dom';
-import { Placeholder } from 'react-bootstrap';
+import { Helmet } from 'react-helmet-async';
 import resolveImageUrl from '@/utils/image-url';
 import ImageAssets from '@/constants/ImagesAsset';
+import { Link, useParams } from 'react-router-dom';
+import { Breadcrumb, Placeholder } from 'react-bootstrap';
 import { useGetProductsQuery } from '@/store/apis/products';
-import { useGetPromotionsQuery } from '@/store/apis/promotions';
+import { useGetPromotionQuery, useGetPromotionsQuery } from '@/store/apis/promotions';
 
-function NewsView() {
-    const { data: promotions = [], isLoading } = useGetPromotionsQuery();
+function NewsDetailView() {
+    const { id } = useParams<{ id: string }>();
+    const { data: news, isLoading } = useGetPromotionQuery({ id: id as string }, { skip: !id });
+    const { data: promotions = [], isLoading: isLoadingPromotions } = useGetPromotionsQuery();
     const { data: products = [], isLoading: isLoadingProducts } = useGetProductsQuery();
+
+    const imageKey = news?.images?.[0]?.key;
+    const cover = imageKey ? resolveImageUrl(`${imageKey}`) : ImageAssets.logo;
+    const createdAtSrc: any = (news as any)?.createDate || (news as any)?.createdAt || '';
+    const createdAt = createdAtSrc ? dayjs(createdAtSrc) : null;
+    const createdDay = createdAt && createdAt.isValid() ? createdAt.format('DD') : '';
+    const createdMonth = createdAt && createdAt.isValid() ? `Th${createdAt.format('MM')}` : '';
+
+    const title = news?.name || 'Tin tức';
 
     return (
         <div id="news" className="news-page">
+            <Helmet>
+                <title>{title}</title>
+                <meta name="og:title" content={title} />
+            </Helmet>
             <div className="news-page__container">
                 <div className="news-page__main">
-                    <h2 className="news-page__title">Tin tức</h2>
-                    <div className="news-grid">
-                        {isLoading && (
-                            <>
-                                {Array.from({ length: 6 }).map((_, idx) => (
-                                    <article key={`sk-news-${idx}`} className="news-card">
-                                        <div className="news-card__thumb">
-                                            <div style={{ width: '100%', paddingTop: '56%', background: '#e9ecef' }} />
-                                            <div className="news-card__date">
-                                                <div className="news-card__date-day">&nbsp;</div>
-                                                <div className="news-card__date-month">&nbsp;</div>
-                                            </div>
-                                        </div>
-                                        <div className="news-card__content">
-                                            <Placeholder as="h3" animation="glow" className="news-card__title">
-                                                <Placeholder xs={6} />
-                                            </Placeholder>
-                                            <Placeholder as="p" animation="glow" className="news-card__excerpt">
-                                                <Placeholder xs={7} /> <Placeholder xs={5} /> <Placeholder xs={8} />
-                                            </Placeholder>
-                                        </div>
-                                    </article>
-                                ))}
-                            </>
+                    <Breadcrumb>
+                        <Breadcrumb.Item linkAs={Link as any} linkProps={{ to: '/' }}>
+                            Trang chủ
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item linkAs={Link as any} linkProps={{ to: paths.main.news }}>
+                            Tin tức
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item active>{title}</Breadcrumb.Item>
+                    </Breadcrumb>
+
+                    <article className="news-detail">
+                        <h1 className="news-detail__title">{title}</h1>
+                        {isLoading ? (
+                            <div style={{ width: '100%', paddingTop: '56%', background: '#e9ecef' }} />
+                        ) : (
+                            <div className="news-detail__thumb">
+                                <img src={cover} alt={title} />
+                                <div className="news-card__date">
+                                    <div className="news-card__date-day">{createdDay}</div>
+                                    <div className="news-card__date-month">{createdMonth}</div>
+                                </div>
+                            </div>
                         )}
-                        {!isLoading && promotions.length === 0 && (
-                            <div className="news-empty">Chưa có tin tức.</div>
-                        )}
-                        {!isLoading &&
-                            promotions.map((item: Promotion) => {
-                                const key = item.images?.[0]?.key;
-                                const img = key ? resolveImageUrl(`${key}`) : ImageAssets.logo;
-                                const createdAtSrc: any = (item as any).createDate || (item as any).createdAt || '';
-                                const createdAt = createdAtSrc ? dayjs(createdAtSrc) : null;
-                                const createdDay = createdAt && createdAt.isValid() ? createdAt.format('DD') : '';
-                                const createdMonth = createdAt && createdAt.isValid() ? `Th${createdAt.format('MM')}` : '';
-                                return (
-                                    <article key={String(item.id)} className="news-card">
-                                        <div className="news-card__thumb">
-                                            <Link to={paths.main.newsDetail(item.id)}>
-                                                <img src={img} alt={item.name} />
-                                            </Link>
-                                            <div className="news-card__date">
-                                                <div className="news-card__date-day">{createdDay}</div>
-                                                <div className="news-card__date-month">{createdMonth}</div>
-                                            </div>
-                                        </div>
-                                        <div className="news-card__content">
-                                            <h3 className="news-card__title">
-                                                <Link to={paths.main.newsDetail(item.id)}>{item.name}</Link>
-                                            </h3>
-                                            <p
-                                                className="news-card__excerpt"
-                                                dangerouslySetInnerHTML={{ __html: item.content || '' }}
-                                            />
-                                        </div>
-                                    </article>
-                                );
-                            })}
-                    </div>
+                        <div
+                            className="news-detail__content"
+                            dangerouslySetInnerHTML={{ __html: news?.content || '' }}
+                        />
+                    </article>
                 </div>
 
                 <aside className="news-page__sidebar">
                     <h3 className="news-page__sidebar-title">Bài viết mới</h3>
                     <ul className="news-list">
-                        {isLoading && (
+                        {isLoadingPromotions && (
                             <>
                                 {Array.from({ length: 4 }).map((_, idx) => (
                                     <li key={`sk-latest-${idx}`} className="news-list__item">
@@ -104,9 +86,9 @@ function NewsView() {
                                 ))}
                             </>
                         )}
-                        {!isLoading &&
-                            promotions.slice(0, 5).map((item: Promotion) => {
-                                const key = item.images?.[0]?.key;
+                        {!isLoadingPromotions &&
+                            promotions.slice(0, 5).map((item: any) => {
+                                const key = item?.images?.[0]?.key;
                                 const img = key ? resolveImageUrl(`${key}`) : ImageAssets.logo;
                                 return (
                                     <li key={`latest-${String(item.id)}`} className="news-list__item">
@@ -170,4 +152,6 @@ function NewsView() {
     );
 }
 
-export default NewsView;
+export default NewsDetailView;
+
+

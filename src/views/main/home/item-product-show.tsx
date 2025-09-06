@@ -41,7 +41,7 @@ const ItemProductShow: React.FC<ItemProductShowProps> = (props: any) => {
             />
             <Card.Body>
                 <Card.Title>{name}</Card.Title>
-                <Card.Text>
+                <Card.Text className="product-card__desc" title={description}>
                     {description}
                 </Card.Text>
                 {price !== undefined && (

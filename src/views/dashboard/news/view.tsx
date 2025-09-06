@@ -183,11 +183,29 @@ const NewsView: React.FC = () => {
                 ),
             },
             {
-                name: 'Ngày kết thúc',
-                selector: 'endDate',
+                name: 'Ngày tạo',
+                selector: (row: Promotion) => (row as any).createDate || (row as any).createdAt || '',
                 sortable: true,
                 right: true,
-                cell: (row: Promotion) => <span>{fDate(row.endDate, 'DD/MM/YYYY')}</span>,
+                cell: (row: Promotion) => (
+                    <span>{fDate((row as any).createDate || (row as any).createdAt, 'DD/MM/YYYY')}</span>
+                ),
+            },
+            {
+                name: 'Ngày cập nhật',
+                selector: (row: Promotion) => (row as any).writeDate || (row as any).updatedAt || '',
+                sortable: true,
+                right: true,
+                cell: (row: Promotion) => (
+                    <span>{fDate((row as any).writeDate || (row as any).updatedAt, 'DD/MM/YYYY')}</span>
+                ),
+            },
+            {
+                name: 'Ngày kết thúc',
+                selector: (row: Promotion) => (row as any).endDate || '',
+                sortable: true,
+                right: true,
+                cell: (row: Promotion) => <span>{fDate((row as any).endDate, 'DD/MM/YYYY')}</span>,
             },
             {
                 name: 'Hiển thị',

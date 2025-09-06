@@ -1,11 +1,17 @@
 // Carousel types
+export type MediaRef = {
+  id: string | number;
+  url?: string;
+  key?: string;
+};
+
 export type Carousel = {
-    id: string | number;
-    images: any; // or a single image depending on BE
-    name?: string;
-    isActive?: boolean;
-    createDate?: string;
-    writeDate?: string;
+  id: string | number;
+  name: string;
+  image: MediaRef;
+  isActive: boolean;
+  createDate?: string;
+  writeDate?: string;
 };
 
 export type CarouselListResponse = Carousel[];

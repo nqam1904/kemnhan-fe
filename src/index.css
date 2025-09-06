@@ -5,23 +5,22 @@
 
     .page_product_detail {
         margin-top: 100px;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
+        padding: 0 12px;
     }
 
     .group-logo {
         display: none !important;
     }
 
-    .logo_mobile {
-        width: 50px;
-    }
 
     .button-cart {
         position: relative;
         left: 0.1rem;
+    }
+
+    /* Hide desktop cart button in header on mobile; keep only topbar icon */
+    .header_client .button-cart {
+        display: none;
     }
 
     .menu__item {
@@ -31,9 +30,6 @@
         text-align: center;
     }
 
-    .menu__btn {
-        display: block !important;
-    }
 
     .menu__item__pc {
         display: none !important;
@@ -42,6 +38,8 @@
     .links {
         display: none !important;
     }
+
+
 
     .list__products {
         margin-top: 0px;
@@ -113,13 +111,13 @@
     }
 
     .product_body {
-        width: 350px;
+        width: 100%;
         border: 1px solid #e5e5e5;
         position: relative;
-        height: 500px;
+        min-height: 0;
         border-radius: 12px;
         background-color: #fff;
-        padding: 24px;
+        padding: 16px;
         margin-top: 10px;
     }
 
@@ -134,8 +132,8 @@
     }
 
     .option_detail .btn_buy {
-        margin-left: 10px;
-        margin-right: 10px;
+        margin-left: 0;
+        margin-right: 0;
     }
 
     .img_empty_cart {
@@ -161,12 +159,12 @@
     .product_content,
     .content_des {
         font-family: 'Roboto', sans-serif;
-        width: 15.5rem;
-        height: 168px;
+        width: 100%;
+        height: auto;
         font-style: normal;
         font-weight: normal;
-        font-size: 24px;
-        line-height: 40px;
+        font-size: 18px;
+        line-height: 28px;
     }
 
     .content_price {
@@ -179,7 +177,8 @@
     }
 
     .product_img img {
-        width: 350px;
+        width: 100%;
+        height: auto;
     }
 
     .item__news {
@@ -193,66 +192,4 @@
     }
 }
 
-/* mobile layout */
-
-.menu__btn {
-    width: 40px;
-    height: 40px;
-    color: #e0501b;
-    display: none;
-    margin-left: 8px;
-    margin-top: 10px;
-}
-
-.menu__overplay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.3);
-    display: none;
-    animation: fadeIn linear 0.2s;
-}
-
-.menu__item__mobile {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 320px;
-    max-width: 100%;
-    background-color: #fff;
-    transform: translateX(-100%);
-    opacity: 0;
-    transition:
-        transform linear 0.2s,
-        opacity linear 0.2s;
-}
-
-.titile__link_mobile {
-    margin-top: 24px;
-    margin-left: 1rem;
-    color: #333;
-    display: block;
-    padding: 8px 0;
-    font-size: 1.4rem;
-}
-
-.menu__mobile__close {
-    width: 28px;
-    height: 28px;
-    color: #666;
-    position: absolute;
-    top: 0.4rem;
-    right: 1rem;
-}
-
-#nav-mobile-input:checked ~ .menu__overplay {
-    display: block;
-}
-
-#nav-mobile-input:checked ~ .menu__item__mobile {
-    transform: translateX(0);
-    opacity: 1;
-}
+/* mobile layout moved to NavbarMobile.css */

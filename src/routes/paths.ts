@@ -38,6 +38,7 @@ export const paths = {
     product: `${ROOTS.MAIN}/san-pham`,
     productDetail: (id: string | number) => `${ROOTS.MAIN}/chi-tiet-san-pham/${id}`,
     news: `${ROOTS.MAIN}/tin-tuc`,
+    newsDetail: (id: string | number) => `${ROOTS.MAIN}/tin-tuc/${id}`,
     cart: `${ROOTS.MAIN}/gio-hang`,
     checkout: `${ROOTS.MAIN}/thanh-toan`,
     contact: `${ROOTS.MAIN}/lien-he`,

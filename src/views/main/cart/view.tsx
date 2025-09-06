@@ -1,19 +1,29 @@
 import './Cart.css';
 
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { CONFIG } from '@/config-global';
-import { fNumber } from '@/utils/format-number';
-import ImageAssets from '@/constants/ImagesAsset';
-import { useMemo, useState, useEffect } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
 import ClearableInput from '@/components/clearable-input';
+import ImageAssets from '@/constants/ImagesAsset';
+import { paths } from '@/routes/paths';
+import { useCreateOrderMutation } from '@/store/apis/orders';
+import { fNumber } from '@/utils/format-number';
 import { isValidEmailAddress, validatePhoneNumber } from '@/utils/format-string';
+import { localStorageGetItem } from '@/utils/storage-available';
+import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 import CartItem from './cart-item';
 
 type Product = { id: string | number; price: number };
 type LineItem = { product: Product; quantity: number };
+
+type CustomerForm = {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email: string;
+    address: string;
+    note: string;
+};
 
 interface CartViewProps {
     cartItem: LineItem[];
@@ -23,17 +33,20 @@ interface CartViewProps {
 }
 
 function CartView(props: CartViewProps) {
+    const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
     const [showCustom, setShowCustom] = useState<boolean>(false);
     const [layout, setLayout] = useState<string>('container-fluid');
-    const [firstName, setFirstName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
-    const [phone, setPhone] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [address, setAddress] = useState<string>('');
-    const [note, setNote] = useState<string>('');
+    const [form, setForm] = useState<CustomerForm>({
+        firstName: '',
+        lastName: '',
+        phone: '',
+        email: '',
+        address: '',
+        note: '',
+    });
 
     useEffect(() => {
-        if (!(localStorage.getItem('token') || '')) {
+        if (!(localStorageGetItem('token') || '')) {
             setLayout('container');
         } else {
             setShowCustom(true);
@@ -51,10 +64,10 @@ function CartView(props: CartViewProps) {
         toast.success('Cập nhật thành công!');
     };
 
-    const showCartItem = () => {
-        const { cartItem } = props;
-        if (!Array.isArray(cartItem) || cartItem.length === 0) return null;
-        return cartItem.map((item, index) => {
+    const cartItems = props?.cartItem ?? [];
+    const renderCartItems = useMemo(() => {
+        if (!Array.isArray(cartItems) || cartItems.length === 0) return null;
+        return cartItems.map((item, index) => {
             const quantity = Number(item.quantity) || 0;
             return (
                 <CartItem
@@ -66,7 +79,7 @@ function CartView(props: CartViewProps) {
                 />
             );
         });
-    };
+    }, [cartItems]);
 
     const onDeleteItem = (id: string | number) => {
         if (window.confirm('Bạn muốn xoá sản phẩm này')) {
@@ -79,26 +92,21 @@ function CartView(props: CartViewProps) {
             }
         }
     };
-    const totalAmount = useMemo(() => {
-        const items = props?.cartItem ?? [];
-        return items.reduce(
+    const totalAmount = useMemo(
+        () => cartItems.reduce(
             (sum, it) => sum + (Number(it?.product?.price) || 0) * (Number(it?.quantity) || 0),
             0
-        );
-    }, [props?.cartItem]);
+        ),
+        [cartItems]
+    );
     const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         e.preventDefault();
         const { target } = e;
-        const { name } = target;
-        const { value } = target;
-        if (name === 'firstName') setFirstName(value);
-        else if (name === 'lastName') setLastName(value);
-        else if (name === 'address') setAddress(value);
-        else if (name === 'phone') setPhone(value);
-        else if (name === 'email') setEmail(value);
-        else if (name === 'note') setNote(value);
+        const { name, value } = target as { name: keyof CustomerForm; value: string };
+        setForm((prev) => ({ ...prev, [name]: value }));
     };
-    const payment = () => {
+    const payment = async () => {
+        const { firstName, lastName, email, address, phone, note } = form;
         const { cartItem } = props;
         const date = new Date();
         if (firstName === '' || lastName === '' || email === '' || address === '' || phone === '') {
@@ -121,38 +129,36 @@ function CartView(props: CartViewProps) {
             discount: 0,
             note,
         }));
-        axios
-            .post(`${CONFIG.serverUrl}/orders`, {
-                data: date,
-                expectDateDelivery: date,
-                note,
-                customer: {
-                    firstName,
-                    lastName,
-                    phone,
-                    email,
-                    address,
+        try {
+            await createOrder({
+                body: {
+                    data: date,
+                    expectDateDelivery: date,
+                    note,
+                    customer: {
+                        firstName,
+                        lastName,
+                        phone,
+                        email,
+                        address,
+                    },
+                    lines: listProduct,
                 },
-                lines: listProduct,
-            })
-            .then((_) => {
-                props?.actDeleteAll();
-                setShowCustom(false);
-                setLayout('container');
-                window.location.href = '/SuccessPayment';
-            })
-            .catch((_) => {
-                toast.error('Có lỗi xảy ra');
-            });
-    };
-
-    const onDeleteAll = () => {
-        if (localStorage.getItem('token') || '') {
+            }).unwrap();
             props?.actDeleteAll();
             setShowCustom(false);
             setLayout('container');
-            toast.success('Thành công!');
+            window.location.href = paths.main.successPayment;
+        } catch (error) {
+            toast.error('Có lỗi xảy ra');
         }
+    };
+
+    const onDeleteAll = () => {
+        props?.actDeleteAll();
+        setShowCustom(false);
+        setLayout('container');
+        toast.success('Thành công!');
     };
     const emptyCart = (
         <div className="description_cart">
@@ -176,25 +182,25 @@ function CartView(props: CartViewProps) {
                         style={{ marginLeft: 20, width: '90%' }}
                         onChange={onChange as any}
                         name="firstName"
-                        value={firstName}
+                        value={form.firstName}
                         placeholder="Nhập họ"
-                    />{' '}
+                    />
                     <br />
                     <ClearableInput
                         className="input_custom"
                         style={{ marginLeft: 20, width: '90%' }}
                         onChange={onChange as any}
                         name="lastName"
-                        value={lastName}
+                        value={form.lastName}
                         placeholder="Nhập tên"
-                    />{' '}
+                    />
                     <br />
                     <ClearableInput
                         className="input_custom"
                         placeholder="Nhập địa chỉ"
                         style={{ marginLeft: 20, width: '90%' }}
                         name="address"
-                        value={address}
+                        value={form.address}
                         onChange={onChange as any}
                     />
                     <br />
@@ -204,7 +210,7 @@ function CartView(props: CartViewProps) {
                         placeholder="Nhập số điện thoại"
                         name="phone"
                         type="tel"
-                        value={phone}
+                        value={form.phone}
                         onChange={onChange as any}
                     />
                     <br />
@@ -212,7 +218,7 @@ function CartView(props: CartViewProps) {
                         className="input_custom"
                         style={{ marginLeft: 20, width: '90%' }}
                         placeholder="Nhập email"
-                        value={email}
+                        value={form.email}
                         name="email"
                         type="email"
                         onChange={onChange as any}
@@ -221,7 +227,7 @@ function CartView(props: CartViewProps) {
                         className="input_custom"
                         style={{ marginLeft: 20, width: '90%' }}
                         placeholder="Nhập ghi chú nếu có"
-                        value={note}
+                        value={form.note}
                         name="note"
                         onChange={onChange as any}
                     />
@@ -237,7 +243,7 @@ function CartView(props: CartViewProps) {
                     <p className="total">{fNumber(totalAmount)} đ</p>
                 </div>
             </div>
-            <button type="button" className="btn_payment" onClick={payment}>
+            <button type="button" className="btn_payment" onClick={payment} disabled={isCreatingOrder}>
                 Đặt mua
             </button>
         </div>
@@ -249,7 +255,7 @@ function CartView(props: CartViewProps) {
                 <div className="card_cart">
                     <div className="cart_header">
                         <p className="content_cart">Giỏ hàng</p>
-                        <p className="number_cart">{props?.cartItem.length ?? 0} Sản phẩm</p>
+                        <p className="number_cart">{props?.cartItem.length ?? 0} sản phẩm</p>
                     </div>
                     <div className="cart_body">
                         <div className="option">
@@ -261,11 +267,11 @@ function CartView(props: CartViewProps) {
                             </div>
                             <button type="button" className="delete_item" onClick={onDeleteAll}>
                                 <img src={ImageAssets.delete} alt="delete" />
-                                <p className="text_delete">Xoá Tất cả</p>
+                                <p className="text_delete">Xoá tất cả</p>
                             </button>
                         </div>
                         <div className="content_cart_item">
-                            {!(localStorage.getItem('token') || '') ? emptyCart : showCartItem()}
+                            {props?.cartItem?.length ? renderCartItems : emptyCart}
                         </div>
                     </div>
                 </div>
