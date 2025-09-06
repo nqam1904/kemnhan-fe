@@ -7,7 +7,7 @@
   "scripts": {
     "all": "rm -rf node_modules dist build && yarn",
     "dev": "node start-dev.js",
-    "start": "vite preview",
+    "start": "vite preview --port 8080 --strictPort",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
     "fm:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
