@@ -8,6 +8,7 @@ import checker from 'vite-plugin-checker';
 const PORT = 8080;
 
 export default defineConfig(({ mode }) => ({
+  base: '/',
   build: {
     outDir: 'dist',
     minify: 'esbuild',
