@@ -1,1 +1,0 @@
-import{j as o}from"./vendor-react-D439mYZB.js";import"./vendor-misc-BkUckcGj.js";import"./vendor-redux-CY9rYXZh.js";import"./vendor-ui-qtF25uBn.js";function m(){return o.jsx("div",{children:"Coming soon"})}export{m as default};
