@@ -1,11 +1,11 @@
-import compactDataTableStyles from '@/components/data-table/styles';
-import { useRouter } from '@/routes/hooks';
-import { useGetCustomersQuery, useLazyGetCustomerByIdQuery } from '@/store/apis/customers';
-import { fDateTime } from '@/utils/format-time';
-import React, { useCallback, useMemo, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
-import DataTable from 'react-data-table-component';
 import { toast } from 'react-toastify';
+import { useRouter } from '@/routes/hooks';
+import { fDateTime } from '@/utils/format-time';
+import { Modal, Button } from 'react-bootstrap';
+import DataTable from 'react-data-table-component';
+import React, { useMemo, useState, useCallback } from 'react';
+import compactDataTableStyles from '@/components/data-table/styles';
+import { useGetCustomersQuery, useLazyGetCustomerByIdQuery } from '@/store/apis/customers';
 
 const CustomerView: React.FC = () => {
     const { data: customers = [], isLoading } = useGetCustomersQuery();
@@ -38,28 +38,27 @@ const CustomerView: React.FC = () => {
 
     const columns = useMemo(
         () => [
-            { name: '#', selector: 'id', sortable: true },
-            { name: 'Họ', selector: 'firstName', sortable: true },
-            { name: 'Tên', selector: 'lastName', sortable: true },
-            { name: 'Số điện thoại', selector: 'phone', sortable: true, right: true },
-            { name: 'Email', selector: 'email', sortable: true, right: true },
+            { name: '#', selector: (row: any) => row.id, sortable: true },
+            { name: 'Họ', selector: (row: any) => row.firstName, sortable: true },
+            { name: 'Tên', selector: (row: any) => row.lastName, sortable: true },
+            { name: 'Số điện thoại', selector: (row: any) => row.phone, sortable: true, },
+            { name: 'Email', selector: (row: any) => row.email, sortable: true, },
             {
                 name: 'Ngày mua hàng',
-                selector: 'createDate',
+                selector: (row: any) => row.createDate || '',
                 sortable: true,
-                right: true,
                 cell: (row: any) => <span>{fDateTime(row.createDate, 'HH:mm DD/MM/YYYY')}</span>
             },
             {
                 name: 'Ngày chỉnh sửa',
-                selector: 'writeDate',
+                selector: (row: any) => row.writeDate || '',
                 sortable: true,
-                right: true,
                 cell: (row: any) => <span>{fDateTime(row.writeDate, 'HH:mm DD/MM/YYYY')}</span>
             },
             {
                 name: 'Hành động',
-                selector: (data: any) => (
+                selector: (row: any) => row.id,
+                cell: (data: any) => (
                     <Button
                         type="button"
                         className="btn btn-primary white mr-10"

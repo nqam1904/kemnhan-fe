@@ -109,7 +109,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #fa541c;
     color: #fff;
     box-sizing: border-box;
     border-radius: 4px;
@@ -124,8 +123,8 @@
 
 h5 {
     display: block;
-    background-color: #fa541c;
     color: #fff;
+    margin-top: 10px;
     padding: 0.5rem;
     border-radius: 0 0 12px 12px;
     transform: translate3d(0, -100%, 0);

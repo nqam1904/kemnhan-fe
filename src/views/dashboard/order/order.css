@@ -1,0 +1,45 @@
+/* Order status labels (pill style) */
+.status-label {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.2px;
+}
+
+.status-completed {
+    color: #16a34a;
+    /* green-600 */
+    background-color: #dcfce7;
+    /* green-100 */
+}
+
+.status-transit {
+    color: #0ea5e9;
+    /* sky-500 */
+    background-color: #e0f2fe;
+    /* sky-100 */
+}
+
+.status-pending {
+    color: #f59e0b;
+    /* amber-500 */
+    background-color: #fef3c7;
+    /* amber-100 */
+}
+
+.status-cancelled {
+    color: #ef4444;
+    /* red-500 */
+    background-color: #fee2e2;
+    /* red-100 */
+}
+
+.status-unknown {
+    color: #6b7280;
+    /* gray-500 */
+    background-color: #f3f4f6;
+    /* gray-100 */
+}

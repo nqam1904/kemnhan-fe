@@ -1,17 +1,17 @@
 import './Cart.css';
 
-import ClearableInput from '@/components/clearable-input';
-import ImageAssets from '@/constants/ImagesAsset';
-import { useResponsive } from '@/hooks/use-responsive';
-import { useRouter } from '@/routes/hooks';
 import { paths } from '@/routes/paths';
-import { useCreateOrderMutation } from '@/store/apis/orders';
-import { fNumber } from '@/utils/format-number';
-import { isValidEmailAddress, validatePhoneNumber } from '@/utils/format-string';
-import { useEffect, useMemo, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useRouter } from '@/routes/hooks';
+import { fNumber } from '@/utils/format-number';
+import { Modal, Button } from 'react-bootstrap';
+import ImageAssets from '@/constants/ImagesAsset';
+import { useMemo, useState, useEffect } from 'react';
+import { useResponsive } from '@/hooks/use-responsive';
 import { toast, ToastContainer } from 'react-toastify';
+import ClearableInput from '@/components/clearable-input';
+import { useCreateOrderMutation } from '@/store/apis/orders';
+import { isValidEmailAddress, validatePhoneNumber } from '@/utils/format-string';
 
 import CartItem from './cart-item';
 

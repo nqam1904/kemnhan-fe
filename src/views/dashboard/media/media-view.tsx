@@ -79,14 +79,15 @@ function MediaComponent(): React.ReactNode {
             },
             {
                 name: 'Hành động',
-                selector: (data: Setting) => (
+                selector: (row: Setting) => row.id,
+                cell: (data: Setting) => (
                     <Button
-                            type="button"
-                            className="btn btn-success white mr-10"
-                            onClick={() => onEdit(data.id)}
-                        >
-                            Cập nhật
-                        </Button>
+                        type="button"
+                        className="btn btn-success white mr-10"
+                        onClick={() => onEdit(data.id)}
+                    >
+                        Cập nhật
+                    </Button>
                 ),
             },
         ],

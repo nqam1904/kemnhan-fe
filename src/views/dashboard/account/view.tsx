@@ -118,54 +118,55 @@ const AccountView: React.FC = () => {
         () => [
             {
                 name: '#',
-                selector: 'id',
+                selector: (row: any) => row.id,
                 sortable: true,
             },
             {
                 name: 'Họ',
-                selector: 'firstName',
+                selector: (row: any) => row.firstName,
                 sortable: true,
             },
             {
                 name: 'Tên',
-                selector: 'lastName',
+                selector: (row: any) => row.lastName,
                 sortable: true,
             },
             {
                 name: 'Số điện thoại',
-                selector: 'phone',
+                selector: (row: any) => row.phone,
                 sortable: true,
                 right: true,
             },
             {
                 name: 'Email',
-                selector: 'email',
+                selector: (row: any) => row.email,
                 sortable: true,
                 right: true,
             },
             {
                 name: 'Chức vụ ',
-                selector: 'role',
+                selector: (row: any) => row.role,
                 sortable: true,
                 right: true,
             },
             {
                 name: 'Ngày tạo',
-                selector: 'createDate',
+                selector: (row: any) => row.createDate,
                 sortable: true,
                 right: true,
                 cell: (row: any) => <span>{fDate(row.createDate, 'DD/MM/YYYY')}</span>,
             },
             {
                 name: 'Ngày chỉnh sửa',
-                selector: 'writeDate',
+                selector: (row: any) => row.writeDate,
                 sortable: true,
                 right: true,
                 cell: (row: any) => <span>{fDate(row.writeDate, 'DD/MM/YYYY')}</span>,
             },
             {
                 name: 'Chức năng',
-                selector: (data: any) => (
+                selector: (row: any) => row.id,
+                cell: (data: any) => (
                     <>
                         <Button
                             type="button"

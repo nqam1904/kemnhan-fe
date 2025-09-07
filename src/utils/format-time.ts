@@ -73,7 +73,6 @@ export function fDate(date: DatePickerFormat, format?: string) {
 /** output: 12:00 am
  */
 export function fTime(date: DatePickerFormat, format?: string) {
-    console.log(date, 'date');
     if (!date) {
         return null;
     }

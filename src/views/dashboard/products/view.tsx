@@ -265,8 +265,8 @@ const ProductsView: React.FC = () => {
 
     const columns = useMemo(
         () => [
-            { name: '#', selector: 'id', sortable: true },
-            { name: 'Tên sản phẩm', selector: 'name', sortable: true },
+            { name: '#', selector: (row: any) => row.id, sortable: true },
+            { name: 'Tên sản phẩm', selector: (row: any) => row.name, sortable: true },
             {
                 name: 'Hình ảnh',
                 selector: (row: any) => row.images?.[0]?.key || '',
@@ -276,6 +276,7 @@ const ProductsView: React.FC = () => {
 
                     return (
                         <div style={{ padding: 8 }}>
+                            {/* @ts-ignore */}
                             <LazyLoadImage
                                 src={src}
                                 alt={row.name}
@@ -291,15 +292,15 @@ const ProductsView: React.FC = () => {
             },
             {
                 name: 'Giá tiền',
-                selector: 'sellPrice',
+                selector: (row: any) => row.sellPrice,
                 cell: (row: any) => <span>{fNumber(row.sellPrice)} VNĐ</span>,
             },
-            { name: 'Đã bán', selector: 'soldQuantity' },
-            { name: 'Đơn vị', selector: 'unit' },
-            { name: 'Số lượng', selector: 'stockQuantity' },
+            { name: 'Đã bán', selector: (row: any) => row.soldQuantity },
+            { name: 'Đơn vị', selector: (row: any) => row.unit },
+            { name: 'Số lượng', selector: (row: any) => row.stockQuantity },
             {
                 name: 'Mô tả',
-                selector: 'description',
+                selector: (row: any) => row.description,
                 cell: (row: any) => (
                     <div style={{ maxWidth: 400, overflow: 'hidden' }}>
                         {formatSubstring(row.description || '')}
@@ -308,7 +309,7 @@ const ProductsView: React.FC = () => {
             },
             {
                 name: 'Nổi bật',
-                selector: 'isFeature',
+                selector: (row: any) => row.isFeature,
                 cell: (row: any) => (
                     <Button variant="link" className="p-0" onClick={() => onToggleFeature(row)}>
                         <img
@@ -321,7 +322,7 @@ const ProductsView: React.FC = () => {
             },
             {
                 name: 'Hiển thị',
-                selector: 'isActive',
+                selector: (row: any) => row.isActive,
                 cell: (row: any) => (
                     <Button variant="link" className="p-0" onClick={() => onToggleActive(row)}>
                         <img
@@ -334,7 +335,7 @@ const ProductsView: React.FC = () => {
             },
             {
                 name: 'Chức năng',
-                selector: (row: any) => row.id as any,
+                selector: (row: any) => row.id,
                 cell: (row: any) => (
                     <>
                         <Button

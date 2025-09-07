@@ -158,8 +158,8 @@ const NewsView: React.FC = () => {
 
     const columns = useMemo(
         () => [
-            { name: '#', selector: 'id', sortable: true },
-            { name: 'Tiêu đề', selector: 'name', sortable: true },
+            { name: '#', selector: (row: Promotion) => row.id, sortable: true },
+            { name: 'Tiêu đề', selector: (row: Promotion) => row.name, sortable: true },
             {
                 name: 'Hình ảnh',
                 selector: (row: Promotion) => row.images?.[0]?.key || '',
@@ -173,7 +173,7 @@ const NewsView: React.FC = () => {
             },
             {
                 name: 'Nội dung',
-                selector: 'content',
+                selector: (row: Promotion) => row.content,
                 grow: 3,
                 cell: (row: Promotion) => (
                     <div
@@ -186,7 +186,6 @@ const NewsView: React.FC = () => {
                 name: 'Ngày tạo',
                 selector: (row: Promotion) => (row as any).createDate || (row as any).createdAt || '',
                 sortable: true,
-                right: true,
                 cell: (row: Promotion) => (
                     <span>{fDate((row as any).createDate || (row as any).createdAt, 'DD/MM/YYYY')}</span>
                 ),
@@ -195,7 +194,6 @@ const NewsView: React.FC = () => {
                 name: 'Ngày cập nhật',
                 selector: (row: Promotion) => (row as any).writeDate || (row as any).updatedAt || '',
                 sortable: true,
-                right: true,
                 cell: (row: Promotion) => (
                     <span>{fDate((row as any).writeDate || (row as any).updatedAt, 'DD/MM/YYYY')}</span>
                 ),
@@ -204,13 +202,11 @@ const NewsView: React.FC = () => {
                 name: 'Ngày kết thúc',
                 selector: (row: Promotion) => (row as any).endDate || '',
                 sortable: true,
-                right: true,
                 cell: (row: Promotion) => <span>{fDate((row as any).endDate, 'DD/MM/YYYY')}</span>,
             },
             {
                 name: 'Hiển thị',
-                selector: 'isActive',
-                right: true,
+                selector: (row: Promotion) => row.isActive,
                 cell: (row: Promotion) => (
                     <Button
                         variant="link"
@@ -228,7 +224,7 @@ const NewsView: React.FC = () => {
             },
             {
                 name: 'Chức năng',
-                selector: (row: Promotion) => row.id as any,
+                selector: (row: Promotion) => row.id,
                 cell: (row: Promotion) => (
                     <>
                         <Button

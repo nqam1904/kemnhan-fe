@@ -1,11 +1,13 @@
+import './order.css';
+
 import type { Order } from '@/store/types/order';
 
 import { useRouter } from '@/routes/hooks';
-import { Modal, Button } from 'react-bootstrap';
 import React, { useMemo, useState } from 'react';
 import { fCurrency } from '@/utils/format-number';
 import DataTable from 'react-data-table-component';
 import { fDate, fDateTime } from '@/utils/format-time';
+import { Badge, Modal, Button } from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
 import compactDataTableStyles from '@/components/data-table/styles';
 import { useGetOrdersQuery, useUpdateOrderStatusMutation } from '@/store/apis/orders';
@@ -46,8 +48,20 @@ const OrderView: React.FC = () => {
         router.push('https://kemnhanonline.vn/api/orders/export');
     };
 
-    const statusText = (s: number) =>
-        s === 1 ? 'Chờ duyệt' : s === 2 ? 'Đang giao hàng' : s === 3 ? 'Hoàn thành đơn' : 'Từ chối đơn hàng';
+    const getOrderStatusBadge = (status: number) => {
+        switch (status) {
+            case 1:
+                return <Badge bg="warning">Chờ duyệt</Badge>;
+            case 2:
+                return <Badge bg="info">Đang giao</Badge>;
+            case 3:
+                return <Badge bg="success">Hoàn thành</Badge>;
+            case 4:
+                return <Badge bg="danger">Từ chối</Badge>;
+            default:
+                return <Badge bg="secondary">Không xác định</Badge>;
+        }
+    };
 
     const columns = useMemo(
         () => [
@@ -61,26 +75,23 @@ const OrderView: React.FC = () => {
             {
                 name: 'Tổng tiền',
                 selector: (row: Order) => row.amountTotal,
-                right: true,
                 cell: (row: Order) => <span>{fCurrency(row.amountTotal, { currency: 'VND' })}</span>,
             },
             { name: 'Ghi chú', selector: (row: Order) => row.note || '' },
             {
                 name: 'Ngày đặt',
                 selector: (row: Order) => row.createDate,
-                right: true,
                 cell: (row: Order) => <span>{fDate(row.createDate, 'DD/MM/YYYY')}</span>,
             },
             {
                 name: 'Ngày cập nhật',
                 selector: (row: Order) => row.writeDate,
-                right: true,
                 cell: (row: Order) => <span>{fDateTime(row.writeDate, 'HH:mm DD/MM/YYYY')}</span>,
             },
             {
                 name: 'Trạng thái',
                 selector: (row: Order) => row.status,
-                cell: (row: Order) => <span>{statusText(row.status)}</span>,
+                cell: (row: Order) => getOrderStatusBadge(row.status),
             },
             {
                 name: 'Chức năng',
@@ -209,7 +220,7 @@ const OrderView: React.FC = () => {
                                 <h6>Thông tin đơn hàng</h6>
                                 <p><strong>Ngày đặt:</strong> {fDate(orderDetails.order.createDate, 'DD/MM/YYYY HH:mm')}</p>
                                 <p><strong>Ngày giao dự kiến:</strong> {fDate(orderDetails.order.expectDateDelivery, 'DD/MM/YYYY HH:mm')}</p>
-                                <p><strong>Trạng thái:</strong> {statusText(orderDetails.order.status)}</p>
+                                <p><strong>Trạng thái:</strong> {getOrderStatusBadge(orderDetails.order.status)}</p>
                                 <p><strong>Phí vận chuyển:</strong> {fCurrency(orderDetails.order.shippingFee || 0, { currency: 'VND' })}</p>
                                 <p><strong>Giảm giá:</strong> {fCurrency(orderDetails.order.discount || 0, { currency: 'VND' })}</p>
                                 <p><strong>Tổng tiền:</strong> {fCurrency(orderDetails.order.amountTotal, { currency: 'VND' })}</p>

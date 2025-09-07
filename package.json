@@ -16,11 +16,13 @@
     "build:analyze": "NODE_OPTIONS='--max-old-space-size=1536' vite build --mode analyze",
     "dev:host": "vite --host"
   },
+  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": "20.x"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
+    "apexcharts": "^5.3.5",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "dayjs": "^1.11.13",
@@ -28,6 +30,7 @@
     "nprogress": "^0.2.0",
     "react": "^18.3.1",
     "react-activity": "^1.2.2",
+    "react-apexcharts": "^1.4.1",
     "react-bootstrap": "^2.10.5",
     "react-data-table-component": "^7.0.0-alpha-5",
     "react-dom": "^18.3.1",
@@ -66,6 +69,5 @@
     "typescript": "^5.5.4",
     "vite": "^5.4.2",
     "vite-plugin-checker": "^0.7.2"
-  },
-  "packageManager": "yarn@1.22.22"
+  }
 }

@@ -3,6 +3,10 @@
     "composite": true,
     "module": "ESNext",
     "moduleResolution": "Node",
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "lib": ["dom", "es2020"],
+    "types": ["vite/client"],
     "allowSyntheticDefaultImports": true
   },
   "include": ["vite.config.ts"]

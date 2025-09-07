@@ -111,6 +111,7 @@ function ProductDetail() {
                     </Breadcrumb>
                     <div className="page_product_detail">
                         <div className="product_img">
+                            {/* @ts-ignore */}
                             <LazyLoadImage
                                 effect="blur"
                                 src={(selectedImage as string) || ImageAssets.logo}

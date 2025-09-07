@@ -1,7 +1,7 @@
 import { useResponsive } from '@/hooks/use-responsive';
 
-import CartItemDesktop from './cart-item-desktop';
 import CartItemMobile from './cart-item-mobile';
+import CartItemDesktop from './cart-item-desktop';
 
 interface CartItemProps {
     item: {

@@ -96,31 +96,32 @@ const CategoryView: React.FC = () => {
         () => [
             {
                 name: '#',
-                selector: 'id',
+                selector: (row: CategoryModel) => row.id,
                 sortable: true,
             },
             {
                 name: 'Tên danh mục',
-                selector: 'name',
+                selector: (row: CategoryModel) => row.name,
                 sortable: true,
             },
             {
                 name: 'Ngày tạo',
-                selector: 'createDate',
+                selector: (row: CategoryModel) => row.createDate || '',
                 sortable: true,
                 right: true,
-                cell: (row: any) => <span>{fDate(row.createDate, 'DD/MM/YYYY')}</span>,
+                cell: (row: CategoryModel) => <span>{fDate(row.createDate, 'DD/MM/YYYY')}</span>,
             },
             {
                 name: 'Ngày chỉnh sửa',
-                selector: 'writeDate',
+                selector: (row: CategoryModel) => row.writeDate || '',
                 sortable: true,
                 right: true,
-                cell: (row: any) => <span>{fDate(row.writeDate, 'DD/MM/YYYY')}</span>,
+                cell: (row: CategoryModel) => <span>{fDate(row.writeDate, 'DD/MM/YYYY')}</span>,
             },
             {
                 name: 'Chức năng',
-                selector: (data: any, _b: any) => (
+                selector: (row: CategoryModel) => row.id,
+                cell: (data: CategoryModel) => (
                     <>
                         <Button
                             type="button"

@@ -27,6 +27,7 @@ function CartItemDesktop(props: CartItemDesktopProps) {
                 <div className="cart_delete">
                     <img src={ImageAssets.delete} alt="delete" onClick={onDeleteItem} />
                 </div>
+                {/* @ts-ignore */}
                 <LazyLoadImage
                     effect="blur"
                     className="cart_product_img"

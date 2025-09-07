@@ -56,8 +56,8 @@ const SettingComponent: React.FC = () => {
 
     const columns = useMemo(
         () => [
-            { name: '#', selector: 'id', sortable: true },
-            { name: 'Thông báo', selector: 'value', sortable: true },
+            { name: '#', selector: (row: any) => row.id, sortable: true },
+            { name: 'Thông báo', selector: (row: any) => row.value, sortable: true },
             {
                 name: 'Chức năng',
                 selector: (row: any) => row.id,

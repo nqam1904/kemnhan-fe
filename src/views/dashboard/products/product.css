@@ -24,3 +24,9 @@
     display: inline-block;
     margin-bottom: 6px;
 }
+
+/* Ensure datatable action icons don't stretch row height */
+.rdt_TableCell img {
+    display: inline-block;
+    vertical-align: middle;
+}
