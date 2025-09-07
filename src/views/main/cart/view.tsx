@@ -1,17 +1,17 @@
 import './Cart.css';
 
-import { paths } from '@/routes/paths';
-import { Link } from 'react-router-dom';
-import { useRouter } from '@/routes/hooks';
-import { fNumber } from '@/utils/format-number';
-import { Modal, Button } from 'react-bootstrap';
-import ImageAssets from '@/constants/ImagesAsset';
-import { useMemo, useState, useEffect } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
 import ClearableInput from '@/components/clearable-input';
+import ImageAssets from '@/constants/ImagesAsset';
+import { useResponsive } from '@/hooks/use-responsive';
+import { useRouter } from '@/routes/hooks';
+import { paths } from '@/routes/paths';
 import { useCreateOrderMutation } from '@/store/apis/orders';
-import { localStorageGetItem } from '@/utils/storage-available';
+import { fNumber } from '@/utils/format-number';
 import { isValidEmailAddress, validatePhoneNumber } from '@/utils/format-string';
+import { useEffect, useMemo, useState } from 'react';
+import { Button, Modal } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 import CartItem from './cart-item';
 
@@ -34,15 +34,18 @@ interface CartViewProps {
     actDeleteItem: (id: string | number) => void;
 }
 
-function CartView(props: CartViewProps) {
+function CartView({ cartItem = [], actUpdateItem, actDeleteItem, actDeleteAll }: CartViewProps) {
     const router = useRouter();
+    const { isDesktop } = useResponsive();
+
     const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
-    const [showCustom, setShowCustom] = useState<boolean>(false);
+    const [showForm, setShowForm] = useState<boolean>(false);
     const [layout, setLayout] = useState<string>('container-fluid');
     const [confirmDelete, setConfirmDelete] = useState<{ show: boolean; id: string | number | null }>({
         show: false,
         id: null,
     });
+    const [confirmDeleteAll, setConfirmDeleteAll] = useState<boolean>(false);
     const [form, setForm] = useState<CustomerForm>({
         firstName: '',
         lastName: '',
@@ -53,12 +56,11 @@ function CartView(props: CartViewProps) {
     });
 
     useEffect(() => {
-        if (!(localStorageGetItem('token') || '')) {
-            setLayout('container');
+        setLayout('container');
+        if (cartItem.length > 0) {
+            setShowForm(true);
         }
-        // Always show the customer info form (guest checkout allowed)
-        setShowCustom(true);
-    }, []);
+    }, [cartItem]);
 
     const handleChangeQuantity = (
         currentQuantity: number,
@@ -66,15 +68,13 @@ function CartView(props: CartViewProps) {
         delta: 1 | -1
     ) => {
         if ((delta === -1 && currentQuantity <= 1) || (delta === 1 && currentQuantity >= 100)) return;
-        const { actUpdateItem } = props;
         actUpdateItem(productId, delta);
         toast.success('Cập nhật thành công!');
     };
 
-    const cartItems = props?.cartItem ?? [];
     const renderCartItems = useMemo(() => {
-        if (!Array.isArray(cartItems) || cartItems.length === 0) return null;
-        return cartItems.map((item, index) => {
+        if (!Array.isArray(cartItem) || cartItem.length === 0) return null;
+        return cartItem.map((item, index) => {
             const quantity = Number(item.quantity) || 0;
             return (
                 <CartItem
@@ -86,23 +86,20 @@ function CartView(props: CartViewProps) {
                 />
             );
         });
-    }, [cartItems]);
+    }, [cartItem]);
 
     const onDeleteItem = (id: string | number) => {
-        const { actDeleteItem } = props;
         actDeleteItem(id);
         toast.success('Cập nhật thành công!');
-        if (!(localStorageGetItem('token') || '')) {
-            setShowCustom(false);
-            setLayout('container');
-        }
+        setShowForm(false);
+        setLayout('container');
     };
     const totalAmount = useMemo(
-        () => cartItems.reduce(
+        () => cartItem.reduce(
             (sum, it) => sum + (Number(it?.product?.price) || 0) * (Number(it?.quantity) || 0),
             0
         ),
-        [cartItems]
+        [cartItem]
     );
     const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         e.preventDefault();
@@ -112,7 +109,6 @@ function CartView(props: CartViewProps) {
     };
     const payment = async () => {
         const { firstName, lastName, email, address, phone, note } = form;
-        const { cartItem } = props;
         const date = new Date();
         if (firstName === '' || lastName === '' || email === '' || address === '' || phone === '') {
             toast.warning('Vui lòng nhập đủ thông tin của bạn!');
@@ -126,6 +122,7 @@ function CartView(props: CartViewProps) {
             toast.error('Số điện thoại phải có 10-11 chữ số!');
             return;
         }
+        const shippingFee = 15000;
         const listProduct = (cartItem || []).map((item) => ({
             productId: item.product.id,
             quantity: item.quantity,
@@ -140,6 +137,7 @@ function CartView(props: CartViewProps) {
                     data: date,
                     expectDateDelivery: date,
                     note,
+                    shippingFee,
                     customer: {
                         firstName,
                         lastName,
@@ -150,8 +148,8 @@ function CartView(props: CartViewProps) {
                     lines: listProduct,
                 },
             }).unwrap();
-            props?.actDeleteAll();
-            setShowCustom(false);
+            actDeleteAll();
+            setShowForm(false);
             setLayout('container');
             router.push(paths.main.successPayment);
         } catch (error) {
@@ -160,99 +158,122 @@ function CartView(props: CartViewProps) {
     };
 
     const onDeleteAll = () => {
-        props?.actDeleteAll();
-        setShowCustom(false);
+        actDeleteAll();
+        setShowForm(false);
         setLayout('container');
         toast.success('Thành công!');
     };
+
     const emptyCart = (
         <div className="description_cart">
-            <div className="page_empty">
+            <div className={`page_empty ${isDesktop ? 'page_empty_desktop' : 'page_empty_mobile'}`}>
                 <img className="img_empty_cart" alt="empty" src={ImageAssets.empty} />
-                <Link to="/" className="btn_back">
+                <Link to="/" className={`btn_back ${isDesktop ? 'btn_back_desktop' : 'btn_back_mobile'}`}>
                     <span>Mua thêm sản phẩm</span>
                 </Link>
             </div>
         </div>
     );
-    const elemCustom = showCustom === true && (
+
+    const elemCustom = showForm ? (
         <div className="cart_custom">
             <div className="cart_header_custom">
                 <p className="content_cart">Đơn hàng</p>
             </div>
             <div className="cart_custom_body">
                 <div className="cart_custom_detail">
-                    <ClearableInput
-                        className="input_custom"
-                        style={{ marginLeft: 20, width: '90%' }}
-                        onChange={onChange as any}
-                        name="firstName"
-                        value={form.firstName}
-                        placeholder="Nhập họ"
-                    />
-                    <br />
-                    <ClearableInput
-                        className="input_custom"
-                        style={{ marginLeft: 20, width: '90%' }}
-                        onChange={onChange as any}
-                        name="lastName"
-                        value={form.lastName}
-                        placeholder="Nhập tên"
-                    />
-                    <br />
-                    <ClearableInput
-                        className="input_custom"
-                        placeholder="Nhập địa chỉ"
-                        style={{ marginLeft: 20, width: '90%' }}
-                        name="address"
-                        value={form.address}
-                        onChange={onChange as any}
-                    />
-                    <br />
-                    <ClearableInput
-                        className="input_custom"
-                        style={{ marginLeft: 20, width: '90%' }}
-                        placeholder="Nhập số điện thoại"
-                        name="phone"
-                        type="tel"
-                        value={form.phone}
-                        onChange={onChange as any}
-                    />
-                    <br />
-                    <ClearableInput
-                        className="input_custom"
-                        style={{ marginLeft: 20, width: '90%' }}
-                        placeholder="Nhập email"
-                        value={form.email}
-                        name="email"
-                        type="email"
-                        onChange={onChange as any}
-                    />
-                    <ClearableInput
-                        className="input_custom"
-                        style={{ marginLeft: 20, width: '90%' }}
-                        placeholder="Nhập ghi chú nếu có"
-                        value={form.note}
-                        name="note"
-                        onChange={onChange as any}
-                    />
+                    <div className="form-group mb-3">
+                        <label>Họ <sup className="text-danger">*</sup></label>
+                        <ClearableInput
+                            className="form-control"
+                            onChange={onChange as any}
+                            name="firstName"
+                            value={form.firstName}
+                            placeholder="Nhập họ"
+                            required
+                        />
+                    </div>
+                    <div className="form-group mb-3">
+                        <label>Tên <sup className="text-danger">*</sup></label>
+                        <ClearableInput
+                            className="form-control"
+                            onChange={onChange as any}
+                            name="lastName"
+                            value={form.lastName}
+                            placeholder="Nhập tên"
+                            required
+                        />
+                    </div>
+                    <div className="form-group mb-3">
+                        <label>Địa chỉ <sup className="text-danger">*</sup></label>
+                        <ClearableInput
+                            className="form-control"
+                            placeholder="Nhập địa chỉ"
+                            name="address"
+                            value={form.address}
+                            onChange={onChange as any}
+                            required
+                        />
+                    </div>
+                    <div className="form-group mb-3">
+                        <label>Số điện thoại <sup className="text-danger">*</sup></label>
+                        <ClearableInput
+                            className="form-control"
+                            placeholder="Nhập số điện thoại"
+                            name="phone"
+                            type="tel"
+                            value={form.phone}
+                            onChange={onChange as any}
+                            inputMode="numeric"
+                            maxLength={11}
+                            required
+                        />
+                    </div>
+                    <div className="form-group mb-3">
+                        <label>Email <sup className="text-danger">*</sup></label>
+                        <ClearableInput
+                            className="form-control"
+                            placeholder="Nhập email"
+                            value={form.email}
+                            name="email"
+                            type="email"
+                            onChange={onChange as any}
+                            required
+                        />
+                    </div>
+                    <div className="form-group mb-3">
+                        <label>Ghi chú</label>
+                        <ClearableInput
+                            className="form-control"
+                            placeholder="Nhập ghi chú nếu có"
+                            value={form.note}
+                            name="note"
+                            onChange={onChange as any}
+                        />
+                    </div>
                 </div>
             </div>
             <div className="cart_amount_body">
-                <div className="thongtin">
-                    <p>Giá sản phẩm (1):</p>
-                    <p>Tổng cộng:</p>
-                </div>
-                <div className="thanhtoan">
-                    <p>{fNumber(props?.cartItem?.[0]?.product?.price || 0)} đ</p>
-                    <p className="total">{fNumber(totalAmount)} đ</p>
+                <div className="order-summary">
+                    <div className="summary-row">
+                        <span>Tạm tính:</span>
+                        <span>{fNumber(totalAmount)} đ</span>
+                    </div>
+                    <div className="summary-row">
+                        <span>Phí vận chuyển:</span>
+                        <span>{fNumber(15000)} đ</span>
+                    </div>
+                    <div className="summary-row total-row">
+                        <span><strong>Tổng cộng:</strong></span>
+                        <span className="total"><strong>{fNumber(totalAmount + 15000)} đ</strong></span>
+                    </div>
                 </div>
             </div>
             <button type="button" className="btn_payment" onClick={payment} disabled={isCreatingOrder}>
                 Đặt mua
             </button>
         </div>
-    );
+    ) : null;
     return (
         <div className={layout}>
             <ToastContainer autoClose={1000} />
@@ -260,7 +281,7 @@ function CartView(props: CartViewProps) {
                 <div className="card_cart">
                     <div className="cart_header">
                         <p className="content_cart">Giỏ hàng</p>
-                        <p className="number_cart">{props?.cartItem.length ?? 0} sản phẩm</p>
+                        <p className="number_cart">{cartItem.length ?? 0} sản phẩm</p>
                     </div>
                     <div className="cart_body">
                         <div className="option">
@@ -270,15 +291,15 @@ function CartView(props: CartViewProps) {
                                     Chọn tất cả
                                 </p>
                             </div>
-                            {(props?.cartItem?.length ?? 0) > 0 && (
-                                <button type="button" className="delete_item" onClick={onDeleteAll}>
+                            {(cartItem?.length ?? 0) > 0 && (
+                                <button type="button" className="delete_item" onClick={() => setConfirmDeleteAll(true)}>
                                     <img src={ImageAssets.delete} alt="delete" />
                                     <p className="text_delete">Xoá tất cả</p>
                                 </button>
                             )}
                         </div>
                         <div className="content_cart_item">
-                            {props?.cartItem?.length ? renderCartItems : emptyCart}
+                            {cartItem?.length ? renderCartItems : emptyCart}
                         </div>
                     </div>
                 </div>
@@ -304,6 +325,30 @@ function CartView(props: CartViewProps) {
                             }}
                         >
                             Xoá
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal
+                    centered
+                    show={confirmDeleteAll}
+                    onHide={() => setConfirmDeleteAll(false)}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Xác nhận</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Bạn có muốn xóa tất cả sản phẩm không?</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setConfirmDeleteAll(false)}>
+                            Huỷ
+                        </Button>
+                        <Button
+                            variant="danger"
+                            onClick={() => {
+                                onDeleteAll();
+                                setConfirmDeleteAll(false);
+                            }}
+                        >
+                            Xóa tất cả
                         </Button>
                     </Modal.Footer>
                 </Modal>

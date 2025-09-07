@@ -9,6 +9,7 @@
     grid-template-columns: 3fr 1fr;
     gap: 24px;
     padding: 0 16px;
+    margin-top: 40px;
 }
 
 .news-page__main {
@@ -279,6 +280,8 @@
 @media (max-width: 991px) {
     .news-page__container {
         grid-template-columns: 1fr;
+        margin-top: 0;
+
     }
 
     .news-grid {
@@ -293,5 +296,6 @@
 @media (max-width: 575px) {
     .news-grid {
         grid-template-columns: 1fr;
+
     }
 }

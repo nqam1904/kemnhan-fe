@@ -1,0 +1,1 @@
+import{j as t}from"./vendor-react-D439mYZB.js";import"./vendor-misc-BkUckcGj.js";import"./vendor-redux-CY9rYXZh.js";import"./vendor-ui-qtF25uBn.js";function m(){return t.jsx("div",{children:"404 - Not Found"})}export{m as default};

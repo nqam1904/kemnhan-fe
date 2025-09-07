@@ -169,7 +169,6 @@ h5 {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px 20px;
 }
 
 .list__products {
@@ -295,7 +294,7 @@ h5 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
         overflow-x: visible;
-        padding: 0 12px 12px;
+        padding: 0 12px 24px;
         scroll-snap-type: none;
         margin-top: 16px;
         /* reduce large offset used on desktop */

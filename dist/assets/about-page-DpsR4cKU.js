@@ -1,0 +1,1 @@
+import{j as t,w as e}from"./vendor-react-D439mYZB.js";import{C as r}from"./index-CCO37Pg2.js";import"./vendor-misc-BkUckcGj.js";import"./vendor-redux-CY9rYXZh.js";import"./vendor-ui-qtF25uBn.js";import"./vendor-utils-DifT8CeW.js";const i={title:`About - ${r.appName}`};function n(){return t.jsx(e,{children:t.jsxs("title",{children:[" ",i.title]})})}export{n as default};

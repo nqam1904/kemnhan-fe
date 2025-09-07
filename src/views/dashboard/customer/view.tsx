@@ -1,10 +1,11 @@
-import { toast } from 'react-toastify';
-import { useRouter } from '@/routes/hooks';
-import { Modal, Button } from 'react-bootstrap';
-import DataTable from 'react-data-table-component';
-import React, { useMemo, useState, useCallback } from 'react';
 import compactDataTableStyles from '@/components/data-table/styles';
+import { useRouter } from '@/routes/hooks';
 import { useGetCustomersQuery, useLazyGetCustomerByIdQuery } from '@/store/apis/customers';
+import { fDateTime } from '@/utils/format-time';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Button, Modal } from 'react-bootstrap';
+import DataTable from 'react-data-table-component';
+import { toast } from 'react-toastify';
 
 const CustomerView: React.FC = () => {
     const { data: customers = [], isLoading } = useGetCustomersQuery();
@@ -42,8 +43,20 @@ const CustomerView: React.FC = () => {
             { name: 'Tên', selector: 'lastName', sortable: true },
             { name: 'Số điện thoại', selector: 'phone', sortable: true, right: true },
             { name: 'Email', selector: 'email', sortable: true, right: true },
-            { name: 'Ngày mua hàng', selector: 'createDate', sortable: true, right: true },
-            { name: 'Ngày chỉnh sửa', selector: 'writeDate', sortable: true, right: true },
+            {
+                name: 'Ngày mua hàng',
+                selector: 'createDate',
+                sortable: true,
+                right: true,
+                cell: (row: any) => <span>{fDateTime(row.createDate, 'HH:mm DD/MM/YYYY')}</span>
+            },
+            {
+                name: 'Ngày chỉnh sửa',
+                selector: 'writeDate',
+                sortable: true,
+                right: true,
+                cell: (row: any) => <span>{fDateTime(row.writeDate, 'HH:mm DD/MM/YYYY')}</span>
+            },
             {
                 name: 'Hành động',
                 selector: (data: any) => (
@@ -100,7 +113,7 @@ const CustomerView: React.FC = () => {
                         <Modal.Title {...({} as any)}> {titleModal} </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <div className="row">
+                        <div className="row mb-3">
                             <div className="form-group col-6">
                                 <label>
                                     Họ <sup className="sub_text">*</sup>
@@ -114,7 +127,7 @@ const CustomerView: React.FC = () => {
                                 <input className="form-control" value={lastName} disabled />
                             </div>
                         </div>
-                        <div className="row">
+                        <div className="row mb-3">
                             <div className=" form-group col-6">
                                 <label>
                                     Số điện thoại <sup className="sub_text">*</sup>
@@ -128,14 +141,14 @@ const CustomerView: React.FC = () => {
                                 <input className="form-control" value={email} disabled />
                             </div>
                         </div>
-                        <div className="row">
+                        <div className="row mb-3">
                             <div className=" form-group col-6">
                                 <label> Địa chỉ</label>
                                 <input className="form-control" value={address} disabled />
                             </div>
                             <div className=" form-group col-6">
                                 <label> Ngày mua hàng</label>
-                                <input className="form-control" value={createDate} disabled />
+                                <input className="form-control" value={fDateTime(createDate, 'HH:mm DD/MM/YYYY') || ''} disabled />
                             </div>
                         </div>
                     </Modal.Body>
