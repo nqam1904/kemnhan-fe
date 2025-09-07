@@ -19,32 +19,9 @@ export default defineConfig(({ mode }) => ({
     reportCompressedSize: false,
     rollupOptions: {
       maxParallelFileOps: 2,
-      external: (id) => {
-        // Don't externalize React to avoid multiple React instances
-        return false;
-      },
       output: {
         manualChunks: {
-          // Keep React ecosystem together to avoid hook issues
-          'vendor-react': [
-            'react',
-            'react-dom',
-            'react/jsx-runtime',
-            'react-router-dom',
-            'react-helmet-async',
-            'react-redux',
-            'react-toastify',
-            'react-bootstrap',
-            'react-lazy-load-image-component',
-            'react-activity',
-            'react-data-table-component',
-          ],
-          // Redux and state management
-          'vendor-redux': ['@reduxjs/toolkit'],
-          // UI and styling libraries
-          'vendor-ui': ['bootstrap', 'styled-components'],
-          // Utility libraries
-          'vendor-utils': ['axios', 'dayjs', 'lodash', 'nprogress', 'zod'],
+          vendor: ['react', 'react-dom', 'react-router-dom', '@reduxjs/toolkit', 'react-redux'],
         },
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
@@ -106,23 +83,12 @@ export default defineConfig(({ mode }) => ({
     include: [
       'react',
       'react-dom',
-      'react/jsx-runtime',
       'react-router-dom',
       '@reduxjs/toolkit',
       'react-redux',
       'axios',
       'dayjs',
       'lodash',
-      'bootstrap',
-      'react-bootstrap',
-      'react-toastify',
-      'react-helmet-async',
-      'react-lazy-load-image-component',
-      'react-activity',
-      'styled-components',
-      'nprogress',
-      'zod',
     ],
-    exclude: ['react-data-table-component'],
   },
 }));
